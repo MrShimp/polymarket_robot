@@ -1,0 +1,34 @@
+{
+  "polymarket": {
+    "host": "https://clob.polymarket.com",
+    "chain_id": 137,
+    "private_key": "your_mainnet_private_key_here",
+    "testnet": {
+      "host": "https://clob-staging.polymarket.com",
+      "chain_id": 80002,
+      "private_key": "your_testnet_private_key_here"
+    }
+  },
+  "trading": {
+    "default_trade_amount": 10.0,
+    "max_slippage": 0.02,
+    "order_timeout": 300,
+    "max_position_size": 100.0,
+    "max_daily_trades": 10,
+    "min_confidence": 0.85,
+    "auto_trade_enabled": false,
+    "dry_run_mode": true
+  },
+  "strategy": {
+    "time_threshold_minutes": 30,
+    "min_confidence": 0.85,
+    "max_confidence": 0.95,
+    "batch_size": 100,
+    "max_retries": 3
+  },
+  "security": {
+    "use_testnet": true,
+    "require_confirmation": true,
+    "max_gas_price": "50000000000"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "tag_slug": "politics",
+  "events_count": 1,
+  "markets_count": 20,
+  "total_volume": 15000000,
+  "total_liquidity": 2500000,
+  "sync_timestamp": "2026-01-13T14:46:47.308418",
+  "top_events": [
+    {
+      "title": "2024 US Presidential Election",
+      "volume": 15000000
+    }
+  ]
+}

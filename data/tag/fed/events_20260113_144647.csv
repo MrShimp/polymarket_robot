@@ -1,0 +1,2 @@
+id,slug,title,description,active,closed,category,tags,volume,liquidity,start_date,end_date,sync_timestamp
+event_004,fed-rate-cut-2024,Federal Reserve Rate Cut 2024,Will the Federal Reserve cut interest rates in 2024?,True,False,Economics,"economics,fed,interest-rates",3000000,500000,2024-01-01T00:00:00Z,2024-12-31T23:59:59Z,2026-01-13T14:46:47.334646

@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-01-18T14:57:39.034893",
+  "strategy_name": "紧急高置信度策略",
+  "strategy_parameters": {
+    "time_threshold_minutes": 30,
+    "min_confidence": 0.8,
+    "max_confidence": 0.95
+  },
+  "total_qualifying_markets": 1,
+  "total_volume": 23713.218815,
+  "total_liquidity": 7574.6516,
+  "confidence_distribution": {
+    "0.90-0.91": 0,
+    "0.91-0.92": 0,
+    "0.92-0.93": 0,
+    "0.93-0.94": 0,
+    "0.94-0.95": 1
+  },
+  "winning_options_distribution": {
+    "Yes": 0,
+    "No": 1,
+    "Other": 0
+  },
+  "top_opportunities": [
+    {
+      "rank": 1,
+      "id": "1196688",
+      "question": "Ethereum Up or Down - January 18, 1AM ET",
+      "confidence": 0.94,
+      "winning_option": "No",
+      "time_remaining_minutes": 5,
+      "volume": 23713.218815,
+      "liquidity": 7574.6516,
+      "endDate": "2026-01-18T07:00:00Z"
+    }
+  ]
+}

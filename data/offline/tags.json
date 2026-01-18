@@ -1,0 +1,142 @@
+[
+  {
+    "slug": "politics",
+    "label": "Politics",
+    "description": "Markets related to politics",
+    "event_count": 14,
+    "total_volume": 35663877
+  },
+  {
+    "slug": "elections",
+    "label": "Elections",
+    "description": "Markets related to elections",
+    "event_count": 10,
+    "total_volume": 20463611
+  },
+  {
+    "slug": "usa",
+    "label": "Usa",
+    "description": "Markets related to usa",
+    "event_count": 1,
+    "total_volume": 32228754
+  },
+  {
+    "slug": "crypto",
+    "label": "Crypto",
+    "description": "Markets related to crypto",
+    "event_count": 14,
+    "total_volume": 25860362
+  },
+  {
+    "slug": "bitcoin",
+    "label": "Bitcoin",
+    "description": "Markets related to bitcoin",
+    "event_count": 13,
+    "total_volume": 13109275
+  },
+  {
+    "slug": "sports",
+    "label": "Sports",
+    "description": "Markets related to sports",
+    "event_count": 4,
+    "total_volume": 33673460
+  },
+  {
+    "slug": "nfl",
+    "label": "Nfl",
+    "description": "Markets related to nfl",
+    "event_count": 4,
+    "total_volume": 4887072
+  },
+  {
+    "slug": "economics",
+    "label": "Economics",
+    "description": "Markets related to economics",
+    "event_count": 11,
+    "total_volume": 6849343
+  },
+  {
+    "slug": "fed",
+    "label": "Fed",
+    "description": "Markets related to fed",
+    "event_count": 2,
+    "total_volume": 16514497
+  },
+  {
+    "slug": "technology",
+    "label": "Technology",
+    "description": "Markets related to technology",
+    "event_count": 12,
+    "total_volume": 17692680
+  },
+  {
+    "slug": "ai",
+    "label": "Ai",
+    "description": "Markets related to ai",
+    "event_count": 14,
+    "total_volume": 26313603
+  },
+  {
+    "slug": "climate",
+    "label": "Climate",
+    "description": "Markets related to climate",
+    "event_count": 3,
+    "total_volume": 49506844
+  },
+  {
+    "slug": "entertainment",
+    "label": "Entertainment",
+    "description": "Markets related to entertainment",
+    "event_count": 7,
+    "total_volume": 13705175
+  },
+  {
+    "slug": "business",
+    "label": "Business",
+    "description": "Markets related to business",
+    "event_count": 6,
+    "total_volume": 45533868
+  },
+  {
+    "slug": "health",
+    "label": "Health",
+    "description": "Markets related to health",
+    "event_count": 1,
+    "total_volume": 38934689
+  },
+  {
+    "slug": "science",
+    "label": "Science",
+    "description": "Markets related to science",
+    "event_count": 11,
+    "total_volume": 49325992
+  },
+  {
+    "slug": "world",
+    "label": "World",
+    "description": "Markets related to world",
+    "event_count": 12,
+    "total_volume": 4387897
+  },
+  {
+    "slug": "finance",
+    "label": "Finance",
+    "description": "Markets related to finance",
+    "event_count": 5,
+    "total_volume": 17484669
+  },
+  {
+    "slug": "stocks",
+    "label": "Stocks",
+    "description": "Markets related to stocks",
+    "event_count": 14,
+    "total_volume": 10436970
+  },
+  {
+    "slug": "defi",
+    "label": "Defi",
+    "description": "Markets related to defi",
+    "event_count": 11,
+    "total_volume": 13081939
+  }
+]

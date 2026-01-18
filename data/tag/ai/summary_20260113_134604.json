@@ -1,0 +1,19 @@
+{
+  "tag_slug": "ai",
+  "tag_label": "Ai",
+  "events_count": 2,
+  "markets_count": 12,
+  "total_volume": 16785985,
+  "total_liquidity": 7349896,
+  "sync_timestamp": "2026-01-13T13:46:04.200826",
+  "top_events": [
+    {
+      "title": "Will OpenAI release GPT-5 in 2025?",
+      "volume": 10129425
+    },
+    {
+      "title": "Will OpenAI release GPT-5 in 2025?",
+      "volume": 6656560
+    }
+  ]
+}

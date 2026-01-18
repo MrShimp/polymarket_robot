@@ -1,0 +1,15 @@
+{
+  "tag_slug": "entertainment",
+  "tag_label": "Entertainment",
+  "events_count": 1,
+  "markets_count": 5,
+  "total_volume": 18838323,
+  "total_liquidity": 2770467,
+  "sync_timestamp": "2026-01-13T13:46:04.203619",
+  "top_events": [
+    {
+      "title": "Will the Chiefs win Super Bowl 2025?",
+      "volume": 18838323
+    }
+  ]
+}

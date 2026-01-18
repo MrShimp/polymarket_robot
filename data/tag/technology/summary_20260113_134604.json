@@ -1,0 +1,31 @@
+{
+  "tag_slug": "technology",
+  "tag_label": "Technology",
+  "events_count": 6,
+  "markets_count": 31,
+  "total_volume": 63485192,
+  "total_liquidity": 16043847,
+  "sync_timestamp": "2026-01-13T13:46:04.199645",
+  "top_events": [
+    {
+      "title": "Will Tesla stock hit $500 in 2025?",
+      "volume": 16345303
+    },
+    {
+      "title": "Will Tesla stock hit $500 in 2025?",
+      "volume": 14059019
+    },
+    {
+      "title": "Will OpenAI release GPT-5 in 2025?",
+      "volume": 10129425
+    },
+    {
+      "title": "Will Tesla stock hit $500 in 2025?",
+      "volume": 8317371
+    },
+    {
+      "title": "Will Tesla stock hit $500 in 2025?",
+      "volume": 7977514
+    }
+  ]
+}

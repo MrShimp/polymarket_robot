@@ -1,0 +1,16 @@
+{
+  "report_timestamp": "2026-01-12T18:57:44.799964",
+  "data_summary": {
+    "events_count": 15,
+    "markets_count": 300,
+    "unique_tags": 15,
+    "data_freshness": {
+      "status": "very_fresh",
+      "age_hours": 0.14843927861111111,
+      "message": "0.1 小时前更新",
+      "last_sync": "2026-01-12T18:48:50.420830"
+    }
+  },
+  "market_distribution": {
+    "total_events": 15,
+    "total_volume": 

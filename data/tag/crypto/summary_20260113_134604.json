@@ -1,0 +1,31 @@
+{
+  "tag_slug": "crypto",
+  "tag_label": "Crypto",
+  "events_count": 5,
+  "markets_count": 24,
+  "total_volume": 42855469,
+  "total_liquidity": 8900176,
+  "sync_timestamp": "2026-01-13T13:46:04.120107",
+  "top_events": [
+    {
+      "title": "Will Bitcoin reach $150,000 by end of 2025?",
+      "volume": 12315271
+    },
+    {
+      "title": "Will Bitcoin reach $150,000 by end of 2025?",
+      "volume": 10597203
+    },
+    {
+      "title": "Will Ethereum reach $8,000 by end of 2025?",
+      "volume": 10032493
+    },
+    {
+      "title": "Will Bitcoin reach $150,000 by end of 2025?",
+      "volume": 5359053
+    },
+    {
+      "title": "Will Ethereum reach $8,000 by end of 2025?",
+      "volume": 4551449
+    }
+  ]
+}

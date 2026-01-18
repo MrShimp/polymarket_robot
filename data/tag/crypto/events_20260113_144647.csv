@@ -1,0 +1,2 @@
+id,slug,title,description,active,closed,category,tags,volume,liquidity,start_date,end_date,sync_timestamp
+event_002,bitcoin-price-100k-2024,Bitcoin Price $100K in 2024,"Will Bitcoin reach $100,000 by the end of 2024?",True,False,Crypto,"crypto,bitcoin,price",8000000,1200000,2024-01-01T00:00:00Z,2024-12-31T23:59:59Z,2026-01-13T14:46:47.315745

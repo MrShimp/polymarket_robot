@@ -1,0 +1,29 @@
+id,question,event_id,market_type,outcome_prices,volume,liquidity,active,closed,created_at,last_trade_price,spread
+market_event_001_001,Market question 1 for event event_001,event_001,Multiple Choice,"['0.27', '0.73']",2200596,624063,True,False,2025-09-18T13:43:24.896019,0.27,0.046
+market_event_001_002,Market question 2 for event event_001,event_001,Categorical,"['0.368', '0.632']",903003,839678,True,False,2025-09-20T13:43:24.896091,0.368,0.0264
+market_event_001_003,Market question 3 for event event_001,event_001,Scalar,"['0.357', '0.643']",4025502,813991,True,False,2025-01-20T13:43:24.896120,0.357,0.0286
+market_event_001_004,Market question 4 for event event_001,event_001,Yes/No,"['0.572', '0.428']",812653,894713,True,False,2025-09-06T13:43:24.896126,0.572,0.0144
+market_event_001_005,Market question 5 for event event_001,event_001,Yes/No,"['0.875', '0.125']",1675088,364378,True,False,2025-06-21T13:43:24.896130,0.875,0.075
+market_event_004_001,Market question 1 for event event_004,event_004,Yes/No,"['0.509', '0.491']",4731756,158111,True,False,2026-01-01T13:43:24.896173,0.509,0.0018
+market_event_004_002,Market question 2 for event event_004,event_004,Categorical,"['0.101', '0.899']",1565323,328021,True,False,2025-11-05T13:43:24.896176,0.101,0.0798
+market_event_004_003,Market question 3 for event event_004,event_004,Categorical,"['0.316', '0.684']",1925471,247586,True,False,2025-10-16T13:43:24.896182,0.316,0.0368
+market_event_004_004,Market question 4 for event event_004,event_004,Scalar,"['0.696', '0.304']",3115638,369339,True,False,2025-12-02T13:43:24.896185,0.696,0.0392
+market_event_004_005,Market question 5 for event event_004,event_004,Multiple Choice,"['0.558', '0.442']",437479,929000,True,False,2025-06-18T13:43:24.896188,0.558,0.0116
+market_event_004_006,Market question 6 for event event_004,event_004,Yes/No,"['0.148', '0.852']",464164,578194,True,False,2025-03-04T13:43:24.896193,0.148,0.0704
+market_event_004_007,Market question 7 for event event_004,event_004,Multiple Choice,"['0.642', '0.358']",4359663,56837,True,False,2025-10-27T13:43:24.896196,0.642,0.0284
+market_event_018_001,Market question 1 for event event_018,event_018,Yes/No,"['0.605', '0.395']",4882732,966323,True,False,2025-05-03T13:43:24.896512,0.605,0.021
+market_event_018_002,Market question 2 for event event_018,event_018,Categorical,"['0.736', '0.264']",547102,104187,True,False,2025-11-05T13:43:24.896515,0.736,0.0472
+market_event_018_003,Market question 3 for event event_018,event_018,Yes/No,"['0.502', '0.498']",3282257,457388,True,False,2025-03-11T13:43:24.896518,0.502,0.0004
+market_event_023_001,Market question 1 for event event_023,event_023,Multiple Choice,"['0.252', '0.748']",2439272,462217,True,False,2025-12-06T13:43:24.896580,0.252,0.0496
+market_event_023_002,Market question 2 for event event_023,event_023,Scalar,"['0.355', '0.645']",480708,357229,True,False,2025-03-21T13:43:24.896583,0.355,0.029
+market_event_023_003,Market question 3 for event event_023,event_023,Categorical,"['0.281', '0.719']",1890515,108068,True,False,2025-08-07T13:43:24.896587,0.281,0.0438
+market_event_023_004,Market question 4 for event event_023,event_023,Scalar,"['0.568', '0.432']",4433745,423021,True,False,2025-04-20T13:43:24.896591,0.568,0.0136
+market_event_023_005,Market question 5 for event event_023,event_023,Multiple Choice,"['0.587', '0.413']",3758601,452015,True,False,2025-05-16T13:43:24.896630,0.587,0.0174
+market_event_023_006,Market question 6 for event event_023,event_023,Categorical,"['0.132', '0.868']",2091988,215502,True,False,2025-09-15T13:43:24.896647,0.132,0.0736
+market_event_023_007,Market question 7 for event event_023,event_023,Scalar,"['0.745', '0.255']",2270514,337525,True,False,2025-07-19T13:43:24.896650,0.745,0.049
+market_event_023_008,Market question 8 for event event_023,event_023,Yes/No,"['0.471', '0.529']",2646163,668109,True,False,2025-10-21T13:43:24.896653,0.471,0.0058
+market_event_024_001,Market question 1 for event event_024,event_024,Multiple Choice,"['0.389', '0.611']",3677489,241562,True,False,2025-12-27T13:43:24.896657,0.389,0.0222
+market_event_024_002,Market question 2 for event event_024,event_024,Multiple Choice,"['0.318', '0.682']",2032553,125965,True,False,2025-07-06T13:43:24.896660,0.318,0.0364
+market_event_024_003,Market question 3 for event event_024,event_024,Categorical,"['0.557', '0.443']",476399,662963,True,False,2025-01-14T13:43:24.896662,0.557,0.0114
+market_event_024_004,Market question 4 for event event_024,event_024,Scalar,"['0.623', '0.377']",3630240,960048,True,False,2025-04-16T13:43:24.896666,0.623,0.0246
+market_event_024_005,Market question 5 for event event_024,event_024,Yes/No,"['0.187', '0.813']",1900730,599635,True,False,2025-04-16T13:43:24.896669,0.187,0.0626

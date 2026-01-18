@@ -1,0 +1,19 @@
+{
+  "tag_slug": "defi",
+  "tag_label": "Defi",
+  "events_count": 2,
+  "markets_count": 6,
+  "total_volume": 14583942,
+  "total_liquidity": 2182082,
+  "sync_timestamp": "2026-01-13T14:25:50.123600",
+  "top_events": [
+    {
+      "title": "Will Ethereum reach $8,000 by end of 2025?",
+      "volume": 10032493
+    },
+    {
+      "title": "Will Ethereum reach $8,000 by end of 2025?",
+      "volume": 4551449
+    }
+  ]
+}

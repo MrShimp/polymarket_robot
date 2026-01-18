@@ -1,0 +1,107 @@
+{
+  "sync_settings": {
+    "base_url": "https://gamma-api.polymarket.com",
+    "data_dir": "./data",
+    "use_mock_data": true,
+    "batch_size": 100,
+    "request_delay": 0.5,
+    "timeout": 10,
+    "max_retries": 3
+  },
+  "tag_mapping": {
+    "politics": [
+      "politics",
+      "election",
+      "government",
+      "policy"
+    ],
+    "crypto": [
+      "crypto",
+      "bitcoin",
+      "ethereum",
+      "blockchain",
+      "defi"
+    ],
+    "sports": [
+      "sports",
+      "nfl",
+      "nba",
+      "football",
+      "basketball",
+      "soccer"
+    ],
+    "economics": [
+      "economics",
+      "fed",
+      "inflation",
+      "gdp",
+      "market",
+      "finance"
+    ],
+    "technology": [
+      "technology",
+      "ai",
+      "tech",
+      "innovation",
+      "startup"
+    ],
+    "entertainment": [
+      "entertainment",
+      "movies",
+      "music",
+      "celebrity",
+      "awards"
+    ],
+    "science": [
+      "science",
+      "research",
+      "discovery",
+      "space",
+      "climate"
+    ],
+    "weather": [
+      "weather",
+      "hurricane",
+      "climate",
+      "temperature"
+    ],
+    "business": [
+      "business",
+      "earnings",
+      "ipo",
+      "merger",
+      "corporate"
+    ],
+    "social": [
+      "social",
+      "trend",
+      "viral",
+      "culture",
+      "society"
+    ]
+  },
+  "file_retention": {
+    "days_to_keep": 30,
+    "max_files_per_tag": 50,
+    "compress_old_files": true
+  },
+  "notification_settings": {
+    "email_alerts": false,
+    "slack_webhook": "",
+    "discord_webhook": "",
+    "alert_on_sync_failure": true,
+    "alert_on_large_changes": true,
+    "change_threshold_percent": 20
+  },
+  "sync_schedule": {
+    "enabled": false,
+    "interval_hours": 6,
+    "specific_times": [
+      "06:00",
+      "12:00",
+      "18:00",
+      "00:00"
+    ],
+    "timezone": "UTC"
+  }
+}

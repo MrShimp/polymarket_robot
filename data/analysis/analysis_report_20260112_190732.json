@@ -1,0 +1,438 @@
+{
+  "report_timestamp": "2026-01-12T19:07:32.594261",
+  "data_summary": {
+    "events_count": 15,
+    "markets_count": 300,
+    "unique_tags": 15,
+    "data_freshness": {
+      "status": "very_fresh",
+      "age_hours": 0.07106461222222223,
+      "message": "0.1 小时前更新",
+      "last_sync": "2026-01-12T19:03:16.764062"
+    }
+  },
+  "market_distribution": {
+    "total_events": 15,
+    "total_volume": 99000000.0,
+    "total_liquidity": 15900000.0,
+    "average_volume": 6600000.0,
+    "median_volume": 5000000.0,
+    "volume_std": 4837354.64897913,
+    "distribution_by_tag": {
+      "ai": {
+        "count": 1,
+        "total_volume": 2000000.0,
+        "avg_volume": 2000000.0,
+        "total_liquidity": 300000.0
+      },
+      "bitcoin": {
+        "count": 1,
+        "total_volume": 8000000.0,
+        "avg_volume": 8000000.0,
+        "total_liquidity": 1200000.0
+      },
+      "crypto": {
+        "count": 1,
+        "total_volume": 8000000.0,
+        "avg_volume": 8000000.0,
+        "total_liquidity": 1200000.0
+      },
+      "economics": {
+        "count": 1,
+        "total_volume": 3000000.0,
+        "avg_volume": 3000000.0,
+        "total_liquidity": 500000.0
+      },
+      "elections": {
+        "count": 1,
+        "total_volume": 15000000.0,
+        "avg_volume": 15000000.0,
+        "total_liquidity": 2500000.0
+      },
+      "fed": {
+        "count": 1,
+        "total_volume": 3000000.0,
+        "avg_volume": 3000000.0,
+        "total_liquidity": 500000.0
+      },
+      "football": {
+        "count": 1,
+        "total_volume": 5000000.0,
+        "avg_volume": 5000000.0,
+        "total_liquidity": 800000.0
+      },
+      "innovation": {
+        "count": 1,
+        "total_volume": 2000000.0,
+        "avg_volume": 2000000.0,
+        "total_liquidity": 300000.0
+      },
+      "interest-rates": {
+        "count": 1,
+        "total_volume": 3000000.0,
+        "avg_volume": 3000000.0,
+        "total_liquidity": 500000.0
+      },
+      "nfl": {
+        "count": 1,
+        "total_volume": 5000000.0,
+        "avg_volume": 5000000.0,
+        "total_liquidity": 800000.0
+      },
+      "politics": {
+        "count": 1,
+        "total_volume": 15000000.0,
+        "avg_volume": 15000000.0,
+        "total_liquidity": 2500000.0
+      },
+      "price": {
+        "count": 1,
+        "total_volume": 8000000.0,
+        "avg_volume": 8000000.0,
+        "total_liquidity": 1200000.0
+      },
+      "sports": {
+        "count": 1,
+        "total_volume": 5000000.0,
+        "avg_volume": 5000000.0,
+        "total_liquidity": 800000.0
+      },
+      "technology": {
+        "count": 1,
+        "total_volume": 2000000.0,
+        "avg_volume": 2000000.0,
+        "total_liquidity": 300000.0
+      },
+      "usa": {
+        "count": 1,
+        "total_volume": 15000000.0,
+        "avg_volume": 15000000.0,
+        "total_liquidity": 2500000.0
+      }
+    },
+    "top_tags_by_volume": [
+      [
+        "elections",
+        {
+          "count": 1,
+          "total_volume": 15000000.0,
+          "avg_volume": 15000000.0,
+          "total_liquidity": 2500000.0
+        }
+      ],
+      [
+        "politics",
+        {
+          "count": 1,
+          "total_volume": 15000000.0,
+          "avg_volume": 15000000.0,
+          "total_liquidity": 2500000.0
+        }
+      ],
+      [
+        "usa",
+        {
+          "count": 1,
+          "total_volume": 15000000.0,
+          "avg_volume": 15000000.0,
+          "total_liquidity": 2500000.0
+        }
+      ],
+      [
+        "bitcoin",
+        {
+          "count": 1,
+          "total_volume": 8000000.0,
+          "avg_volume": 8000000.0,
+          "total_liquidity": 1200000.0
+        }
+      ],
+      [
+        "crypto",
+        {
+          "count": 1,
+          "total_volume": 8000000.0,
+          "avg_volume": 8000000.0,
+          "total_liquidity": 1200000.0
+        }
+      ],
+      [
+        "price",
+        {
+          "count": 1,
+          "total_volume": 8000000.0,
+          "avg_volume": 8000000.0,
+          "total_liquidity": 1200000.0
+        }
+      ],
+      [
+        "football",
+        {
+          "count": 1,
+          "total_volume": 5000000.0,
+          "avg_volume": 5000000.0,
+          "total_liquidity": 800000.0
+        }
+      ],
+      [
+        "nfl",
+        {
+          "count": 1,
+          "total_volume": 5000000.0,
+          "avg_volume": 5000000.0,
+          "total_liquidity": 800000.0
+        }
+      ],
+      [
+        "sports",
+        {
+          "count": 1,
+          "total_volume": 5000000.0,
+          "avg_volume": 5000000.0,
+          "total_liquidity": 800000.0
+        }
+      ],
+      [
+        "economics",
+        {
+          "count": 1,
+          "total_volume": 3000000.0,
+          "avg_volume": 3000000.0,
+          "total_liquidity": 500000.0
+        }
+      ]
+    ],
+    "top_tags_by_count": [
+      [
+        "ai",
+        {
+          "count": 1,
+          "total_volume": 2000000.0,
+          "avg_volume": 2000000.0,
+          "total_liquidity": 300000.0
+        }
+      ],
+      [
+        "bitcoin",
+        {
+          "count": 1,
+          "total_volume": 8000000.0,
+          "avg_volume": 8000000.0,
+          "total_liquidity": 1200000.0
+        }
+      ],
+      [
+        "crypto",
+        {
+          "count": 1,
+          "total_volume": 8000000.0,
+          "avg_volume": 8000000.0,
+          "total_liquidity": 1200000.0
+        }
+      ],
+      [
+        "economics",
+        {
+          "count": 1,
+          "total_volume": 3000000.0,
+          "avg_volume": 3000000.0,
+          "total_liquidity": 500000.0
+        }
+      ],
+      [
+        "elections",
+        {
+          "count": 1,
+          "total_volume": 15000000.0,
+          "avg_volume": 15000000.0,
+          "total_liquidity": 2500000.0
+        }
+      ],
+      [
+        "fed",
+        {
+          "count": 1,
+          "total_volume": 3000000.0,
+          "avg_volume": 3000000.0,
+          "total_liquidity": 500000.0
+        }
+      ],
+      [
+        "football",
+        {
+          "count": 1,
+          "total_volume": 5000000.0,
+          "avg_volume": 5000000.0,
+          "total_liquidity": 800000.0
+        }
+      ],
+      [
+        "innovation",
+        {
+          "count": 1,
+          "total_volume": 2000000.0,
+          "avg_volume": 2000000.0,
+          "total_liquidity": 300000.0
+        }
+      ],
+      [
+        "interest-rates",
+        {
+          "count": 1,
+          "total_volume": 3000000.0,
+          "avg_volume": 3000000.0,
+          "total_liquidity": 500000.0
+        }
+      ],
+      [
+        "nfl",
+        {
+          "count": 1,
+          "total_volume": 5000000.0,
+          "avg_volume": 5000000.0,
+          "total_liquidity": 800000.0
+        }
+      ]
+    ],
+    "distribution_by_category": {
+      "Crypto": {
+        "count": 3,
+        "total_volume": 24000000.0,
+        "avg_volume": 8000000.0,
+        "total_liquidity": 3600000.0
+      },
+      "Economics": {
+        "count": 3,
+        "total_volume": 9000000.0,
+        "avg_volume": 3000000.0,
+        "total_liquidity": 1500000.0
+      },
+      "Politics": {
+        "count": 3,
+        "total_volume": 45000000.0,
+        "avg_volume": 15000000.0,
+        "total_liquidity": 7500000.0
+      },
+      "Sports": {
+        "count": 3,
+        "total_volume": 15000000.0,
+        "avg_volume": 5000000.0,
+        "total_liquidity": 2400000.0
+      },
+      "Technology": {
+        "count": 3,
+        "total_volume": 6000000.0,
+        "avg_volume": 2000000.0,
+        "total_liquidity": 900000.0
+      }
+    },
+    "time_analysis": {
+      "expiring_soon": 15,
+      "expiring_this_month": 15,
+      "expiring_this_year": 15,
+      "average_days_to_expiry": -380.2,
+      "median_days_to_expiry": -377.0
+    }
+  },
+  "market_trends": {
+    "volume_trends": {
+      "q25": 3000000.0,
+      "median": 5000000.0,
+      "q75": 8000000.0,
+      "p90": 15000000.0,
+      "p95": 15000000.0,
+      "high_volume_events": 0,
+      "low_volume_events": 3
+    },
+    "liquidity_trends": {
+      "q25": 500000.0,
+      "median": 800000.0,
+      "q75": 1200000.0,
+      "p90": 2500000.0,
+      "p95": 2500000.0,
+      "high_liquidity_events": 0,
+      "low_liquidity_events": 3
+    },
+    "growth_analysis": {
+      "volume_volatility": 1.269389905663635,
+      "positive_growth_events": 7,
+      "negative_growth_events": 6
+    },
+    "correlation_analysis": {
+      "volume_liquidity_correlation": 0.9980327410607567
+    }
+  },
+  "opportunities": {
+    "high_volume_low_liquidity": [],
+    "emerging_trends": [
+      {
+        "tag": "elections",
+        "total_volume": 15000000.0,
+        "event_count": 1,
+        "avg_volume": 15000000.0,
+        "growth_potential": "high"
+      },
+      {
+        "tag": "politics",
+        "total_volume": 15000000.0,
+        "event_count": 1,
+        "avg_volume": 15000000.0,
+        "growth_potential": "high"
+      },
+      {
+        "tag": "usa",
+        "total_volume": 15000000.0,
+        "event_count": 1,
+        "avg_volume": 15000000.0,
+        "growth_potential": "high"
+      },
+      {
+        "tag": "bitcoin",
+        "total_volume": 8000000.0,
+        "event_count": 1,
+        "avg_volume": 8000000.0,
+        "growth_potential": "medium"
+      },
+      {
+        "tag": "crypto",
+        "total_volume": 8000000.0,
+        "event_count": 1,
+        "avg_volume": 8000000.0,
+        "growth_potential": "medium"
+      }
+    ],
+    "undervalued_markets": [],
+    "arbitrage_opportunities": [],
+    "risk_warnings": []
+  },
+  "recommendations": [
+    {
+      "type": "opportunity",
+      "category": "high_volume",
+      "message": "标签 \"elections\" 交易量较高 ($15,000,000)，值得关注",
+      "priority": "high",
+      "action": "深入分析 elections 相关市场"
+    },
+    {
+      "type": "opportunity",
+      "category": "high_volume",
+      "message": "标签 \"politics\" 交易量较高 ($15,000,000)，值得关注",
+      "priority": "high",
+      "action": "深入分析 politics 相关市场"
+    },
+    {
+      "type": "opportunity",
+      "category": "high_volume",
+      "message": "标签 \"usa\" 交易量较高 ($15,000,000)，值得关注",
+      "priority": "high",
+      "action": "深入分析 usa 相关市场"
+    },
+    {
+      "type": "urgent",
+      "category": "timing",
+      "message": "15 个事件将在一周内到期",
+      "priority": "high",
+      "action": "尽快决定是否参与即将到期的市场"
+    }
+  ]
+}

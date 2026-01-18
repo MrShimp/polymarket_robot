@@ -1,0 +1,6 @@
+id,slug,title,description,tags,volume,liquidity,active,closed,created_at,end_date,market_count
+event_005,event-005-3923,Will Trump win the 2024 election?,Prediction market for: Will Trump win the 2024 election?,"['politics', 'elections', 'usa']",27394519,8237843,True,False,2025-01-21T13:43:24.895807,2027-01-06T13:43:24.895814,2
+event_012,event-012-1152,Will Trump win the 2024 election?,Prediction market for: Will Trump win the 2024 election?,"['politics', 'elections', 'usa']",35169366,5127609,True,False,2025-02-22T13:43:24.895852,2026-11-05T13:43:24.895853,7
+event_016,event-016-4348,Will Trump win the 2024 election?,Prediction market for: Will Trump win the 2024 election?,"['politics', 'elections', 'usa']",47575594,3301847,True,False,2025-04-20T13:43:24.895867,2026-11-08T13:43:24.895869,2
+event_020,event-020-5562,Will Trump win the 2024 election?,Prediction market for: Will Trump win the 2024 election?,"['politics', 'elections', 'usa']",34894990,5440635,True,False,2025-10-13T13:43:24.895910,2026-03-23T13:43:24.895917,5
+event_022,event-022-1477,Will Trump win the 2024 election?,Prediction market for: Will Trump win the 2024 election?,"['politics', 'elections', 'usa']",49573537,2743597,True,False,2025-07-25T13:43:24.895937,2026-07-06T13:43:24.895940,1

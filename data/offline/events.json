@@ -1,0 +1,452 @@
+[
+  {
+    "id": "event_001",
+    "slug": "event-001-1349",
+    "title": "Will the Fed cut rates in Q1 2025?",
+    "description": "Prediction market for: Will the Fed cut rates in Q1 2025?",
+    "tags": [
+      "economics",
+      "fed",
+      "finance"
+    ],
+    "volume": 12971342,
+    "liquidity": 5458372,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-05-20T13:43:24.895677",
+    "end_date": "2027-06-05T13:43:24.895693",
+    "market_count": 5
+  },
+  {
+    "id": "event_002",
+    "slug": "event-002-4508",
+    "title": "Will OpenAI release GPT-5 in 2025?",
+    "description": "Prediction market for: Will OpenAI release GPT-5 in 2025?",
+    "tags": [
+      "technology",
+      "ai",
+      "business"
+    ],
+    "volume": 10129425,
+    "liquidity": 1356127,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-08-06T13:43:24.895701",
+    "end_date": "2027-05-26T13:43:24.895704",
+    "market_count": 8
+  },
+  {
+    "id": "event_003",
+    "slug": "event-003-1946",
+    "title": "Will Ethereum reach $8,000 by end of 2025?",
+    "description": "Prediction market for: Will Ethereum reach $8,000 by end of 2025?",
+    "tags": [
+      "crypto",
+      "defi",
+      "finance"
+    ],
+    "volume": 4551449,
+    "liquidity": 2098628,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-04-18T13:43:24.895708",
+    "end_date": "2026-04-30T13:43:24.895710",
+    "market_count": 3
+  },
+  {
+    "id": "event_004",
+    "slug": "event-004-9538",
+    "title": "Will the Fed cut rates in Q1 2025?",
+    "description": "Prediction market for: Will the Fed cut rates in Q1 2025?",
+    "tags": [
+      "economics",
+      "fed",
+      "finance"
+    ],
+    "volume": 25133235,
+    "liquidity": 5480360,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-04-29T13:43:24.895738",
+    "end_date": "2027-09-03T13:43:24.895770",
+    "market_count": 7
+  },
+  {
+    "id": "event_005",
+    "slug": "event-005-3923",
+    "title": "Will Trump win the 2024 election?",
+    "description": "Prediction market for: Will Trump win the 2024 election?",
+    "tags": [
+      "politics",
+      "elections",
+      "usa"
+    ],
+    "volume": 27394519,
+    "liquidity": 8237843,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-01-21T13:43:24.895807",
+    "end_date": "2027-01-06T13:43:24.895814",
+    "market_count": 2
+  },
+  {
+    "id": "event_006",
+    "slug": "event-006-1544",
+    "title": "Will Tesla stock hit $500 in 2025?",
+    "description": "Prediction market for: Will Tesla stock hit $500 in 2025?",
+    "tags": [
+      "stocks",
+      "business",
+      "technology"
+    ],
+    "volume": 16345303,
+    "liquidity": 2051013,
+    "active": true,
+    "closed": false,
+    "created_at": "2026-01-06T13:43:24.895822",
+    "end_date": "2026-05-10T13:43:24.895824",
+    "market_count": 6
+  },
+  {
+    "id": "event_007",
+    "slug": "event-007-8921",
+    "title": "Will Ethereum reach $8,000 by end of 2025?",
+    "description": "Prediction market for: Will Ethereum reach $8,000 by end of 2025?",
+    "tags": [
+      "crypto",
+      "defi",
+      "finance"
+    ],
+    "volume": 10032493,
+    "liquidity": 2269498,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-06-28T13:43:24.895830",
+    "end_date": "2027-05-16T13:43:24.895831",
+    "market_count": 3
+  },
+  {
+    "id": "event_008",
+    "slug": "event-008-9367",
+    "title": "Will Bitcoin reach $150,000 by end of 2025?",
+    "description": "Prediction market for: Will Bitcoin reach $150,000 by end of 2025?",
+    "tags": [
+      "crypto",
+      "bitcoin",
+      "finance"
+    ],
+    "volume": 10597203,
+    "liquidity": 2888528,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-04-20T13:43:24.895834",
+    "end_date": "2027-06-28T13:43:24.895836",
+    "market_count": 8
+  },
+  {
+    "id": "event_009",
+    "slug": "event-009-2153",
+    "title": "Will the Chiefs win Super Bowl 2025?",
+    "description": "Prediction market for: Will the Chiefs win Super Bowl 2025?",
+    "tags": [
+      "sports",
+      "nfl",
+      "entertainment"
+    ],
+    "volume": 18838323,
+    "liquidity": 4050449,
+    "active": true,
+    "closed": false,
+    "created_at": "2026-01-09T13:43:24.895839",
+    "end_date": "2026-06-17T13:43:24.895840",
+    "market_count": 5
+  },
+  {
+    "id": "event_010",
+    "slug": "event-010-8031",
+    "title": "Will global temperature rise exceed 1.5\u00b0C by 2030?",
+    "description": "Prediction market for: Will global temperature rise exceed 1.5\u00b0C by 2030?",
+    "tags": [
+      "climate",
+      "science",
+      "world"
+    ],
+    "volume": 9994015,
+    "liquidity": 1198817,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-10-14T13:43:24.895843",
+    "end_date": "2026-08-05T13:43:24.895845",
+    "market_count": 6
+  },
+  {
+    "id": "event_011",
+    "slug": "event-011-3233",
+    "title": "Will OpenAI release GPT-5 in 2025?",
+    "description": "Prediction market for: Will OpenAI release GPT-5 in 2025?",
+    "tags": [
+      "technology",
+      "ai",
+      "business"
+    ],
+    "volume": 6656560,
+    "liquidity": 2517239,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-09-04T13:43:24.895847",
+    "end_date": "2027-10-17T13:43:24.895849",
+    "market_count": 4
+  },
+  {
+    "id": "event_012",
+    "slug": "event-012-1152",
+    "title": "Will Trump win the 2024 election?",
+    "description": "Prediction market for: Will Trump win the 2024 election?",
+    "tags": [
+      "politics",
+      "elections",
+      "usa"
+    ],
+    "volume": 35169366,
+    "liquidity": 5127609,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-02-22T13:43:24.895852",
+    "end_date": "2026-11-05T13:43:24.895853",
+    "market_count": 7
+  },
+  {
+    "id": "event_013",
+    "slug": "event-013-2701",
+    "title": "Will Tesla stock hit $500 in 2025?",
+    "description": "Prediction market for: Will Tesla stock hit $500 in 2025?",
+    "tags": [
+      "stocks",
+      "business",
+      "technology"
+    ],
+    "volume": 14059019,
+    "liquidity": 1236464,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-04-17T13:43:24.895856",
+    "end_date": "2027-05-02T13:43:24.895857",
+    "market_count": 5
+  },
+  {
+    "id": "event_014",
+    "slug": "event-014-1774",
+    "title": "Will global temperature rise exceed 1.5\u00b0C by 2030?",
+    "description": "Prediction market for: Will global temperature rise exceed 1.5\u00b0C by 2030?",
+    "tags": [
+      "climate",
+      "science",
+      "world"
+    ],
+    "volume": 4885124,
+    "liquidity": 2296301,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-02-14T13:43:24.895860",
+    "end_date": "2026-10-20T13:43:24.895861",
+    "market_count": 4
+  },
+  {
+    "id": "event_015",
+    "slug": "event-015-5674",
+    "title": "Will Tesla stock hit $500 in 2025?",
+    "description": "Prediction market for: Will Tesla stock hit $500 in 2025?",
+    "tags": [
+      "stocks",
+      "business",
+      "technology"
+    ],
+    "volume": 8317371,
+    "liquidity": 3647723,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-12-01T13:43:24.895864",
+    "end_date": "2027-10-21T13:43:24.895865",
+    "market_count": 4
+  },
+  {
+    "id": "event_016",
+    "slug": "event-016-4348",
+    "title": "Will Trump win the 2024 election?",
+    "description": "Prediction market for: Will Trump win the 2024 election?",
+    "tags": [
+      "politics",
+      "elections",
+      "usa"
+    ],
+    "volume": 47575594,
+    "liquidity": 3301847,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-04-20T13:43:24.895867",
+    "end_date": "2026-11-08T13:43:24.895869",
+    "market_count": 2
+  },
+  {
+    "id": "event_017",
+    "slug": "event-017-8083",
+    "title": "Will Bitcoin reach $150,000 by end of 2025?",
+    "description": "Prediction market for: Will Bitcoin reach $150,000 by end of 2025?",
+    "tags": [
+      "crypto",
+      "bitcoin",
+      "finance"
+    ],
+    "volume": 12315271,
+    "liquidity": 2711837,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-10-25T13:43:24.895871",
+    "end_date": "2026-05-06T13:43:24.895873",
+    "market_count": 4
+  },
+  {
+    "id": "event_018",
+    "slug": "event-018-6099",
+    "title": "Will the Fed cut rates in Q1 2025?",
+    "description": "Prediction market for: Will the Fed cut rates in Q1 2025?",
+    "tags": [
+      "economics",
+      "fed",
+      "finance"
+    ],
+    "volume": 13787568,
+    "liquidity": 3642015,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-08-17T13:43:24.895876",
+    "end_date": "2027-06-15T13:43:24.895877",
+    "market_count": 3
+  },
+  {
+    "id": "event_019",
+    "slug": "event-019-7673",
+    "title": "Will Tesla stock hit $500 in 2025?",
+    "description": "Prediction market for: Will Tesla stock hit $500 in 2025?",
+    "tags": [
+      "stocks",
+      "business",
+      "technology"
+    ],
+    "volume": 7977514,
+    "liquidity": 3307927,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-11-26T13:43:24.895879",
+    "end_date": "2026-12-09T13:43:24.895880",
+    "market_count": 4
+  },
+  {
+    "id": "event_020",
+    "slug": "event-020-5562",
+    "title": "Will Trump win the 2024 election?",
+    "description": "Prediction market for: Will Trump win the 2024 election?",
+    "tags": [
+      "politics",
+      "elections",
+      "usa"
+    ],
+    "volume": 34894990,
+    "liquidity": 5440635,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-10-13T13:43:24.895910",
+    "end_date": "2026-03-23T13:43:24.895917",
+    "market_count": 5
+  },
+  {
+    "id": "event_021",
+    "slug": "event-021-7202",
+    "title": "Will global temperature rise exceed 1.5\u00b0C by 2030?",
+    "description": "Prediction market for: Will global temperature rise exceed 1.5\u00b0C by 2030?",
+    "tags": [
+      "climate",
+      "science",
+      "world"
+    ],
+    "volume": 11027436,
+    "liquidity": 1012493,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-03-11T13:43:24.895927",
+    "end_date": "2026-04-21T13:43:24.895930",
+    "market_count": 7
+  },
+  {
+    "id": "event_022",
+    "slug": "event-022-1477",
+    "title": "Will Trump win the 2024 election?",
+    "description": "Prediction market for: Will Trump win the 2024 election?",
+    "tags": [
+      "politics",
+      "elections",
+      "usa"
+    ],
+    "volume": 49573537,
+    "liquidity": 2743597,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-07-25T13:43:24.895937",
+    "end_date": "2026-07-06T13:43:24.895940",
+    "market_count": 1
+  },
+  {
+    "id": "event_023",
+    "slug": "event-023-6968",
+    "title": "Will the Fed cut rates in Q1 2025?",
+    "description": "Prediction market for: Will the Fed cut rates in Q1 2025?",
+    "tags": [
+      "economics",
+      "fed",
+      "finance"
+    ],
+    "volume": 14543250,
+    "liquidity": 1509343,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-11-20T13:43:24.895946",
+    "end_date": "2026-02-14T13:43:24.895949",
+    "market_count": 8
+  },
+  {
+    "id": "event_024",
+    "slug": "event-024-2530",
+    "title": "Will the Fed cut rates in Q1 2025?",
+    "description": "Prediction market for: Will the Fed cut rates in Q1 2025?",
+    "tags": [
+      "economics",
+      "fed",
+      "finance"
+    ],
+    "volume": 13930147,
+    "liquidity": 5991245,
+    "active": true,
+    "closed": false,
+    "created_at": "2025-10-06T13:43:24.895955",
+    "end_date": "2026-12-16T13:43:24.895957",
+    "market_count": 5
+  },
+  {
+    "id": "event_025",
+    "slug": "event-025-7536",
+    "title": "Will Bitcoin reach $150,000 by end of 2025?",
+    "description": "Prediction market for: Will Bitcoin reach $150,000 by end of 2025?",
+    "tags": [
+      "crypto",
+      "bitcoin",
+      "finance"
+    ],
+    "volume": 5359053,
+    "liquidity": 3558304,
+    "active": true,
+    "closed": false,
+    "created_at": "2026-01-03T13:43:24.895964",
+    "end_date": "2027-02-04T13:43:24.895967",
+    "market_count": 6
+  }
+]
