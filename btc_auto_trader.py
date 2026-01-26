@@ -76,15 +76,21 @@ class BTCAutoTrader:
             if minutes_to_next == 15:
                 minutes_to_next = 0
             
-            seconds_to_next = (minutes_to_next * 60) - current_second
+            # 计算总的等待秒数
+            total_seconds_to_next = (minutes_to_next * 60) - current_second
             
-            if seconds_to_next <= 30:  # 如果在30秒内，认为已经到了
+            if total_seconds_to_next <= 30:  # 如果在30秒内，认为已经到了
                 break
             
-            self.log(f"⏰ 等待下一个15分钟整点，还需 {minutes_to_next}分{60-current_second}秒")
+            # 正确计算显示的分钟和秒数
+            display_minutes = total_seconds_to_next // 60
+            display_seconds = total_seconds_to_next % 60
             
-            # 每分钟检查一次
-            time.sleep(min(60, seconds_to_next))
+            self.log(f"⏰ 等待下一个15分钟整点，还需 {display_minutes}分{display_seconds}秒")
+            
+            # 每分钟检查一次，但不超过剩余时间
+            sleep_time = min(60, total_seconds_to_next)
+            time.sleep(sleep_time)
     
     def get_btc_price(self) -> Optional[float]:
         """获取当前BTC价格"""

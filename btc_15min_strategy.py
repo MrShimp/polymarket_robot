@@ -17,6 +17,7 @@ import asyncio
 import websockets
 import requests
 import csv
+from decimal import Decimal, ROUND_DOWN, ROUND_UP
 from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional, Tuple
 from threading import Thread, Event, Lock
@@ -53,7 +54,7 @@ class BTC15MinStrategy:
         self.price_threshold = 30       # ±30刀价格波动阈值
         
         # 交易执行参数
-        self.entry_probability = 0.75   # 75%概率入场
+        self.entry_probability = 0.60   # 60%概率入场 (降低门槛)
         self.take_profit = 0.90         # 90%止盈
         self.stop_loss = 0.55           # 55%止损
         
@@ -63,7 +64,7 @@ class BTC15MinStrategy:
         self.stagnant_price_change = 3   # 3刀涨幅阈值
         
         # 数据源优化参数
-        self.buffer_threshold = 32       # 缓冲阈值：$32-35
+        self.buffer_threshold = 30       # 缓冲阈值：$32-35
         self.momentum_check_time = 15    # 动量确认时间：15秒
         
         # 状态跟踪
@@ -76,6 +77,7 @@ class BTC15MinStrategy:
         self.data_lock = Lock()
         self.default_amount = 5.0  # 默认交易金额
         self.last_minute_log = None  # 上次分钟日志时间
+        self.traded_intervals = set()  # 记录已交易的15分钟区间
         
         # BTC价格监控
         self.btc_price = None
@@ -146,6 +148,11 @@ class BTC15MinStrategy:
         # 检查是否在交易时段
         if not self.is_trading_hours():
             return False, f"不在交易时段 ({self.trading_hours['start']}:00-{self.trading_hours['end']}:00)"
+        
+        # 检查当前15分钟区间是否已经交易过
+        interval_key = interval_start.strftime('%Y%m%d_%H%M')
+        if interval_key in self.traded_intervals:
+            return False, f"当前15分钟区间 ({interval_start.strftime('%H:%M')}-{interval_end.strftime('%H:%M')}) 已交易过"
         
         # 检查是否在区间开始5分钟后
         min_entry_time = interval_start + timedelta(minutes=self.min_time_after_start)
@@ -300,6 +307,15 @@ class BTC15MinStrategy:
             if self.position and self.position.get('interval') != interval_start:
                 self.log("⚠️ 新区间开始，重置持仓状态")
                 self.position = None
+            
+            # 显示已交易区间统计
+            interval_key = interval_start.strftime('%Y%m%d_%H%M')
+            if interval_key not in self.traded_intervals:
+                self.log(f"🆕 新区间可交易: {interval_start.strftime('%H:%M')}-{interval_end.strftime('%H:%M')}")
+            else:
+                self.log(f"🚫 区间已交易过: {interval_start.strftime('%H:%M')}-{interval_end.strftime('%H:%M')}")
+            
+            self.log(f"📈 今日已交易区间数: {len(self.traded_intervals)}")
     
     def save_interval_data(self, interval_start: datetime, start_price: float):
         """保存区间数据"""
@@ -365,72 +381,41 @@ class BTC15MinStrategy:
             self.log(f"获取市场信息失败: {e}", "ERROR")
             return None
     
-    def get_both_probabilities(self, token_ids: List[str]) -> Tuple[Optional[float], Optional[float]]:
-        """获取YES和NO的概率"""
+    def get_both_probabilities(self, market_id: str) -> Tuple[Optional[float], Optional[float]]:
+        """获取YES和NO的概率 - 通过订单簿的最后交易价格获取"""
         try:
+            # 获取市场信息以获取token_ids
+            market_info = self.get_market_info(market_id)
+            if not market_info:
+                self.log("⚠️ 无法获取市场信息", "ERROR")
+                return None, None
+            
+            token_ids = market_info.get('clobTokenIds', [])
+            if len(token_ids) < 2:
+                self.log("⚠️ Token ID不足", "ERROR")
+                return None, None
+            
+            yes_token_id = token_ids[0]
+            no_token_id = token_ids[1]
+            
             yes_prob = None
             no_prob = None
             
-            if len(token_ids) >= 2:
-                # YES概率 (通常是第一个token)
-                try:
-                    yes_orderbook = self.clob_client.get_order_book(token_ids[0])
-                    
-                    if yes_orderbook and hasattr(yes_orderbook, 'bids') and hasattr(yes_orderbook, 'asks'):
-                        if yes_orderbook.bids and yes_orderbook.asks:
-                            # 尝试不同的访问方式
-                            try:
-                                best_bid = float(yes_orderbook.bids[0].price)
-                                best_ask = float(yes_orderbook.asks[0].price)
-                                yes_prob = (best_bid + best_ask) / 2
-                            except AttributeError:
-                                # 如果是字典格式
-                                best_bid = float(yes_orderbook.bids[0]['price'])
-                                best_ask = float(yes_orderbook.asks[0]['price'])
-                                yes_prob = (best_bid + best_ask) / 2
-                        elif yes_orderbook.bids:
-                            try:
-                                yes_prob = float(yes_orderbook.bids[0].price)
-                            except AttributeError:
-                                yes_prob = float(yes_orderbook.bids[0]['price'])
-                        elif yes_orderbook.asks:
-                            try:
-                                yes_prob = float(yes_orderbook.asks[0].price)
-                            except AttributeError:
-                                yes_prob = float(yes_orderbook.asks[0]['price'])
-                except Exception as e:
-                    self.log(f"获取YES概率失败: {e}", "ERROR")
-                
-                # NO概率 (通常是第二个token)
-                try:
-                    no_orderbook = self.clob_client.get_order_book(token_ids[1])
-                    
-                    if no_orderbook and hasattr(no_orderbook, 'bids') and hasattr(no_orderbook, 'asks'):
-                        if no_orderbook.bids and no_orderbook.asks:
-                            try:
-                                best_bid = float(no_orderbook.bids[0].price)
-                                best_ask = float(no_orderbook.asks[0].price)
-                                no_prob = (best_bid + best_ask) / 2
-                            except AttributeError:
-                                best_bid = float(no_orderbook.bids[0]['price'])
-                                best_ask = float(no_orderbook.asks[0]['price'])
-                                no_prob = (best_bid + best_ask) / 2
-                        elif no_orderbook.bids:
-                            try:
-                                no_prob = float(no_orderbook.bids[0].price)
-                            except AttributeError:
-                                no_prob = float(no_orderbook.bids[0]['price'])
-                        elif no_orderbook.asks:
-                            try:
-                                no_prob = float(no_orderbook.asks[0].price)
-                            except AttributeError:
-                                no_prob = float(no_orderbook.asks[0]['price'])
-                except Exception as e:
-                    self.log(f"获取NO概率失败: {e}", "ERROR")
+            # 获取YES概率 - 通过订单簿的最后交易价格
+            try:
+                yes_orderbook = self.clob_client.get_order_book(yes_token_id)
+                if yes_orderbook and hasattr(yes_orderbook, 'last_trade_price'):
+                    yes_prob = float(yes_orderbook.last_trade_price)
+                    no_prob = 1 - yes_prob
+                else:
+                    self.log("⚠️ YES订单簿无最后交易价格")
+            except Exception as e:
+                self.log(f"获取YES概率失败: {e}", "ERROR")
             
             # 清晰显示当前概率
             if yes_prob is not None and no_prob is not None:
                 self.log(f"📊 市场概率: YES={yes_prob:.1%} ({yes_prob:.3f}), NO={no_prob:.1%} ({no_prob:.3f})")
+                return yes_prob, no_prob
             else:
                 missing_probs = []
                 if yes_prob is None:
@@ -439,27 +424,32 @@ class BTC15MinStrategy:
                     missing_probs.append("NO")
                 self.log(f"⚠️ 无法获取概率: {', '.join(missing_probs)}")
             
-            return yes_prob, no_prob
+            return None, None
             
         except Exception as e:
             self.log(f"获取双向概率失败: {e}", "ERROR")
             return None, None
     
-    def should_enter_position(self, yes_prob: float, no_prob: float, price_direction: str) -> Tuple[bool, str, float]:
+    def should_enter_position(self, yes_prob_pct: float, no_prob_pct: float, price_direction: str) -> Tuple[bool, str, float]:
         """判断是否应该入场 - 双向检测"""
+        # 转换为小数形式进行比较
+        yes_prob = yes_prob_pct / 100.0
+        no_prob = no_prob_pct / 100.0
+        entry_threshold = self.entry_probability  # 0.75
+        
         # 检查YES方向
-        if yes_prob >= self.entry_probability and price_direction == 'up':
-            return True, 'yes', yes_prob
+        if yes_prob >= entry_threshold and price_direction == 'up':
+            return True, 'yes', yes_prob_pct
         
         # 检查NO方向  
-        if no_prob >= self.entry_probability and price_direction == 'down':
-            return True, 'no', no_prob
+        if no_prob >= entry_threshold and price_direction == 'down':
+            return True, 'no', no_prob_pct
         
         # 也可以在概率极高时忽略价格方向
         if yes_prob >= 0.80:  # 80%以上概率可以忽略价格方向
-            return True, 'yes', yes_prob
+            return True, 'yes', yes_prob_pct
         if no_prob >= 0.80:
-            return True, 'no', no_prob
+            return True, 'no', no_prob_pct
             
         return False, 'none', 0.0
     
@@ -522,13 +512,13 @@ class BTC15MinStrategy:
                 # 检查是否在交易时段
                 if not self.is_trading_hours():
                     self.log("⏰ 不在交易时段，等待...")
-                    await asyncio.sleep(60)
+                    await asyncio.sleep(10)
                     continue
                 
-                # 获取双向概率
-                yes_prob, no_prob = self.get_both_probabilities(token_ids)
+                # 获取双向概率 - 每次都获取最新数据
+                yes_prob, no_prob = self.get_both_probabilities(market_id)
                 if not yes_prob or not no_prob:
-                    await asyncio.sleep(5)
+                    await asyncio.sleep(1)
                     continue
                 
                 yes_prob_pct = yes_prob * 100
@@ -540,19 +530,19 @@ class BTC15MinStrategy:
                     time_valid, time_msg = self.is_valid_entry_time()
                     if not time_valid:
                         self.log(f"⏳ 买入限制: {time_msg}")
-                        await asyncio.sleep(10)
+                        await asyncio.sleep(1)
                         continue
                     
                     # 检查价格波动
                     if not self.btc_price or not self.baseline_price:
-                        self.log("📊 等待价格数据...")
-                        await asyncio.sleep(5)
+                        self.log("� 等待价格数据...n")
+                        await asyncio.sleep(1)
                         continue
                     
                     price_valid, price_msg, direction = self.check_price_movement(self.btc_price)
                     if not price_valid:
                         self.log(f"📈 {price_msg}")
-                        await asyncio.sleep(10)
+                        await asyncio.sleep(1)
                         continue
                     
                     # 检查双向入场信号
@@ -572,23 +562,29 @@ class BTC15MinStrategy:
                             target_prob = no_prob
                         
                         # 执行入场
-                        success, actual_shares = await self.enter_position(target_token_id, self.default_amount, target_prob)
+                        success, actual_amount = await self.enter_position(target_token_id, self.default_amount, target_prob)
                         if success:
                             interval_start, _ = self.get_current_interval()
+                            
+                            # 记录已交易的区间
+                            interval_key = interval_start.strftime('%Y%m%d_%H%M')
+                            self.traded_intervals.add(interval_key)
+                            
                             self.position = {
                                 'token_id': target_token_id,
                                 'outcome': target_outcome,
                                 'side': entry_side,
                                 'entry_price': target_prob,
                                 'entry_time': time.time(),
-                                'shares': actual_shares,  # 使用实际购买的份额
-                                'amount': self.default_amount,
+                                'amount': actual_amount,  # 使用实际购买的金额
+                                'original_amount': self.default_amount,
                                 'interval': interval_start,
                                 'btc_entry_price': self.btc_price,
                                 'direction': direction
                             }
                             self.log(f"✅ 入场成功: {entry_side.upper()} 概率{entry_prob:.1f}%, BTC${self.btc_price:,.2f}")
-                            self.log(f"📋 实际购买: {actual_shares} shares")
+                            self.log(f"📋 实际购买: ${actual_amount}")
+                            self.log(f"🔒 区间 {interval_start.strftime('%H:%M')}-{(interval_start + timedelta(minutes=15)).strftime('%H:%M')} 已锁定，15分钟内不再交易")
                     else:
                         self.log(f"⏸️ 等待入场: YES{yes_prob_pct:.1f}% NO{no_prob_pct:.1f}%, 方向{direction}")
                 
@@ -631,13 +627,15 @@ class BTC15MinStrategy:
                     if should_exit:
                         self.log(f"📉 出场信号: {exit_reason}")
                         
-                        success = await self.exit_position(self.position['token_id'], self.position['shares'])
+                        success = await self.exit_position(self.position['token_id'], self.position['amount'])
                         if success:
-                            final_amount = self.position['shares'] * current_prob
-                            profit = final_amount - self.position['amount']
-                            profit_pct = (profit / self.position['amount']) * 100
+                            # 计算盈利基于概率变化
+                            entry_amount = self.position['amount']
+                            estimated_exit_value = entry_amount * (current_prob / entry_prob)
+                            profit = estimated_exit_value - entry_amount
+                            profit_pct = (profit / entry_amount) * 100
                             
-                            self.log(f"✅ 出场成功: 盈利${profit:.2f} ({profit_pct:.1f}%)")
+                            self.log(f"✅ 出场成功: 预估盈利${profit:.2f} ({profit_pct:.1f}%)")
                             
                             # 保存交易记录
                             self.save_trade_record(market_id, self.position, current_prob, profit, exit_reason)
@@ -645,61 +643,59 @@ class BTC15MinStrategy:
                             # 清除持仓
                             self.position = None
                 
-                await asyncio.sleep(5)  # 5秒检查一次
+                await asyncio.sleep(1)  # 5秒检查一次
                 
             except Exception as e:
                 self.log(f"交易循环错误: {e}", "ERROR")
-                await asyncio.sleep(30)
+                await asyncio.sleep(5)
         
         self.log("🛑 策略执行结束")
         return True 
    
+    def format_amount_for_api(self, amount: int, is_taker: bool = True) -> float:
+        """
+        格式化金额以符合API精度要求（关键修复）
+        :param amount: 传入的整数金额
+        :param is_taker: 是否是taker订单（市场订单默认是taker）
+        :return: 符合精度要求的浮点数金额
+        """
+        # 转换为Decimal以精确处理小数
+        decimal_amount = Decimal(str(amount))
+        
+        # 根据订单类型设置小数位数
+        decimals = self.taker_decimals if is_taker else self.maker_decimals
+        
+        # 格式化（截断而非四舍五入，避免超出精度）
+        formatted = decimal_amount.quantize(
+            Decimal('1.' + '0' * decimals),
+            rounding=ROUND_DOWN
+        )
+        
+        # 转换回浮点数
+        return float(formatted)
+
     async def enter_position(self, token_id: str, price: float, current_prob: float) -> Tuple[bool, float]:
         """入场操作"""
         try:
-            # 1. 获取当前盘口深度 (Order Book)
-            # 对于 BUY，我们需要看 'asks' (卖单池) 的最低价
-            order_book = self.clob_client.get_order_book(token_id)
-    
-            if not order_book.asks:
-                print("❌ 盘口无卖单，无法计算价格")
-                return 
-
-            # 获取卖一价 (Best Ask)
-            best_ask = float(order_book.asks[0].price)
-            print(f"🔍 当前最优价格: {best_ask}")
-
-            # 2. 计算应买入的份额 (Shares)
-            # 公式: Shares = USD / Price
-            raw_shares = price / best_ask
-    
-            # 3. 精度处理 (关键点!)
-            # Taker 模式必须是 2 位小数，且建议向下取整以防超出预算或余额
-            safe_shares = math.floor(raw_shares * 100) / 100.0
-    
-            if safe_shares <= 0:
-                print(f"⚠️ 金额太小，无法凑成 0.01 股")
-                return 
-            self.log(f"🎯 准备入场: token_id={token_id}, 预期概率={current_prob:.3f}")
+            self.log(f"🎯 准备入场: token_id={token_id}, 金额=${price}")
             
-            # 计算份额 - 根据Polymarket API要求调整精度
-            shares = price / current_prob
-            
-            # 对于市价买单，使用4位小数精度 (maker amount)
-            shares_rounded = round(shares, 4)
+            # 直接使用命令行参数中的金额，不进行任何格式化
+            shares_rounded = price  # 直接使用传入的价格值
             
             order_args = MarketOrderArgs(
                 token_id=token_id,
                 amount=shares_rounded,
                 side="BUY",
             )
-            signed_order = self.clob_client.create_market_order(order_args)
-            result = self.clob_client.post_order(signed_order, orderType=OrderType.GTC)
+            self.log(f"💰 交易金额: {shares_rounded} (直接使用命令行参数)")
 
-            if result and result.get('orderId'):
-                self.log(f"✅ 入场订单提交成功: {result.get('orderId')}")
-                self.log(f"📋 订单详情: {shares_rounded} shares @ 概率{current_prob:.3f}")
-                return True, shares_rounded  # 返回实际购买的份额
+            #signed_order = self.clob_client.create_market_order(order_args)
+            #result = self.clob_client.post_order(signed_order, orderType=OrderType.FOK)
+
+            if result and result.get('orderID'):
+                self.log(f"✅ 入场订单提交成功: {result}")
+                self.log(f"📋 订单详情: {shares_rounded} @ 概率{current_prob:.3f}")
+                return True, shares_rounded  # 返回实际购买的金额
             else:
                 self.log(f"❌ 入场订单失败: {result}", "ERROR")
                 return False, 0.0
@@ -708,26 +704,27 @@ class BTC15MinStrategy:
             self.log(f"❌ 入场操作失败: {e}", "ERROR")
             return False, 0.0
     
-    async def exit_position(self, token_id: str, shares: float) -> bool:
+    async def exit_position(self, token_id: str, amount: float) -> bool:
         """出场操作"""
         try:
-            self.log(f"🎯 准备出场: token_id={token_id}, shares={shares:.4f}")
+            self.log(f"🎯 准备出场: token_id={token_id}, 金额={amount}")
             
-            # 对于市价卖单，使用4位小数精度保持一致性
-            shares_rounded = round(shares, 4)
-            self.log(f"💰 卖出份额: {shares:.6f} → {shares_rounded} shares (4位小数)")
+            # 直接使用传入的金额，不进行任何格式化
+            amount_to_sell = amount
+            
+            self.log(f"💰 卖出金额: {amount_to_sell} (直接使用原始值)")
             
             order_args = MarketOrderArgs(
                 token_id=token_id,
-                amount=shares_rounded,
+                amount=amount_to_sell,
                 side="SELL",
             )
-            signed_order = self.clob_client.create_market_order(order_args)
-            result = self.clob_client.post_order(signed_order, orderType=OrderType.GTC)
+            #signed_order = self.clob_client.create_market_order(order_args)
+            #result = self.clob_client.post_order(signed_order, orderType=OrderType.FOK)
 
-            if result and result.get('orderId'):
-                self.log(f"✅ 出场订单提交成功: {result.get('orderId')}")
-                self.log(f"📋 订单详情: {shares_rounded} shares")
+            if result and result.get('orderID'):
+                self.log(f"✅ 出场订单提交成功: {result}")
+                self.log(f"📋 订单详情: {amount_to_sell}")
                 return True
             else:
                 self.log(f"❌ 出场订单失败: {result}", "ERROR")
@@ -749,8 +746,8 @@ class BTC15MinStrategy:
                 'exit_time': datetime.now().isoformat(),
                 'entry_price': position.get('entry_price'),
                 'exit_price': exit_price,
-                'shares': position.get('shares'),
-                'amount': position.get('amount'),
+                'shares': position.get('amount'),  # 现在amount就是交易金额
+                'amount': position.get('original_amount', position.get('amount')),
                 'profit': profit,
                 'profit_pct': (profit / position.get('amount', 1)) * 100,
                 'exit_reason': exit_reason,
@@ -785,6 +782,7 @@ class BTC15MinStrategy:
         self.log(f"   价格阈值: ±${self.price_threshold} (缓冲: ${self.buffer_threshold})")
         self.log(f"   买入窗口: 区间开始{self.min_time_after_start}分钟后 至 结束前{self.min_time_before_end}分钟")
         self.log(f"   卖出窗口: 无限制 (任何时间可卖出)")
+        self.log(f"   交易频次: 每15分钟区间最多1次交易 (严格限制)")
         self.log(f"   入场概率: {self.entry_probability*100}% (双向检测)")
         self.log(f"   止盈概率: {self.take_profit*100}%")
         self.log(f"   止损概率: {self.stop_loss*100}%")
@@ -822,6 +820,7 @@ class BTC15MinStrategy:
         """获取策略状态"""
         beijing_time = self.get_beijing_time()
         interval_start, interval_end = self.get_current_interval()
+        interval_key = interval_start.strftime('%Y%m%d_%H%M')
         
         return {
             'running': self.running,
@@ -829,13 +828,16 @@ class BTC15MinStrategy:
             'trading_hours': self.is_trading_hours(),
             'current_interval': {
                 'start': interval_start.strftime('%H:%M'),
-                'end': interval_end.strftime('%H:%M')
+                'end': interval_end.strftime('%H:%M'),
+                'traded': interval_key in self.traded_intervals
             },
             'btc_price': self.btc_price,
             'baseline_price': self.baseline_price,
             'interval_start_price': self.interval_start_price,
             'position': self.position is not None,
-            'position_details': self.position
+            'position_details': self.position,
+            'traded_intervals_today': len(self.traded_intervals),
+            'traded_intervals_list': sorted(list(self.traded_intervals))
         }
 
 
@@ -909,6 +911,8 @@ async def main():
         print(f"   北京时间: {status['beijing_time']}")
         print(f"   交易时段: {'✅' if status['trading_hours'] else '❌'}")
         print(f"   当前区间: {status['current_interval']['start']}-{status['current_interval']['end']}")
+        print(f"   区间状态: {'🚫 已交易' if status['current_interval']['traded'] else '🆕 可交易'}")
+        print(f"   今日已交易区间: {status['traded_intervals_today']} 个")
         
         if len(sys.argv) < 2:
             confirm = input(f"\n❓ 确认启动BTC 15分钟双向策略? (y/n): ").strip().lower()

@@ -14,54 +14,59 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from btc_15min_strategy import BTC15MinStrategy
 
+
 async def demo_strategy():
     """Demo the BTC 15min strategy"""
     print("🚀 BTC 15分钟策略演示")
     print("=" * 50)
-    
+
     # Example parameters
     baseline_price = 95000.0  # Example baseline price
-    trade_amount = 5.0        # Small amount for demo
-    
+    trade_amount = 5.0  # Small amount for demo
+
     print(f"📊 演示参数:")
     print(f"   基准价格: ${baseline_price:,.2f}")
     print(f"   交易金额: ${trade_amount}")
     print(f"   模式: 演示模式 (不执行真实交易)")
-    
+
     try:
         # Create strategy instance
         strategy = BTC15MinStrategy(use_testnet=True, baseline_price=baseline_price)
-        
+
         # Show current status
         status = strategy.get_status()
         print(f"\n⏰ 当前状态:")
         print(f"   北京时间: {status['beijing_time']}")
         print(f"   交易时段: {'✅ 开放' if status['trading_hours'] else '❌ 关闭'}")
-        print(f"   当前区间: {status['current_interval']['start']}-{status['current_interval']['end']}")
-        
+        print(
+            f"   当前区间: {status['current_interval']['start']}-{status['current_interval']['end']}"
+        )
+
         # Test price monitoring for a short time
         print(f"\n📈 开始价格监控测试 (30秒)...")
-        
+
         # Start price monitoring
         strategy.running = True
-        
+
         # Monitor for 30 seconds
         import time
+
         start_time = time.time()
         while time.time() - start_time < 30:
             price = await strategy.get_btc_price_binance()
             if price:
                 print(f"📊 BTC价格: ${price:,.2f}")
             await asyncio.sleep(5)
-        
+
         strategy.stop()
         print("✅ 演示完成!")
-        
+
     except Exception as e:
         print(f"❌ 演示错误: {e}")
         return False
-    
+
     return True
+
 
 def show_usage():
     """Show usage information"""
@@ -77,7 +82,9 @@ def show_usage():
     print()
     print("📋 使用方法:")
     print("   1. 直接运行: python3 btc_15min_strategy.py")
-    print("   2. 命令行参数: python3 btc_15min_strategy.py <market_id> <amount> <baseline_price>")
+    print(
+        "   2. 命令行参数: python3 btc_15min_strategy.py <market_id> <amount> <baseline_price>"
+    )
     print()
     print("💡 示例:")
     print("   python3 btc_15min_strategy.py 0x1234...abcd 10.0 95000")
@@ -88,8 +95,9 @@ def show_usage():
     print("   • 基准价格应该接近当前BTC价格")
     print("   • 建议先用小金额测试")
 
+
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] in ['--help', '-h', 'help']:
+    if len(sys.argv) > 1 and sys.argv[1] in ["--help", "-h", "help"]:
         show_usage()
     else:
         print("运行演示模式...")

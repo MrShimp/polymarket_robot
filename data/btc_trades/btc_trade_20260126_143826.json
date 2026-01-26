@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-01-26T14:38:26.459900",
+  "market_id": "1263460",
+  "outcome": "Down",
+  "interval": "2026-01-26T14:30:00+08:00",
+  "entry_time": "2026-01-26T14:38:21.363178",
+  "exit_time": "2026-01-26T14:38:26.459937",
+  "entry_price": 0.77,
+  "exit_price": 0.24,
+  "shares": 1.0,
+  "amount": 1.0,
+  "profit": -0.6883116883116883,
+  "profit_pct": -68.83116883116884,
+  "exit_reason": "概率止损: 24.0% <= 55.00000000000001%",
+  "btc_entry_price": 87877.64,
+  "btc_exit_price": 87877.64,
+  "direction": "down",
+  "duration_minutes": 0.08494616746902466
+}
