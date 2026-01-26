@@ -4,11 +4,8 @@
     "chain_id": 137,
     "private_key": "",
     "api_key": "", 
-    "api_key_back": "",
     "api_secret": "",
-    "api_secret_back": "",
     "passphrase": "",
-    "passphrase_back": "",
     "funder_address":"0x1728Ce033A473202f248464c0a574f0511698dfB",
     "testnet": {
       "host": "https://clob-staging.polymarket.com",
