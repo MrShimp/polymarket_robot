@@ -62,7 +62,7 @@ polymarket_robot/
 │   ├── trading_bot.py              # 智能交易机器人
 │   ├── quick_trading_bot.py        # 快速交易机器人
 │   ├── run_bot.py                  # 机器人启动器
-│   └── test_trading_bot.py         # 机器人测试
+│   └── btc_market_query.py         # BTC市场查询工具
 ├── 🔍 市场搜索和分析工具
 │   ├── market_finder.py            # 市场查找器
 │   ├── improved_market_search.py   # 改进的市场搜索
@@ -178,8 +178,8 @@ python3 btc_auto_trader.py [交易金额]
 # 交互式启动
 python3 trading_bot.py
 
-# 测试机器人
-python3 test_trading_bot.py
+# 测试BTC市场查询
+python3 btc_market_query.py
 ```
 
 ### 快速交易机器人
