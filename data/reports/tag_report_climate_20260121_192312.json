@@ -1,0 +1,221 @@
+{
+  "timestamp": "2026-01-21T19:23:12.405060",
+  "search_term": "climate",
+  "total_markets": 1000,
+  "total_volume": 3016300048.320962,
+  "total_liquidity": 188541327.84951034,
+  "categories": {
+    "Unknown": 1000
+  },
+  "time_ranges": {
+    "1天内": 89,
+    "1周内": 72,
+    "1月内": 181,
+    "3月内": 91,
+    "6月内": 230,
+    "1年内": 187,
+    "1年以上": 109
+  },
+  "top_markets": [
+    {
+      "rank": 1,
+      "id": "601697",
+      "question": "Fed decreases interest rates by 50+ bps after January 2026 meeting?",
+      "category": "",
+      "endDate": "2026-01-28T00:00:00Z",
+      "time_remaining": "6天12小时",
+      "volume": 175624096.349695,
+      "liquidity": 8437383.77
+    },
+    {
+      "rank": 2,
+      "id": "601700",
+      "question": "Fed increases interest rates by 25+ bps after January 2026 meeting?",
+      "category": "",
+      "endDate": "2026-01-28T00:00:00Z",
+      "time_remaining": "6天12小时",
+      "volume": 165075042.697747,
+      "liquidity": 8797913.73104
+    },
+    {
+      "rank": 3,
+      "id": "601699",
+      "question": "No change in Fed interest rates after January 2026 meeting?",
+      "category": "",
+      "endDate": "2026-01-28T00:00:00Z",
+      "time_remaining": "6天12小时",
+      "volume": 48120655.643501,
+      "liquidity": 1565998.05697
+    },
+    {
+      "rank": 4,
+      "id": "601698",
+      "question": "Fed decreases interest rates by 25 bps after January 2026 meeting?",
+      "category": "",
+      "endDate": "2026-01-28T00:00:00Z",
+      "time_remaining": "6天12小时",
+      "volume": 46738543.785017,
+      "liquidity": 1234308.83431
+    },
+    {
+      "rank": 5,
+      "id": "1106713",
+      "question": "Khamenei out as Supreme Leader of Iran by January 31?",
+      "category": "",
+      "endDate": "2026-01-31T00:00:00Z",
+      "time_remaining": "9天12小时",
+      "volume": 38307609.387284,
+      "liquidity": 1089651.9077
+    },
+    {
+      "rank": 6,
+      "id": "566203",
+      "question": "Will Leeds win the 2025–26 English Premier League?",
+      "category": "",
+      "endDate": "2026-05-27T00:00:00Z",
+      "time_remaining": "125天12小时",
+      "volume": 33321128.186948,
+      "liquidity": 923495.84512
+    },
+    {
+      "rank": 7,
+      "id": "559687",
+      "question": "Will Oprah Winfrey win the 2028 Democratic presidential nomination?",
+      "category": "",
+      "endDate": "2028-11-07T00:00:00Z",
+      "time_remaining": "1020天12小时",
+      "volume": 29592513.977968,
+      "liquidity": 1339577.90501
+    },
+    {
+      "rank": 8,
+      "id": "566174",
+      "question": "Will Slavia Pragu win the 2025–26 Champions League?",
+      "category": "",
+      "endDate": "2026-05-31T00:00:00Z",
+      "time_remaining": "129天12小时",
+      "volume": 28312300.791395,
+      "liquidity": 254220.32973
+    },
+    {
+      "rank": 9,
+      "id": "559688",
+      "question": "Will Andrew Yang win the 2028 Democratic presidential nomination?",
+      "category": "",
+      "endDate": "2028-11-07T00:00:00Z",
+      "time_remaining": "1020天12小时",
+      "volume": 27906815.635397,
+      "liquidity": 252434.30806
+    },
+    {
+      "rank": 10,
+      "id": "553874",
+      "question": "Will the Memphis Grizzlies win the 2026 NBA Finals?",
+      "category": "",
+      "endDate": "2026-07-01T00:00:00Z",
+      "time_remaining": "160天12小时",
+      "volume": 27484172.846527,
+      "liquidity": 524246.92061
+    },
+    {
+      "rank": 11,
+      "id": "559684",
+      "question": "Will Chelsea Clinton win the 2028 Democratic presidential nomination?",
+      "category": "",
+      "endDate": "2028-11-07T00:00:00Z",
+      "time_remaining": "1020天12小时",
+      "volume": 27027720.346489,
+      "liquidity": 968337.56842
+    },
+    {
+      "rank": 12,
+      "id": "559685",
+      "question": "Will MrBeast win the 2028 Democratic presidential nomination?",
+      "category": "",
+      "endDate": "2028-11-07T00:00:00Z",
+      "time_remaining": "1020天12小时",
+      "volume": 24885082.803256,
+      "liquidity": 860141.17311
+    },
+    {
+      "rank": 13,
+      "id": "559680",
+      "question": "Will Phil Murphy win the 2028 Democratic presidential nomination?",
+      "category": "",
+      "endDate": "2028-11-07T00:00:00Z",
+      "time_remaining": "1020天12小时",
+      "volume": 24685883.207831,
+      "liquidity": 411241.62602
+    },
+    {
+      "rank": 14,
+      "id": "559681",
+      "question": "Will LeBron James win the 2028 Democratic presidential nomination?",
+      "category": "",
+      "endDate": "2028-11-07T00:00:00Z",
+      "time_remaining": "1020天12小时",
+      "volume": 24424632.690995,
+      "liquidity": 1025931.64992
+    },
+    {
+      "rank": 15,
+      "id": "559683",
+      "question": "Will George Clooney win the 2028 Democratic presidential nomination?",
+      "category": "",
+      "endDate": "2028-11-07T00:00:00Z",
+      "time_remaining": "1020天12小时",
+      "volume": 23750744.324836,
+      "liquidity": 1045326.94647
+    },
+    {
+      "rank": 16,
+      "id": "559677",
+      "question": "Will Hillary Clinton win the 2028 Democratic presidential nomination?",
+      "category": "",
+      "endDate": "2028-11-07T00:00:00Z",
+      "time_remaining": "1020天12小时",
+      "volume": 23394807.144965,
+      "liquidity": 707189.80525
+    },
+    {
+      "rank": 17,
+      "id": "572472",
+      "question": "Will Trump nominate Bill Pulte as the next Fed chair?",
+      "category": "",
+      "endDate": "2026-12-31T00:00:00Z",
+      "time_remaining": "343天12小时",
+      "volume": 23330788.068131,
+      "liquidity": 349191.86519
+    },
+    {
+      "rank": 18,
+      "id": "561251",
+      "question": "Will LeBron James win the 2028 US Presidential Election?",
+      "category": "",
+      "endDate": "2028-11-07T00:00:00Z",
+      "time_remaining": "1020天12小时",
+      "volume": 22762709.701514,
+      "liquidity": 1073895.36738
+    },
+    {
+      "rank": 19,
+      "id": "572494",
+      "question": "Will Trump nominate himself as the next Fed chair?",
+      "category": "",
+      "endDate": "2026-12-31T00:00:00Z",
+      "time_remaining": "343天12小时",
+      "volume": 22746767.801,
+      "liquidity": 155761.81791
+    },
+    {
+      "rank": 20,
+      "id": "559671",
+      "question": "Will Zohran Mamdani win the 2028 Democratic presidential nomination?",
+      "category": "",
+      "endDate": "2028-11-07T00:00:00Z",
+      "time_remaining": "1020天12小时",
+      "volume": 22032703.21293,
+      "liquidity": 390734.24765
+    }
+  ]
+}

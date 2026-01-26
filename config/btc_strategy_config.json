@@ -1,0 +1,79 @@
+{
+  "strategy_name": "BTC 15分钟策略",
+  "version": "1.0.0",
+  "
+  
+  "trading_hours": {
+    "start_hour": 10,
+    "end_hour": 19,
+    "timezone": "Asia/Shanghai",
+    "description": "10:00 AM – 07:00 PM 北京时间"
+  },
+  
+  "entry_filters": {
+    "min_time_after_start_minutes": 10,
+    "min_time_before_end_minutes": 1,
+    "price_threshold_usd": 30,
+    "buffer_threshold_usd": 32,
+    "momentum_check_seconds": 15,
+    "description": "入场过滤条件"
+  },
+  
+  "trading_execution": {
+    "entry_probability": 0.75,
+    "take_profit_probability": 0.90,
+    "stop_loss_probability": 0.55,
+    "description": "交易执行参数"
+  },
+  
+  "special_take_profit": {
+    "threshold_probability": 0.85,
+    "stagnant_time_seconds": 30,
+    "stagnant_price_change_usd": 3,
+    "description": "特殊止盈机制：85%+连续30秒涨幅<3刀"
+  },
+  
+  "data_optimization": {
+    "price_update_interval_seconds": 2,
+    "position_check_interval_seconds": 5,
+    "price_history_limit": 100,
+    "reconnect_max_attempts": 5,
+    "description": "数据源优化参数"
+  },
+  
+  "risk_management": {
+    "max_position_per_interval": 1,
+    "max_daily_trades": 20,
+    "max_loss_per_trade_pct": 45,
+    "emergency_stop_loss_pct": 30,
+    "description": "风险管理参数"
+  },
+  
+  "logging": {
+    "log_level": "INFO",
+    "save_trade_records": true,
+    "save_interval_data": true,
+    "log_directory": "data/btc_strategy_logs",
+    "description": "日志配置"
+  },
+  
+  "market_data": {
+    "primary_source": "binance",
+    "backup_sources": ["coinbase", "kraken"],
+    "price_sources": {
+      "binance": "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT",
+      "coinbase": "https://api.coinbase.com/v2/exchange-rates?currency=BTC",
+      "kraken": "https://api.kraken.com/0/public/Ticker?pair=XBTUSD"
+    },
+    "description": "市场数据源配置"
+  },
+  
+  "notifications": {
+    "enabled": false,
+    "webhook_url": "",
+    "notify_on_entry": true,
+    "notify_on_exit": true,
+    "notify_on_error": true,
+    "description": "通知配置（可选）"
+  }
+}

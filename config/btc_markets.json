@@ -1,0 +1,54 @@
+{
+  "markets": {
+    "btc_100k_2024": {
+      "name": "BTC达到$100,000 (2024年)",
+      "description": "Bitcoin价格在2024年是否会达到$100,000",
+      "market_id": "",
+      "baseline_price": 95000.0,
+      "category": "price_target",
+      "active": false,
+      "notes": "需要填入实际的market_id"
+    },
+    "btc_weekly_up": {
+      "name": "BTC本周上涨",
+      "description": "Bitcoin本周收盘价是否高于开盘价",
+      "market_id": "",
+      "baseline_price": 95000.0,
+      "category": "weekly",
+      "active": false,
+      "notes": "每周更新market_id"
+    },
+    "btc_daily_up": {
+      "name": "BTC今日上涨",
+      "description": "Bitcoin今日收盘价是否高于开盘价",
+      "market_id": "",
+      "baseline_price": 95000.0,
+      "category": "daily",
+      "active": false,
+      "notes": "每日更新market_id"
+    },
+    "btc_monthly_high": {
+      "name": "BTC月度新高",
+      "description": "Bitcoin本月是否创新高",
+      "market_id": "",
+      "baseline_price": 95000.0,
+      "category": "monthly",
+      "active": false,
+      "notes": "每月更新market_id"
+    }
+  },
+  "default_settings": {
+    "trade_amount": 10.0,
+    "use_testnet": false,
+    "require_confirmation": false,
+    "auto_update_baseline": true,
+    "price_buffer": 32.0
+  },
+  "market_sources": {
+    "polymarket_api": "https://gamma-api.polymarket.com/markets",
+    "clob_api": "https://clob.polymarket.com",
+    "price_api": "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT"
+  },
+  "last_updated": "2026-01-26T00:00:00Z",
+  "version": "1.0.0"
+}

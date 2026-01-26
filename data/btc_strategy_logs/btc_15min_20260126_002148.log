@@ -1,0 +1,3 @@
+[2026-01-26 00:21:48] [INFO] 📋 基准价格设置: $95,000.00
+[2026-01-26 00:21:49] [ERROR] 获取市场信息失败: 422 Client Error: Unprocessable Entity for url: https://gamma-api.polymarket.com/markets/--help
+[2026-01-26 00:21:49] [INFO] 🛑 停止BTC 15分钟策略

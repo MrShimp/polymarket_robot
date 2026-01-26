@@ -1,0 +1,83 @@
+{
+  "timestamp": "2026-01-21T21:54:10.637833",
+  "keyword": "trump",
+  "total_markets": 5,
+  "active_markets": 5,
+  "closed_markets": 1,
+  "total_volume": 0.0,
+  "total_liquidity": 0.0,
+  "categories": {
+    "Unknown": 5
+  },
+  "time_ranges": {
+    "1天内": 1,
+    "1周内": 0,
+    "1月内": 1,
+    "3月内": 1,
+    "6月内": 0,
+    "1年内": 2,
+    "1年以上": 0
+  },
+  "top_markets": [
+    {
+      "rank": 1,
+      "id": "35908",
+      "question": "Who will Trump nominate as Fed Chair?",
+      "category": "",
+      "endDate": "2026-12-31T00:00:00Z",
+      "time_remaining": "343天10小时",
+      "volume": 0,
+      "liquidity": 0,
+      "active": true,
+      "closed": false
+    },
+    {
+      "rank": 2,
+      "id": "118172",
+      "question": "Will Trump acquire Greenland before 2027?",
+      "category": "",
+      "endDate": "2026-12-31T00:00:00Z",
+      "time_remaining": "343天10小时",
+      "volume": 0,
+      "liquidity": 0,
+      "active": true,
+      "closed": false
+    },
+    {
+      "rank": 3,
+      "id": "103465",
+      "question": "Who will Trump meet with in January?",
+      "category": "",
+      "endDate": "2026-01-31T00:00:00Z",
+      "time_remaining": "9天10小时",
+      "volume": 0,
+      "liquidity": 0,
+      "active": true,
+      "closed": false
+    },
+    {
+      "rank": 4,
+      "id": "31884",
+      "question": "What will Trump say at the Energy and Innovation Summit on July 15?",
+      "category": "",
+      "endDate": "2025-07-15T00:00:00Z",
+      "time_remaining": "已过期",
+      "volume": 0,
+      "liquidity": 0,
+      "active": true,
+      "closed": true
+    },
+    {
+      "rank": 5,
+      "id": "73968",
+      "question": "Trump out as President by March 31?",
+      "category": "",
+      "endDate": "2026-03-31T00:00:00Z",
+      "time_remaining": "68天10小时",
+      "volume": 0,
+      "liquidity": 0,
+      "active": true,
+      "closed": false
+    }
+  ]
+}

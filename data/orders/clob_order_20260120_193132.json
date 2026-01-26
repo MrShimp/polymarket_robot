@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-01-20T19:31:32.576479",
+  "market_id": "527079",
+  "question": "Will GTA 6 cost $100+?",
+  "outcome": "No",
+  "amount": 5.0,
+  "order_type": "LIMIT",
+  "price": 0.9,
+  "success": true,
+  "order_id": null,
+  "error": null,
+  "clob_result": "SignedOrder(order=<py_order_utils.model.order.Order object at 0x1118a6ba0>, signature='0xe2a9ab5619f5fe7e61066c7f5f620a1e6a8e20b8edaf21496af1d982da130bd72df2b6f40005ecc5d12c4a4889d5f83c7b66e2265181933b970bbd80b6f3ccd91b')"
+}

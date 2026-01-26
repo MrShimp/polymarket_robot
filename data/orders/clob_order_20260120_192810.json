@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-01-20T19:28:10.542356",
+  "market_id": "527079",
+  "question": "Will GTA 6 cost $100+?",
+  "outcome": "No",
+  "amount": 5.0,
+  "order_type": "LIMIT",
+  "price": 0.97,
+  "success": true,
+  "order_id": null,
+  "error": null,
+  "clob_result": 

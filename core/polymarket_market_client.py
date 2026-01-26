@@ -3,7 +3,8 @@ import json
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 import logging
-from data_saver import DataSaver
+import os
+import csv
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -19,7 +20,6 @@ class PolymarketMarketClient:
                  save_data: bool = True):
         self.base_url = base_url
         self.save_data = save_data
-        self.data_saver = DataSaver() if save_data else None
         self.session = requests.Session()
         
         # 设置基础请求头
@@ -30,6 +30,23 @@ class PolymarketMarketClient:
             'Accept-Language': 'en-US,en;q=0.9',
             'Referer': 'https://polymarket.com/'
         })
+    
+    def _save_to_csv(self, data: List[Dict], filename: str):
+        """简单的CSV保存功能"""
+        if not data or not self.save_data:
+            return
+        
+        try:
+            os.makedirs("data/api_cache", exist_ok=True)
+            filepath = f"data/api_cache/{filename}"
+            
+            with open(filepath, 'w', newline='', encoding='utf-8') as f:
+                if data:
+                    writer = csv.DictWriter(f, fieldnames=data[0].keys())
+                    writer.writeheader()
+                    writer.writerows(data)
+        except Exception as e:
+            logger.warning(f"Failed to save data to {filename}: {e}")
     
     def get_events(self, 
                    active: Optional[bool] = None,
@@ -81,8 +98,8 @@ class PolymarketMarketClient:
             logger.info(f"成功获取 {len(events_data)} 个事件")
             
             # 保存数据到CSV
-            if self.save_data and self.data_saver and events_data:
-                self.data_saver.save_polymarket_events_data(events_data)
+            if self.save_data and events_data:
+                self._save_to_csv(events_data, "events_list.csv")
             
             return events_data
             
@@ -109,8 +126,8 @@ class PolymarketMarketClient:
             logger.info(f"成功获取事件: {slug}")
             
             # 保存数据到CSV
-            if self.save_data and self.data_saver:
-                self.data_saver.save_polymarket_event_detail(event_data)
+            if self.save_data and event_data:
+                self._save_to_csv([event_data], f"event_{event_slug}.csv")
             
             return event_data
             
@@ -168,8 +185,8 @@ class PolymarketMarketClient:
             logger.info(f"成功获取 {len(markets_data)} 个市场")
             
             # 保存数据到CSV
-            if self.save_data and self.data_saver and markets_data:
-                self.data_saver.save_polymarket_markets_data(markets_data)
+            if self.save_data and markets_data:
+                self._save_to_csv(markets_data, "markets_list.csv")
             
             return markets_data
             
@@ -196,8 +213,8 @@ class PolymarketMarketClient:
             logger.info(f"成功获取市场: {slug}")
             
             # 保存数据到CSV
-            if self.save_data and self.data_saver:
-                self.data_saver.save_polymarket_market_detail(market_data)
+            if self.save_data and market_data:
+                self._save_to_csv([market_data], f"market_{market_slug}.csv")
             
             return market_data
             
@@ -327,8 +344,8 @@ class PolymarketMarketClient:
             logger.info(f"成功获取市场历史: {market_slug}")
             
             # 保存数据到CSV
-            if self.save_data and self.data_saver and history_data:
-                self.data_saver.save_polymarket_market_history(market_slug, history_data)
+            if self.save_data and history_data:
+                self._save_to_csv(history_data, f"history_{market_slug}.csv")
             
             return history_data
             
@@ -352,8 +369,8 @@ class PolymarketMarketClient:
             logger.info(f"成功获取 {len(categories_data)} 个分类")
             
             # 保存数据到CSV
-            if self.save_data and self.data_saver and categories_data:
-                self.data_saver.save_polymarket_categories_data(categories_data)
+            if self.save_data and categories_data:
+                self._save_to_csv(categories_data, "categories_list.csv")
             
             return categories_data
             

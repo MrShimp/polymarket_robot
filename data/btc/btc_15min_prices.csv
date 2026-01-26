@@ -1,0 +1,2 @@
+timestamp,datetime,price,source,type
+1769136388.855563,2026-01-23T10:46:28.855563,89709.7775,multi_source_consensus,15min_interval

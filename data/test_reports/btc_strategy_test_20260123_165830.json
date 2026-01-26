@@ -1,0 +1,152 @@
+{
+  "timestamp": "2026-01-23T16:58:30.303421",
+  "total_tests": 24,
+  "passed_tests": 22,
+  "failed_tests": 2,
+  "test_results": [
+    {
+      "test_name": "北京时间获取",
+      "result": true,
+      "message": "当前北京时间: 2026-01-23 16:58:29",
+      "timestamp": "2026-01-23T16:58:29.988318"
+    },
+    {
+      "test_name": "交易时段判断",
+      "result": true,
+      "message": "当前16点，交易时段: True",
+      "timestamp": "2026-01-23T16:58:29.988331"
+    },
+    {
+      "test_name": "15分钟区间计算",
+      "result": true,
+      "message": "区间: 16:45-17:00",
+      "timestamp": "2026-01-23T16:58:29.988346"
+    },
+    {
+      "test_name": "入场时间验证",
+      "result": true,
+      "message": "时间窗口有效",
+      "timestamp": "2026-01-23T16:58:29.988356"
+    },
+    {
+      "test_name": "价格波动检测 #1",
+      "result": true,
+      "message": "价格$90035.0, 价格波动 $35.00 >= $32, 方向:up",
+      "timestamp": "2026-01-23T16:58:29.988372"
+    },
+    {
+      "test_name": "价格波动检测 #2",
+      "result": true,
+      "message": "价格$89965.0, 价格波动 $35.00 >= $32, 方向:down",
+      "timestamp": "2026-01-23T16:58:29.988382"
+    },
+    {
+      "test_name": "价格波动检测 #3",
+      "result": true,
+      "message": "价格$90015.0, 价格波动 $15.00 < $32, 方向:none",
+      "timestamp": "2026-01-23T16:58:29.988385"
+    },
+    {
+      "test_name": "动量确认检测",
+      "result": true,
+      "message": "动量确认: True",
+      "timestamp": "2026-01-23T16:58:29.988399"
+    },
+    {
+      "test_name": "入场逻辑测试",
+      "result": true,
+      "message": "概率76.0%, 方向up, 选择yes -> True (期望True)",
+      "timestamp": "2026-01-23T16:58:29.988407"
+    },
+    {
+      "test_name": "入场逻辑测试",
+      "result": false,
+      "message": "概率74.0%, 方向up, 选择yes -> True (期望False)",
+      "timestamp": "2026-01-23T16:58:29.988411"
+    },
+    {
+      "test_name": "入场逻辑测试",
+      "result": true,
+      "message": "概率76.0%, 方向down, 选择yes -> False (期望False)",
+      "timestamp": "2026-01-23T16:58:29.988414"
+    },
+    {
+      "test_name": "入场逻辑测试",
+      "result": true,
+      "message": "概率76.0%, 方向up, 选择no -> False (期望False)",
+      "timestamp": "2026-01-23T16:58:29.988416"
+    },
+    {
+      "test_name": "入场逻辑测试",
+      "result": true,
+      "message": "概率76.0%, 方向down, 选择no -> True (期望True)",
+      "timestamp": "2026-01-23T16:58:29.988418"
+    },
+    {
+      "test_name": "横盘检测 - 小变化",
+      "result": true,
+      "message": "横盘检测: True, 30秒内最大变化 $1.00 < $3",
+      "timestamp": "2026-01-23T16:58:29.988435"
+    },
+    {
+      "test_name": "横盘检测 - 大变化",
+      "result": true,
+      "message": "横盘检测: False, 30秒内最大变化 $10.00 >= $3",
+      "timestamp": "2026-01-23T16:58:29.988440"
+    },
+    {
+      "test_name": "BTC价格获取",
+      "result": true,
+      "message": "BTC价格: $89,259.57",
+      "timestamp": "2026-01-23T16:58:30.294084"
+    },
+    {
+      "test_name": "价格历史记录",
+      "result": false,
+      "message": "历史记录数量: 5",
+      "timestamp": "2026-01-23T16:58:30.294124"
+    },
+    {
+      "test_name": "参数 entry_probability",
+      "result": true,
+      "message": "实际值: 0.75, 期望值: 0.75",
+      "timestamp": "2026-01-23T16:58:30.294575"
+    },
+    {
+      "test_name": "参数 take_profit",
+      "result": true,
+      "message": "实际值: 0.9, 期望值: 0.9",
+      "timestamp": "2026-01-23T16:58:30.294611"
+    },
+    {
+      "test_name": "参数 stop_loss",
+      "result": true,
+      "message": "实际值: 0.55, 期望值: 0.55",
+      "timestamp": "2026-01-23T16:58:30.294622"
+    },
+    {
+      "test_name": "参数 price_threshold",
+      "result": true,
+      "message": "实际值: 30, 期望值: 30",
+      "timestamp": "2026-01-23T16:58:30.294714"
+    },
+    {
+      "test_name": "参数 buffer_threshold",
+      "result": true,
+      "message": "实际值: 32, 期望值: 32",
+      "timestamp": "2026-01-23T16:58:30.294723"
+    },
+    {
+      "test_name": "区间数据保存",
+      "result": true,
+      "message": "区间数据保存成功",
+      "timestamp": "2026-01-23T16:58:30.299331"
+    },
+    {
+      "test_name": "交易记录保存",
+      "result": true,
+      "message": "交易记录保存成功",
+      "timestamp": "2026-01-23T16:58:30.302461"
+    }
+  ]
+}

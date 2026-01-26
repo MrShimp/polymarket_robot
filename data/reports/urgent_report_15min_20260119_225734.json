@@ -1,0 +1,102 @@
+{
+  "timestamp": "2026-01-19T22:57:34.584098",
+  "minutes_threshold": 15,
+  "total_urgent_markets": 29,
+  "total_volume": 672326.6211539999,
+  "total_liquidity": 1442581.68603,
+  "categories": {
+    "Unknown": 29
+  },
+  "top_markets": [
+    {
+      "rank": 1,
+      "id": "1213398",
+      "question": "Ethereum Up or Down - January 19, 9:50AM-9:55AM ET",
+      "endDate": "2026-01-19T14:55:00Z",
+      "time_remaining": "-2分钟",
+      "volume": 0,
+      "liquidity": 0
+    },
+    {
+      "rank": 2,
+      "id": "1213397",
+      "question": "XRP Up or Down - January 19, 9:50AM-9:55AM ET",
+      "endDate": "2026-01-19T14:55:00Z",
+      "time_remaining": "-2分钟",
+      "volume": 0,
+      "liquidity": 0
+    },
+    {
+      "rank": 3,
+      "id": "1213396",
+      "question": "Bitcoin Up or Down - January 19, 9:50AM-9:55AM ET",
+      "endDate": "2026-01-19T14:55:00Z",
+      "time_remaining": "-2分钟",
+      "volume": 0,
+      "liquidity": 0
+    },
+    {
+      "rank": 4,
+      "id": "1213395",
+      "question": "Solana Up or Down - January 19, 9:50AM-9:55AM ET",
+      "endDate": "2026-01-19T14:55:00Z",
+      "time_remaining": "-2分钟",
+      "volume": 0,
+      "liquidity": 0
+    },
+    {
+      "rank": 5,
+      "id": "1213302",
+      "question": "Series: Most drakes?",
+      "endDate": "2026-01-19T15:00:00Z",
+      "time_remaining": "2分钟",
+      "volume": 0,
+      "liquidity": 0
+    },
+    {
+      "rank": 6,
+      "id": "1213388",
+      "question": "Bitcoin Up or Down - January 19, 9:45AM-10:00AM ET",
+      "endDate": "2026-01-19T15:00:00Z",
+      "time_remaining": "2分钟",
+      "volume": 81688.874965,
+      "liquidity": 12008.9434
+    },
+    {
+      "rank": 7,
+      "id": "1213394",
+      "question": "Ethereum Up or Down - January 19, 9:45AM-10:00AM ET",
+      "endDate": "2026-01-19T15:00:00Z",
+      "time_remaining": "2分钟",
+      "volume": 17336.060978,
+      "liquidity": 9631.7837
+    },
+    {
+      "rank": 8,
+      "id": "1213390",
+      "question": "XRP Up or Down - January 19, 9:45AM-10:00AM ET",
+      "endDate": "2026-01-19T15:00:00Z",
+      "time_remaining": "2分钟",
+      "volume": 2756.617082,
+      "liquidity": 980.4338
+    },
+    {
+      "rank": 9,
+      "id": "1216917",
+      "question": "Map Handicap: LK (-1.5) vs Pigeons (+1.5)",
+      "endDate": "2026-01-19T15:00:00Z",
+      "time_remaining": "2分钟",
+      "volume": 1109.351171,
+      "liquidity": 209738.73964
+    },
+    {
+      "rank": 10,
+      "id": "1213702",
+      "question": "Solana Up or Down - January 19, 9:55AM-10:00AM ET",
+      "endDate": "2026-01-19T15:00:00Z",
+      "time_remaining": "2分钟",
+      "volume": 0,
+      "liquidity": 0
+    }
+  ]
+}

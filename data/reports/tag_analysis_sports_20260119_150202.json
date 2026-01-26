@@ -1,0 +1,423 @@
+{
+  "timestamp": "2026-01-19T15:02:02.532306",
+  "tag_name": "sports",
+  "total_markets": 1000,
+  "category_analysis": {
+    "categories": {},
+    "category_volumes": {}
+  },
+  "timing_analysis": {
+    "time_ranges": {
+      "1天内": 38,
+      "1周内": 44,
+      "1月内": 194,
+      "3月内": 91,
+      "6月内": 186,
+      "1年内": 224,
+      "1年以上": 109,
+      "已过期": 72
+    }
+  },
+  "activity_analysis": {
+    "volume_stats": {
+      "total": 2893743079.097321,
+      "average": 2893743.0790973213,
+      "median": 607788.082099,
+      "max": 166521830.490727,
+      "min": 177250.482363
+    },
+    "liquidity_stats": {
+      "total": 188097234.59296,
+      "average": 188097.23459296,
+      "median": 67517.9674,
+      "max": 9351704.13622,
+      "min": 176.5924
+    },
+    "activity_ranges": {
+      "超高活跃 (>$10M)": 70,
+      "高活跃 ($1M-$10M)": 329,
+      "中活跃 ($100K-$1M)": 601,
+      "低活跃 ($10K-$100K)": 0,
+      "极低活跃 (<$10K)": 0
+    }
+  },
+  "price_analysis": {
+    "price_ranges": {
+      "极度看跌 (<10%)": 693,
+      "看跌 (10%-30%)": 128,
+      "中性 (30%-70%)": 109,
+      "看涨 (70%-90%)": 33,
+      "极度看涨 (>90%)": 37
+    },
+    "average_yes_price": 0.149959,
+    "price_imbalance_stats": {
+      "average": 0.0,
+      "max": 0.0,
+      "high_imbalance_count": 0
+    }
+  },
+  "top_volume_markets": [
+    {
+      "id": 601697,
+      "question": "Fed decreases interest rates by 50+ bps after January 2026 meeting?",
+      "category": NaN,
+      "volume": 166521830.490727,
+      "liquidity": 9351704.13622,
+      "yes_price": 0.0025,
+      "endDate": "2026-01-28T00:00:00Z"
+    },
+    {
+      "id": 601700,
+      "question": "Fed increases interest rates by 25+ bps after January 2026 meeting?",
+      "category": NaN,
+      "volume": 160851324.167747,
+      "liquidity": 7033411.89767,
+      "yes_price": 0.0015,
+      "endDate": "2026-01-28T00:00:00Z"
+    },
+    {
+      "id": 601699,
+      "question": "No change in Fed interest rates after January 2026 meeting?",
+      "category": NaN,
+      "volume": 43957263.321176,
+      "liquidity": 1138828.12689,
+      "yes_price": 0.9615,
+      "endDate": "2026-01-28T00:00:00Z"
+    },
+    {
+      "id": 601698,
+      "question": "Fed decreases interest rates by 25 bps after January 2026 meeting?",
+      "category": NaN,
+      "volume": 42586707.113009,
+      "liquidity": 746348.90041,
+      "yes_price": 0.0355,
+      "endDate": "2026-01-28T00:00:00Z"
+    },
+    {
+      "id": 1106713,
+      "question": "Khamenei out as Supreme Leader of Iran by January 31?",
+      "category": NaN,
+      "volume": 36539456.931969,
+      "liquidity": 963746.9561,
+      "yes_price": 0.075,
+      "endDate": "2026-01-31T00:00:00Z"
+    },
+    {
+      "id": 566203,
+      "question": "Will Leeds win the 2025–26 English Premier League?",
+      "category": NaN,
+      "volume": 33076158.481948,
+      "liquidity": 740936.2638,
+      "yes_price": 0.0015,
+      "endDate": "2026-05-27T00:00:00Z"
+    },
+    {
+      "id": 559687,
+      "question": "Will Oprah Winfrey win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 29264571.978975,
+      "liquidity": 1250601.70102,
+      "yes_price": 0.0055,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 559688,
+      "question": "Will Andrew Yang win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 27547736.698068,
+      "liquidity": 460809.11079,
+      "yes_price": 0.0055,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 566174,
+      "question": "Will Slavia Pragu win the 2025–26 Champions League?",
+      "category": NaN,
+      "volume": 27541599.334063,
+      "liquidity": 430505.05966,
+      "yes_price": 0.0015,
+      "endDate": "2026-05-31T00:00:00Z"
+    },
+    {
+      "id": 559684,
+      "question": "Will Chelsea Clinton win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 26624286.147181,
+      "liquidity": 1063703.35385,
+      "yes_price": 0.0035,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 559685,
+      "question": "Will MrBeast win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 24373280.586006,
+      "liquidity": 1024193.09021,
+      "yes_price": 0.0045,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 559681,
+      "question": "Will LeBron James win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 23916422.946633,
+      "liquidity": 1318412.12347,
+      "yes_price": 0.0085,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 559680,
+      "question": "Will Phil Murphy win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 23599302.740579,
+      "liquidity": 1332836.98661,
+      "yes_price": 0.0055,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 553874,
+      "question": "Will the Memphis Grizzlies win the 2026 NBA Finals?",
+      "category": NaN,
+      "volume": 23577142.074248,
+      "liquidity": 627171.34738,
+      "yes_price": 0.005,
+      "endDate": "2026-07-01T00:00:00Z"
+    },
+    {
+      "id": 559683,
+      "question": "Will George Clooney win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 23472900.046836,
+      "liquidity": 1113261.74282,
+      "yes_price": 0.0045,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 572472,
+      "question": "Will Trump nominate Bill Pulte as the next Fed chair?",
+      "category": NaN,
+      "volume": 23282488.068131,
+      "liquidity": 287678.79442,
+      "yes_price": 0.0005,
+      "endDate": "2026-12-31T00:00:00Z"
+    },
+    {
+      "id": 572494,
+      "question": "Will Trump nominate himself as the next Fed chair?",
+      "category": NaN,
+      "volume": 22617447.801,
+      "liquidity": 174569.02295,
+      "yes_price": 0.0005,
+      "endDate": "2026-12-31T00:00:00Z"
+    },
+    {
+      "id": 561251,
+      "question": "Will LeBron James win the 2028 US Presidential Election?",
+      "category": NaN,
+      "volume": 22610400.307092,
+      "liquidity": 1016368.11562,
+      "yes_price": 0.0085,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 559677,
+      "question": "Will Hillary Clinton win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 22170568.057134,
+      "liquidity": 1130186.08436,
+      "yes_price": 0.0035,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 559671,
+      "question": "Will Zohran Mamdani win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 21736630.444642,
+      "liquidity": 315127.61564,
+      "yes_price": 0.0065,
+      "endDate": "2028-11-07T00:00:00Z"
+    }
+  ],
+  "top_liquidity_markets": [
+    {
+      "id": 601697,
+      "question": "Fed decreases interest rates by 50+ bps after January 2026 meeting?",
+      "category": NaN,
+      "volume": 166521830.490727,
+      "liquidity": 9351704.13622,
+      "yes_price": 0.0025,
+      "endDate": "2026-01-28T00:00:00Z"
+    },
+    {
+      "id": 601700,
+      "question": "Fed increases interest rates by 25+ bps after January 2026 meeting?",
+      "category": NaN,
+      "volume": 160851324.167747,
+      "liquidity": 7033411.89767,
+      "yes_price": 0.0015,
+      "endDate": "2026-01-28T00:00:00Z"
+    },
+    {
+      "id": 1167543,
+      "question": "Raptors vs. Lakers",
+      "category": NaN,
+      "volume": 3108598.042358,
+      "liquidity": 1920201.94228,
+      "yes_price": 0.0005,
+      "endDate": "2026-01-19T02:30:00Z"
+    },
+    {
+      "id": 559690,
+      "question": "Will Kim Kardashian win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 15444767.461006,
+      "liquidity": 1739847.44036,
+      "yes_price": 0.0065,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 540224,
+      "question": "Will the Los Angeles Rams win Super Bowl 2026?",
+      "category": NaN,
+      "volume": 6211159.715924,
+      "liquidity": 1431847.78602,
+      "yes_price": 0.277,
+      "endDate": "2026-02-08T12:00:00Z"
+    },
+    {
+      "id": 997488,
+      "question": "Will Trump acquire Greenland before 2027?",
+      "category": NaN,
+      "volume": 14326356.368992,
+      "liquidity": 1430821.6779,
+      "yes_price": 0.205,
+      "endDate": "2026-12-31T00:00:00Z"
+    },
+    {
+      "id": 559680,
+      "question": "Will Phil Murphy win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 23599302.740579,
+      "liquidity": 1332836.98661,
+      "yes_price": 0.0055,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 559681,
+      "question": "Will LeBron James win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 23916422.946633,
+      "liquidity": 1318412.12347,
+      "yes_price": 0.0085,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 559678,
+      "question": "Will Liz Cheney win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 20067980.410324,
+      "liquidity": 1257378.24094,
+      "yes_price": 0.0055,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 559687,
+      "question": "Will Oprah Winfrey win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 29264571.978975,
+      "liquidity": 1250601.70102,
+      "yes_price": 0.0055,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 569426,
+      "question": "Will André Ventura win the 2026 Portugal presidential election?",
+      "category": NaN,
+      "volume": 9553996.648625,
+      "liquidity": 1191239.85053,
+      "yes_price": 0.0495,
+      "endDate": "2026-01-25T14:00:00Z"
+    },
+    {
+      "id": 559666,
+      "question": "Will Tim Walz win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 14952162.254271,
+      "liquidity": 1165816.62448,
+      "yes_price": 0.0045,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 601699,
+      "question": "No change in Fed interest rates after January 2026 meeting?",
+      "category": NaN,
+      "volume": 43957263.321176,
+      "liquidity": 1138828.12689,
+      "yes_price": 0.9615,
+      "endDate": "2026-01-28T00:00:00Z"
+    },
+    {
+      "id": 559677,
+      "question": "Will Hillary Clinton win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 22170568.057134,
+      "liquidity": 1130186.08436,
+      "yes_price": 0.0035,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 561254,
+      "question": "Will Kim Kardashian win the 2028 US Presidential Election?",
+      "category": NaN,
+      "volume": 12106570.918606,
+      "liquidity": 1126820.73445,
+      "yes_price": 0.0085,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 559683,
+      "question": "Will George Clooney win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 23472900.046836,
+      "liquidity": 1113261.74282,
+      "yes_price": 0.0045,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 559679,
+      "question": "Will Bernie Sanders win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 20789825.998879,
+      "liquidity": 1064449.8072,
+      "yes_price": 0.0035,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 559684,
+      "question": "Will Chelsea Clinton win the 2028 Democratic presidential nomination?",
+      "category": NaN,
+      "volume": 26624286.147181,
+      "liquidity": 1063703.35385,
+      "yes_price": 0.0035,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 561249,
+      "question": "Will Greg Abbott win the 2028 US Presidential Election?",
+      "category": NaN,
+      "volume": 17274977.966326,
+      "liquidity": 1054841.40412,
+      "yes_price": 0.0065,
+      "endDate": "2028-11-07T00:00:00Z"
+    },
+    {
+      "id": 1154327,
+      "question": "Miami vs. Indiana",
+      "category": NaN,
+      "volume": 365010.67116,
+      "liquidity": 1053681.1548,
+      "yes_price": 0.255,
+      "endDate": "2026-01-20T00:30:00Z"
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "timestamp": "2026-01-19T14:50:12.794415",
+  "total_markets": 100,
+  "sports_analysis": {
+    "sport_counts": {
+      "NFL/Football": 61,
+      "NBA/Basketball": 0,
+      "MLB/Baseball": 0,
+      "NHL/Hockey": 0,
+      "Soccer": 0,
+      "Tennis": 0,
+      "Golf": 0,
+      "Olympics": 0,
+      "Other Sports": 39
+    },
+    "sport_volumes": {
+      "NFL/Football": 52009836.46876302,
+      "NBA/Basketball": 0,
+      "MLB/Baseball": 0,
+      "NHL/Hockey": 0,
+      "Soccer": 0,
+      "Tennis": 0,
+      "Golf": 0,
+      "Olympics": 0,
+      "Other Sports": 27754916.310786996
+    }
+  },
+  "timing_analysis": {
+    "time_ranges": {
+      "1天内": 18,
+      "1周内": 6,
+      "1月内": 56,
+      "3月内": 12,
+      "6月内": 1,
+      "1年内": 7,
+      "1年以上": 0
+    }
+  },
+  "activity_analysis": {
+    "volume_stats": {
+      "total": 79764752.77955,
+      "average": 797647.5277955,
+      "max": 10530200.837178,
+      "min": 3354.1675
+    },
+    "liquidity_stats": {
+      "total": 4505868.2387,
+      "average": 45058.68238699999,
+      "max": 1393570.65223,
+      "min": 277.9744
+    },
+    "activity_ranges": {
+      "高活跃 (>$1M)": 13,
+      "中活跃 ($100K-$1M)": 36,
+      "低活跃 ($10K-$100K)": 39,
+      "极低活跃 (<$10K)": 12
+    }
+  },
+  "top_markets": [
+    {
+      "id": 540211,
+      "question": "Will the Chicago Bears win Super Bowl 2026?",
+      "volume": 10530200.837178,
+      "liquidity": 114182.34658,
+      "endDate": "2026-02-08T12:00:00Z"
+    },
+    {
+      "id": 540227,
+      "question": "Will the New England Patriots win Super Bowl 2026?",
+      "volume": 10419806.662586,
+      "liquidity": 101476.73168,
+      "endDate": "2026-02-08T12:00:00Z"
+    },
+    {
+      "id": 540218,
+      "question": "Will the Houston Texans win Super Bowl 2026?",
+      "volume": 9002496.983968,
+      "liquidity": 1393570.65223,
+      "endDate": "2026-02-08T12:00:00Z"
+    },
+    {
+      "id": 540819,
+      "question": "Will Jesus Christ return before GTA VI?",
+      "volume": 7889219.257488,
+      "liquidity": 532081.661,
+      "endDate": "2026-07-31T12:00:00Z"
+    },
+    {
+      "id": 540234,
+      "question": "Will the Seattle Seahawks win Super Bowl 2026?",
+      "volume": 6807819.64895,
+      "liquidity": 135681.78182,
+      "endDate": "2026-02-08T12:00:00Z"
+    },
+    {
+      "id": 540215,
+      "question": "Will the Denver Broncos win Super Bowl 2026?",
+      "volume": 6318991.840179,
+      "liquidity": 175410.77225,
+      "endDate": "2026-02-08T12:00:00Z"
+    },
+    {
+      "id": 540224,
+      "question": "Will the Los Angeles Rams win Super Bowl 2026?",
+      "volume": 6082263.263713,
+      "liquidity": 97769.2111,
+      "endDate": "2026-02-08T12:00:00Z"
+    },
+    {
+      "id": 540844,
+      "question": "Will bitcoin hit $1m before GTA VI?",
+      "volume": 2787556.147747,
+      "liquidity": 255455.4321,
+      "endDate": "2026-07-31T12:00:00Z"
+    },
+    {
+      "id": 527079,
+      "question": "Will GTA 6 cost $100+?",
+      "volume": 1409147.932937,
+      "liquidity": 56247.03522,
+      "endDate": "2026-02-28T12:00:00Z"
+    },
+    {
+      "id": 540816,
+      "question": "Russia-Ukraine Ceasefire before GTA VI?",
+      "volume": 1181335.854653,
+      "liquidity": 164513.7712,
+      "endDate": "2026-07-31T12:00:00Z"
+    },
+    {
+      "id": 540843,
+      "question": "Will China invades Taiwan before GTA VI?",
+      "volume": 1148602.019418,
+      "liquidity": 75283.2119,
+      "endDate": "2026-07-31T12:00:00Z"
+    },
+    {
+      "id": 537490,
+      "question": "Will tariffs generate >$250b in 2025?",
+      "volume": 1063936.35686,
+      "liquidity": 18524.2399,
+      "endDate": "2026-02-28T12:00:00Z"
+    },
+    {
+      "id": 517311,
+      "question": "Will Trump deport 250,000-500,000 people?",
+      "volume": 1049547.917272,
+      "liquidity": 7124.42025,
+      "endDate": "2025-12-31T12:00:00Z"
+    },
+    {
+      "id": 517310,
+      "question": "Will Trump deport less than 250,000?",
+      "volume": 963228.650732,
+      "liquidity": 8551.77268,
+      "endDate": "2025-12-31T12:00:00Z"
+    },
+    {
+      "id": 537485,
+      "question": "Will the U.S. collect between $100b and $200b in revenue in 2025?",
+      "volume": 780167.674243,
+      "liquidity": 14554.0909,
+      "endDate": "2026-02-28T12:00:00Z"
+    },
+    {
+      "id": 537484,
+      "question": "Will the U.S. collect less than $100b in revenue in 2025?",
+      "volume": 770443.489823,
+      "liquidity": 14161.67508,
+      "endDate": "2026-02-28T12:00:00Z"
+    },
+    {
+      "id": 540245,
+      "question": "Will the Rams win the NFC Championship?",
+      "volume": 669346.327234,
+      "liquidity": 70218.624,
+      "endDate": "2026-01-26T12:00:00Z"
+    },
+    {
+      "id": 521949,
+      "question": "Will Elon and DOGE cut more than $250b in federal spending in 2025?",
+      "volume": 663682.887974,
+      "liquidity": 3306.25612,
+      "endDate": "2025-12-31T12:00:00Z"
+    },
+    {
+      "id": 540818,
+      "question": "New Playboi Carti Album before GTA VI?",
+      "volume": 585546.163455,
+      "liquidity": 29996.0428,
+      "endDate": "2026-07-31T12:00:00Z"
+    },
+    {
+      "id": 540820,
+      "question": "Trump out as President before GTA VI?",
+      "volume": 448109.106887,
+      "liquidity": 56596.9866,
+      "endDate": "2026-07-31T12:00:00Z"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+id,question,endDate,time_remaining_minutes,time_remaining_str,outcomes,outcomePrices,clobTokenIds,conditionId,volumeNum,liquidityNum,category,active,closed,acceptingOrders,slug,description
+166353,Bitcoin above ___ on January 22?,2026-01-22T17:00:00Z,,,,,,,,,,True,True,,bitcoin-above-on-january-22,"This market will resolve to ""Yes"" if the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title has a final ""Close"" price higher than the price specified in the title. Otherwise, this market will resolve to ""No"".
+
+The resolution source for this market is Binance, specifically the BTC/USDT ""Close"" prices currently available at https://www.binance.com/en/trade/BTC_USDT with ""1m"" and ""Candles"" selected on the top bar.
+
+Please note that this market is about the price according to Binance BTC/USDT, not according to other sources or spot markets.
+
+Price precision is determined by the number of decimal places in the source."
+137338,What price will Bitcoin hit in January?,2026-02-01T05:00:00Z,,,,,,,,,,True,False,,what-price-will-bitcoin-hit-in-january-2026,What price will Bitcoin hit in January?
+168468,Bitcoin above ___ on January 23?,2026-01-23T17:00:00Z,,,,,,,,,,True,False,,bitcoin-above-on-january-23,"This market will resolve to ""Yes"" if the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title has a final ""Close"" price higher than the price specified in the title. Otherwise, this market will resolve to ""No"".
+
+The resolution source for this market is Binance, specifically the BTC/USDT ""Close"" prices currently available at https://www.binance.com/en/trade/BTC_USDT with ""1m"" and ""Candles"" selected on the top bar.
+
+Please note that this market is about the price according to Binance BTC/USDT, not according to other sources or spot markets.
+
+Price precision is determined by the number of decimal places in the source."
+166342,Bitcoin price on January 22?,2026-01-22T17:00:00Z,,,,,,,,,,True,True,,bitcoin-price-on-january-22,"This market will resolve according to the final ""Close"" price of the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title. Otherwise, this market will resolve to ""No"".
+
+The resolution source for this market is Binance, specifically the BTC/USDT ""Close"" prices currently available at https://www.binance.com/en/trade/BTC_USDT with ""1m"" and ""Candles"" selected on the top bar.
+
+If the reported value falls exactly between two brackets, then this market will resolve to the higher range bracket.
+
+Please note that this market is about the price according to Binance BTC/USDT, not according to other sources or spot markets."
+177072,"Bitcoin Up or Down - January 22, 12PM ET",2026-01-22T18:00:00Z,,,,,,,,,,True,True,,bitcoin-up-or-down-january-22-12pm-et,"This market will resolve to ""Up"" if the close price is greater than or equal to the open price for the BTC/USDT 1 hour candle that begins on the time and date specified in the title. Otherwise, this market will resolve to ""Down"".
+
+The resolution source for this market is information from Binance, specifically the BTC/USDT pair (https://www.binance.com/en/trade/BTC_USDT). The close « C » and open « O » displayed at the top of the graph for the relevant ""1H"" candle will be used once the data for that candle is finalized.
+
+Please note that this market is about the price according to Binance BTC/USDT, not according to other sources or spot markets."

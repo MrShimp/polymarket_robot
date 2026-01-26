@@ -3,7 +3,8 @@ import json
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 import logging
-from export.data_saver import DataSaver
+import os
+import csv
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -12,7 +13,23 @@ class PolymarketClient:
     def __init__(self, base_url: str = "https://clob.polymarket.com", save_data: bool = True):
         self.base_url = base_url
         self.save_data = save_data
-        self.data_saver = DataSaver() if save_data else None
+    
+    def _save_to_csv(self, data: List[Dict], filename: str):
+        """简单的CSV保存功能"""
+        if not data or not self.save_data:
+            return
+        
+        try:
+            os.makedirs("data/api_cache", exist_ok=True)
+            filepath = f"data/api_cache/{filename}"
+            
+            with open(filepath, 'w', newline='', encoding='utf-8') as f:
+                if data:
+                    writer = csv.DictWriter(f, fieldnames=data[0].keys())
+                    writer.writeheader()
+                    writer.writerows(data)
+        except Exception as e:
+            logger.warning(f"Failed to save data to {filename}: {e}")
         self.session = requests.Session()
         self.session.headers.update({
             'Content-Type': 'application/json',
@@ -41,8 +58,8 @@ class PolymarketClient:
             logger.info(f"成功获取市场 {condition_id} 的数据")
             
             # 保存数据到CSV
-            if self.save_data and self.data_saver:
-                self.data_saver.save_market_detail(market_data)
+            if self.save_data and market_data:
+                self._save_to_csv([market_data], f"market_{market_id}.csv")
             
             return market_data
             
@@ -90,8 +107,8 @@ class PolymarketClient:
             logger.info(f"成功获取 {len(markets_data)} 个市场数据")
             
             # 保存数据到CSV
-            if self.save_data and self.data_saver and markets_data:
-                self.data_saver.save_markets_data(markets_data)
+            if self.save_data and markets_data:
+                self._save_to_csv(markets_data, "markets_list.csv")
             
             return markets_data
             
@@ -120,8 +137,8 @@ class PolymarketClient:
             logger.info(f"成功获取代币 {token_id} 的订单簿数据")
             
             # 保存数据到CSV
-            if self.save_data and self.data_saver:
-                self.data_saver.save_orderbook_data(token_id, orderbook_data)
+            if self.save_data and orderbook_data:
+                self._save_to_csv([orderbook_data], f"orderbook_{token_id}.csv")
             
             return orderbook_data
             
@@ -169,8 +186,8 @@ class PolymarketClient:
             logger.info(f"成功获取 {len(trades_data)} 条交易记录")
             
             # 保存数据到CSV
-            if self.save_data and self.data_saver and trades_data:
-                self.data_saver.save_trades_data(trades_data)
+            if self.save_data and trades_data:
+                self._save_to_csv(trades_data, "trades_list.csv")
             
             return trades_data
             
@@ -199,8 +216,8 @@ class PolymarketClient:
             logger.info(f"成功获取市场 {condition_id} 的价格信息")
             
             # 保存数据到CSV
-            if self.save_data and self.data_saver:
-                self.data_saver.save_prices_data(condition_id, prices_data)
+            if self.save_data and prices_data:
+                self._save_to_csv([prices_data], f"prices_{condition_id}.csv")
             
             return prices_data
             

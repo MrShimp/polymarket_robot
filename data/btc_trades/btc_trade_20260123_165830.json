@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-01-23T16:58:30.299351",
+  "market_id": "test_market",
+  "outcome": "Yes",
+  "interval": "2026-01-23T16:58:30.294735",
+  "entry_time": "2026-01-23T16:58:30.299343",
+  "exit_time": "2026-01-23T16:58:30.299364",
+  "entry_price": 0.75,
+  "exit_price": 0.85,
+  "shares": 10,
+  "amount": 7.5,
+  "profit": 1.0,
+  "profit_pct": 13.333333333333334,
+  "exit_reason": "测试出场",
+  "btc_entry_price": 90000,
+  "btc_exit_price": 89259.57,
+  "direction": "up",
+  "duration_minutes": 4.80810801188151e-07
+}

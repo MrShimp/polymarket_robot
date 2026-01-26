@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-01-22T20:27:18.592550",
+  "keyword": "bitcoin",
+  "total_markets": 2,
+  "active_markets": 2,
+  "closed_markets": 0,
+  "total_volume": 0.0,
+  "total_liquidity": 0.0,
+  "categories": {
+    "Unknown": 2
+  },
+  "time_ranges": {
+    "1天内": 1,
+    "1周内": 0,
+    "1月内": 1,
+    "3月内": 0,
+    "6月内": 0,
+    "1年内": 0,
+    "1年以上": 0
+  },
+  "top_markets": [
+    {
+      "rank": 1,
+      "id": "137338",
+      "question": "What price will Bitcoin hit in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "9天16小时",
+      "volume": 0,
+      "liquidity": 0,
+      "active": true,
+      "closed": false
+    },
+    {
+      "rank": 2,
+      "id": "166353",
+      "question": "Bitcoin above ___ on January 22?",
+      "category": "",
+      "endDate": "2026-01-22T17:00:00Z",
+      "time_remaining": "4小时",
+      "volume": 0,
+      "liquidity": 0,
+      "active": true,
+      "closed": false
+    }
+  ]
+}

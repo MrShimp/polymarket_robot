@@ -1,0 +1,19 @@
+{
+  "date": "20260123",
+  "total_records": 1,
+  "min_price": 89709.7775,
+  "max_price": 89709.7775,
+  "avg_price": 89709.7775,
+  "first_price": 89709.7775,
+  "last_price": 89709.7775,
+  "price_change": 0.0,
+  "price_change_pct": 0.0,
+  "volatility": 0.0,
+  "generated_at": "2026-01-23T10:47:33.061123",
+  "data_sources": [
+    "binance",
+    "coinbase",
+    "kraken",
+    "coingecko"
+  ]
+}

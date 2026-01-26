@@ -1,0 +1,221 @@
+{
+  "timestamp": "2026-01-23T18:22:41.379483",
+  "search_term": "bitcoin",
+  "total_markets": 58,
+  "total_volume": 72359444.91862199,
+  "total_liquidity": 6112228.292289999,
+  "categories": {
+    "Unknown": 58
+  },
+  "time_ranges": {
+    "1天内": 12,
+    "1周内": 4,
+    "1月内": 18,
+    "3月内": 1,
+    "6月内": 2,
+    "1年内": 20,
+    "1年以上": 0
+  },
+  "top_markets": [
+    {
+      "rank": 1,
+      "id": "1082748",
+      "question": "Will Bitcoin reach $150,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 12418709.253871,
+      "liquidity": 674687.59541
+    },
+    {
+      "rank": 2,
+      "id": "1082781",
+      "question": "Will Bitcoin reach $100,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 6925258.249662,
+      "liquidity": 87455.2302
+    },
+    {
+      "rank": 3,
+      "id": "1082793",
+      "question": "Will Bitcoin dip to $85,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 4593855.936841,
+      "liquidity": 89072.0133
+    },
+    {
+      "rank": 4,
+      "id": "1082777",
+      "question": "Will Bitcoin reach $105,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 3620497.738673,
+      "liquidity": 94953.20596
+    },
+    {
+      "rank": 5,
+      "id": "1082763",
+      "question": "Will Bitcoin reach $120,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 3187714.248146,
+      "liquidity": 140469.55102
+    },
+    {
+      "rank": 6,
+      "id": "540844",
+      "question": "Will bitcoin hit $1m before GTA VI?",
+      "category": "",
+      "endDate": "2026-07-31T12:00:00Z",
+      "time_remaining": "189天1小时",
+      "volume": 2864269.585775,
+      "liquidity": 259918.6625
+    },
+    {
+      "rank": 7,
+      "id": "1082753",
+      "question": "Will Bitcoin reach $130,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 2843299.754707,
+      "liquidity": 109310.02061
+    },
+    {
+      "rank": 8,
+      "id": "1082772",
+      "question": "Will Bitcoin reach $110,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 2741078.273845,
+      "liquidity": 125577.07298
+    },
+    {
+      "rank": 9,
+      "id": "1082768",
+      "question": "Will Bitcoin reach $115,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 2620921.646555,
+      "liquidity": 89151.52052
+    },
+    {
+      "rank": 10,
+      "id": "1082796",
+      "question": "Will Bitcoin dip to $80,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 2185625.302579,
+      "liquidity": 126176.53663
+    },
+    {
+      "rank": 11,
+      "id": "1082829",
+      "question": "Will Bitcoin dip to $40,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 2130546.505441,
+      "liquidity": 211071.60242
+    },
+    {
+      "rank": 12,
+      "id": "1057916",
+      "question": "Will Bitcoin dip to $15,000 by December 31, 2026?",
+      "category": "",
+      "endDate": "2027-01-01T05:00:00Z",
+      "time_remaining": "342天18小时",
+      "volume": 1790282.818141,
+      "liquidity": 34721.15082
+    },
+    {
+      "rank": 13,
+      "id": "1082805",
+      "question": "Will Bitcoin dip to $70,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 1740933.683526,
+      "liquidity": 104226.95188
+    },
+    {
+      "rank": 14,
+      "id": "1082757",
+      "question": "Will Bitcoin reach $125,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 1721507.454355,
+      "liquidity": 94418.13533
+    },
+    {
+      "rank": 15,
+      "id": "1082801",
+      "question": "Will Bitcoin dip to $75,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 1519530.907779,
+      "liquidity": 65298.00465
+    },
+    {
+      "rank": 16,
+      "id": "1082809",
+      "question": "Will Bitcoin dip to $65,000 in January?",
+      "category": "",
+      "endDate": "2026-02-01T05:00:00Z",
+      "time_remaining": "8天18小时",
+      "volume": 1078668.744387,
+      "liquidity": 63958.86138
+    },
+    {
+      "rank": 17,
+      "id": "572403",
+      "question": "Will Bitcoin hit $80k or $150k first?",
+      "category": "",
+      "endDate": "2027-01-01T04:00:00Z",
+      "time_remaining": "342天17小时",
+      "volume": 1026611.207321,
+      "liquidity": 36136.09539
+    },
+    {
+      "rank": 18,
+      "id": "692250",
+      "question": "MicroStrategy sells any Bitcoin by March 31, 2026?",
+      "category": "",
+      "endDate": "",
+      "time_remaining": "Unknown",
+      "volume": 991816.090521,
+      "liquidity": 123524.09534
+    },
+    {
+      "rank": 19,
+      "id": "701500",
+      "question": "Will Bitcoin dip to $65,000 by December 31, 2026?",
+      "category": "",
+      "endDate": "2027-01-01T05:00:00Z",
+      "time_remaining": "342天18小时",
+      "volume": 811477.113901,
+      "liquidity": 85103.9235
+    },
+    {
+      "rank": 20,
+      "id": "701502",
+      "question": "Will Bitcoin dip to $45,000 by December 31, 2026?",
+      "category": "",
+      "endDate": "2027-01-01T05:00:00Z",
+      "time_remaining": "342天18小时",
+      "volume": 713603.504836,
+      "liquidity": 96100.6715
+    }
+  ]
+}
