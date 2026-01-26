@@ -50,12 +50,12 @@ class BTC15MinStrategy:
 
         # 策略参数
         self.trading_hours = {
-            "start": 00,  # 10:00 AM 北京时间
-            "end": 24,  # 07:00 PM 北京时间
+            "start": 10,  # 10:00 AM 北京时间
+            "end": 15,  # 07:00 PM 北京时间
         }
 
         # 入场过滤条件
-        self.min_time_after_start = 1  # 区间开始n分钟后才能下单
+        self.min_time_after_start = 5  # 区间开始n分钟后才能下单
         self.min_time_before_end = 1  # 结算前1分钟禁止下单
         self.price_threshold = 30  # ±30刀价格波动阈值
 
