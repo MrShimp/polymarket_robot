@@ -5,8 +5,7 @@ Polymarket BTC 15分钟策略
 - 时段：10:00 AM – 07:00 PM (北京时间)
 - 频次：每个15分钟区间只下1单
 - 入场过滤：时间窗口、价格波动阈值(±30刀)
-- 交易执行：0.75入场、0.90止盈、0.55止损
-- 特殊止盈：0.85+连续30秒涨幅<3刀
+- 交易执行：0.60入场、0.90止盈、0.55止损
 """
 import math
 import sys
@@ -34,15 +33,22 @@ from py_clob_client.clob_types import (
 )
 from trading.polymarket_clob_client import PolymarketCLOBClient
 from trading.order_manager import OrderManager
+from trading.buy_strategy import BuyStrategy
+from trading.sell_strategy import SellStrategy
 
 
 class BTC15MinStrategy:
     """BTC 15分钟策略"""
 
-    def __init__(self, use_testnet: bool = False, baseline_price: float = 95000.0):
-        self.clob_wrapper = PolymarketCLOBClient(use_testnet=use_testnet)
+    def __init__(self, baseline_price: float = 95000.0):
+        self.clob_wrapper = PolymarketCLOBClient()
         self.clob_client = self.clob_wrapper.get_client()
-        self.order_manager = OrderManager(use_testnet=use_testnet)
+        self.order_manager = OrderManager()
+
+        # 初始化买卖策略
+        self.buy_strategy = BuyStrategy(self.clob_client, self.log)
+        self.sell_strategy = SellStrategy(self.clob_client, self.log)
+
         self.gamma_api_base = "https://gamma-api.polymarket.com"
 
         # 设置基准价格
@@ -51,7 +57,7 @@ class BTC15MinStrategy:
         # 策略参数
         self.trading_hours = {
             "start": 10,  # 10:00 AM 北京时间
-            "end": 15,  # 07:00 PM 北京时间
+            "end": 20,  # 07:00 PM 北京时间
         }
 
         # 入场过滤条件
@@ -60,7 +66,7 @@ class BTC15MinStrategy:
         self.price_threshold = 30  # ±30刀价格波动阈值
 
         # 交易执行参数
-        self.entry_probability = 0.60  # 60%概率入场 (降低门槛)
+        self.entry_probability = 0.75  # 70%概率入场 (降低门槛)
         self.take_profit = 0.90  # 90%止盈
         self.stop_loss = 0.55  # 55%止损
 
@@ -84,6 +90,11 @@ class BTC15MinStrategy:
         self.default_amount = 5.0  # 默认交易金额
         self.last_minute_log = None  # 上次分钟日志时间
         self.traded_intervals = set()  # 记录已交易的15分钟区间
+        
+        # 新增：概率监控和日志控制
+        self.last_no_trade_log = 0  # 上次无交易条件日志时间
+        self.last_position_log = 0  # 上次持仓日志时间
+        self.prob_update_count = 0  # 概率更新计数器
 
         # BTC价格监控
         self.btc_price = None
@@ -300,11 +311,11 @@ class BTC15MinStrategy:
                     # 检查是否是新的15分钟区间
                     await self.check_new_interval()
 
-                await asyncio.sleep(1)  # 1秒更新一次价格
+                await asyncio.sleep(0.2)  # 每0.2秒更新一次价格 (5次/秒)
 
             except Exception as e:
                 self.log(f"价格监控错误: {e}", "ERROR")
-                await asyncio.sleep(5)
+                await asyncio.sleep(2)
 
     async def check_new_interval(self):
         """检查是否进入新的15分钟区间"""
@@ -432,7 +443,6 @@ class BTC15MinStrategy:
                 yes_prob = (best_bid + best_ask) / 2
                 no_prob = 1 - yes_prob
 
-                self.log(f"📊 订单簿: YES概率={yes_prob:.1%}")
                 return yes_prob, no_prob
 
             # 如果订单簿只有单边，再退而求其次用 last_trade_price
@@ -531,40 +541,53 @@ class BTC15MinStrategy:
             try:
                 # 检查是否在交易时段
                 if not self.is_trading_hours():
-                    self.log("⏰ 不在交易时段，等待...")
-                    await asyncio.sleep(10)
+                    current_time = time.time()
+                    if current_time - self.last_no_trade_log >= 10:  # 每10秒记录一次
+                        self.last_no_trade_log = current_time
+                        self.log("⏰ 不在交易时段，等待...")
+                    await asyncio.sleep(2)
                     continue
 
-                # 获取双向概率 - 每次都获取最新数据
+                # 获取双向概率 - 每次都获取最新数据 (5次/秒)
                 yes_prob, no_prob = self.get_both_probabilities(market_id)
                 if not yes_prob or not no_prob:
-                    await asyncio.sleep(1)
+                    await asyncio.sleep(0.2)
                     continue
 
                 yes_prob_pct = yes_prob * 100
                 no_prob_pct = no_prob * 100
+                self.prob_update_count += 1
 
                 # 如果还没有持仓
                 if not self.position:
                     # 检查入场条件 - 只限制买入时间
                     time_valid, time_msg = self.is_valid_entry_time()
                     if not time_valid:
-                        self.log(f"⏳ 买入限制: {time_msg}")
-                        await asyncio.sleep(1)
+                        current_time = time.time()
+                        if current_time - self.last_no_trade_log >= 10:  # 每10秒记录一次
+                            self.last_no_trade_log = current_time
+                            self.log(f"⏳ 买入限制: {time_msg}")
+                        await asyncio.sleep(0.2)
                         continue
 
                     # 检查价格波动
                     if not self.btc_price or not self.baseline_price:
-                        self.log("� 等待价格数据...n")
-                        await asyncio.sleep(1)
+                        current_time = time.time()
+                        if current_time - self.last_no_trade_log >= 10:  # 每10秒记录一次
+                            self.last_no_trade_log = current_time
+                            self.log("⏳ 等待价格数据...")
+                        await asyncio.sleep(0.2)
                         continue
 
                     price_valid, price_msg, direction = self.check_price_movement(
                         self.btc_price
                     )
                     if not price_valid:
-                        self.log(f"📈 {price_msg}")
-                        await asyncio.sleep(1)
+                        current_time = time.time()
+                        if current_time - self.last_no_trade_log >= 10:  # 每10秒记录一次
+                            self.last_no_trade_log = current_time
+                            self.log(f"📈 {price_msg}")
+                        await asyncio.sleep(0.2)
                         continue
 
                     # 检查双向入场信号
@@ -588,7 +611,7 @@ class BTC15MinStrategy:
                             target_prob = no_prob
 
                         # 执行入场
-                        success, actual_amount = await self.enter_position(
+                        success, actual_amount = await self.buy_strategy.enter_position(
                             target_token_id, self.default_amount, target_prob
                         )
                         if success:
@@ -617,13 +640,22 @@ class BTC15MinStrategy:
                             self.log(
                                 f"🔒 区间 {interval_start.strftime('%H:%M')}-{(interval_start + timedelta(minutes=15)).strftime('%H:%M')} 已锁定，15分钟内不再交易"
                             )
+                            # 重置日志时间，立即开始持仓监控
+                            self.last_position_log = 0
+                        else:
+                            self.log(f"❌ 入场失败: 订单执行失败")
                     else:
-                        self.log(
-                            f"⏸️ 等待入场: YES{yes_prob_pct:.1f}% NO{no_prob_pct:.1f}%, 方向{direction}"
-                        )
+                        current_time = time.time()
+                        if current_time - self.last_no_trade_log >= 10:  # 每10秒记录一次
+                            self.last_no_trade_log = current_time
+                            self.log(
+                                f"⏸️ 等待入场: YES{yes_prob_pct:.1f}% NO{no_prob_pct:.1f}%, 方向{direction}, 需要概率≥{self.entry_probability*100}%"
+                            )
+                        await asyncio.sleep(0.2)
+                        continue
 
                 else:
-                    # 已有持仓，检查出场条件 - 卖出无时间限制
+                    # 已有持仓，检查出场条件 - 卖出无时间限制，每秒记录盈亏
                     entry_prob = self.position["entry_price"]
 
                     # 获取当前持仓的概率
@@ -635,10 +667,18 @@ class BTC15MinStrategy:
                         current_prob_pct = no_prob_pct
 
                     profit_points = (current_prob - entry_prob) * 100
+                    profit_amount = profit_points * self.position["amount"] / 100
+                    profit_pct = (profit_amount / self.position["amount"]) * 100
 
-                    self.log(
-                        f"📊 持仓监控: {self.position['side'].upper()} 概率{current_prob_pct:.1f}%, 盈利{profit_points:.1f}点"
-                    )
+                    # 每秒记录持仓盈亏
+                    current_time = time.time()
+                    if current_time - self.last_position_log >= 1.0:  # 每1秒记录一次
+                        self.last_position_log = current_time
+                        profit_status = "📈 盈利" if profit_points > 0 else "📉 亏损" if profit_points < 0 else "➡️ 持平"
+                        self.log(
+                            f"{profit_status}: {self.position['side'].upper()} 概率{current_prob_pct:.1f}% "
+                            f"(入场{entry_prob*100:.1f}%), {profit_points:+.1f}点, ${profit_amount:+.2f} ({profit_pct:+.1f}%)"
+                        )
 
                     should_exit = False
                     exit_reason = ""
@@ -663,7 +703,7 @@ class BTC15MinStrategy:
                     if should_exit:
                         self.log(f"📉 出场信号: {exit_reason}")
 
-                        success = await self.exit_position(
+                        success = await self.sell_strategy.exit_position(
                             self.position["token_id"], self.position["amount"]
                         )
                         if success:
@@ -691,132 +731,14 @@ class BTC15MinStrategy:
                             # 清除持仓
                             self.position = None
 
-                await asyncio.sleep(1)  # 5秒检查一次
+                await asyncio.sleep(0.2)  # 每0.2秒检查一次 (5次/秒)
 
             except Exception as e:
                 self.log(f"交易循环错误: {e}", "ERROR")
-                await asyncio.sleep(5)
+                await asyncio.sleep(1)
 
         self.log("🛑 策略执行结束")
         return True
-
-    def format_amount_for_api(self, amount: int, is_taker: bool = True) -> float:
-        """
-        格式化金额以符合API精度要求（关键修复）
-        :param amount: 传入的整数金额
-        :param is_taker: 是否是taker订单（市场订单默认是taker）
-        :return: 符合精度要求的浮点数金额
-        """
-        # 转换为Decimal以精确处理小数
-        decimal_amount = Decimal(str(amount))
-
-        # 根据订单类型设置小数位数
-        decimals = self.taker_decimals if is_taker else self.maker_decimals
-
-        # 格式化（截断而非四舍五入，避免超出精度）
-        formatted = decimal_amount.quantize(
-            Decimal("1." + "0" * decimals), rounding=ROUND_DOWN
-        )
-
-        # 转换回浮点数
-        return float(formatted)
-
-    async def enter_position(
-        self, token_id: str, price: float, current_prob: float
-    ) -> Tuple[bool, float]:
-        """入场操作"""
-        try:
-            self.log(f"🎯 准备入场: token_id={token_id}, 金额=${price}")
-
-            # 直接使用命令行参数中的金额，不进行任何格式化
-            shares_rounded = price  # 直接使用传入的价格值
-
-            order_args = MarketOrderArgs(
-                token_id=token_id,
-                amount=shares_rounded,
-                side="BUY",
-            )
-            self.log(f"💰 交易金额: {shares_rounded} (直接使用命令行参数)")
-
-            signed_order = self.clob_client.create_market_order(order_args)
-            result = self.clob_client.post_order(signed_order, orderType=OrderType.FOK)
-
-            if result and result.get("orderID"):
-                self.log(f"✅ 入场订单提交成功: {result}")
-                self.log(f"📋 订单详情: {shares_rounded} @ 概率{current_prob:.3f}")
-                return True, shares_rounded  # 返回实际购买的金额
-            else:
-                self.log(f"❌ 入场订单失败: {result}", "ERROR")
-                return False, 0.0
-
-        except Exception as e:
-            self.log(f"❌ 入场操作失败: {e}", "ERROR")
-            return False, 0.0
-
-    async def exit_position(self, token_id: str, amount: float) -> bool:
-        """出场操作 - 持续重试直到成功"""
-        max_retries = 10  # 最大重试次数，防止无限循环
-        retry_count = 0
-
-        while retry_count < max_retries:
-            try:
-                # 获取实际持仓
-                actual_balance = self.clob_client.get_balance_allowance(
-                    params=BalanceAllowanceParams(
-                        asset_type=AssetType.CONDITIONAL,
-                        token_id=token_id,
-                    )
-                )
-
-                # 确保余额是数字类型
-                balance_value = actual_balance.get("balance", "0")
-                if isinstance(balance_value, str):
-                    balance_value = float(balance_value)
-                balance_value = balance_value/ 1000000
-                # 如果没有持仓，直接返回成功
-                if balance_value <= 0:
-                    self.log("✅ 没有持仓，出场完成")
-                    return True
-
-                retry_count += 1
-                self.log(
-                    f"🎯 出场尝试 #{retry_count}: token_id={token_id}, 持仓={balance_value}份"
-                )
-
-                # 创建市场卖出订单
-                order_args = MarketOrderArgs(
-                    token_id=token_id,
-                    amount=balance_value,
-                    side="SELL",
-                )
-                signed_order = self.clob_client.create_market_order(order_args)
-                result = self.clob_client.post_order(
-                    signed_order, orderType=OrderType.FOK
-                )
-
-                if result and result.get("orderID"):
-                    self.log(
-                        f"✅ 出场成功 (第{retry_count}次尝试): {result.get('orderID')}"
-                    )
-                    self.log(f"📋 成功卖出: {balance_value}份")
-                    return True
-                else:
-                    error_msg = str(result) if result else "无响应"
-                    self.log(f"⚠️ 出场失败 (第{retry_count}次): {error_msg}")
-
-                    # 等待2秒后重试
-                    await asyncio.sleep(1)
-
-            except Exception as e:
-                error_msg = str(e)
-                self.log(f"⚠️ 出场异常 (第{retry_count}次): {error_msg}")
-
-                # 等待2秒后重试
-                await asyncio.sleep(1)
-
-        # 如果达到最大重试次数仍未成功
-        self.log(f"❌ 出场失败: 已重试{max_retries}次，放弃操作")
-        return False
 
     def save_trade_record(
         self,
@@ -998,7 +920,7 @@ async def main():
 
         # 创建策略实例
         global strategy
-        strategy = BTC15MinStrategy(use_testnet=False, baseline_price=baseline_price)
+        strategy = BTC15MinStrategy(baseline_price=baseline_price)
 
         # 验证市场
         market_info = strategy.get_market_info(market_id)

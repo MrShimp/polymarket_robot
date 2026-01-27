@@ -14,6 +14,7 @@ def setup_credentials():
     print("="*50)
     print("请准备你的以太坊私钥用于Polymarket交易")
     print("⚠️  私钥将用于签名交易，请确保安全保存")
+    print("🌐 网络: 主网 (Polygon)")
     print()
     
     # 获取私钥
@@ -28,28 +29,11 @@ def setup_credentials():
         print("⚠️  私钥应以0x开头，自动添加前缀")
         private_key = '0x' + private_key
     
-
-    
-    # 选择网络
-    print("\n网络选择:")
-    print("1. 测试网 (Polygon Amoy - 推荐用于测试)")
-    print("2. 主网 (Polygon - 实际交易)")
-    
-    while True:
-        choice = input("请选择网络 (1/2): ").strip()
-        if choice == '1':
-            use_testnet = True
-            break
-        elif choice == '2':
-            use_testnet = False
-            print("⚠️  警告: 你选择了主网，这将使用真实资金进行交易!")
-            confirm = input("确认使用主网? (yes/no): ").strip().lower()
-            if confirm == 'yes':
-                break
-            else:
-                continue
-        else:
-            print("请输入 1 或 2")
+    print("⚠️  警告: 这将使用真实资金进行交易!")
+    confirm = input("确认使用主网? (yes/no): ").strip().lower()
+    if confirm != 'yes':
+        print("❌ 用户取消设置")
+        return False
     
     # 交易参数设置
     print("\n📊 交易参数设置:")
@@ -77,12 +61,7 @@ def setup_credentials():
         "polymarket": {
             "host": "https://clob.polymarket.com",
             "chain_id": 137,
-            "private_key": "" if not use_testnet else "",
-            "testnet": {
-                "host": "https://clob-staging.polymarket.com",
-                "chain_id": 80002,
-                "private_key": ""
-            }
+            "private_key": private_key
         },
         "trading": {
             "default_trade_amount": default_trade_amount,
@@ -102,17 +81,10 @@ def setup_credentials():
             "max_retries": 3
         },
         "security": {
-            "use_testnet": use_testnet,
             "require_confirmation": require_confirmation,
             "max_gas_price": "50000000000"
         }
     }
-    
-    # 设置私钥到对应网络
-    if use_testnet:
-        config["polymarket"]["testnet"]["private_key"] = private_key
-    else:
-        config["polymarket"]["private_key"] = private_key
     
     # 保存配置
     config_file = "config/sys_config.json"
@@ -124,7 +96,7 @@ def setup_credentials():
             json.dump(config, f, indent=2)
         
         print(f"\n✅ 配置已保存到: {config_file}")
-        print(f"🌐 网络: {'测试网 (Polygon Amoy)' if use_testnet else '主网 (Polygon)'}")
+        print(f"🌐 网络: 主网 (Polygon)")
         print(f"💰 默认交易金额: ${default_trade_amount} USDC")
         print(f"🎭 模拟模式: {'启用' if dry_run else '禁用'}")
         print(f"🤖 自动交易: {'启用' if auto_trade else '禁用'}")
@@ -172,7 +144,7 @@ def test_credentials():
         client = PolymarketCLOBClient(**config.get_client_config())
         
         print(f"✅ 客户端创建成功!")
-        print(f"🌐 网络: {'测试网' if config.use_testnet else '主网'}")
+        print(f"🌐 网络: 主网")
         print(f"📍 地址: {client.address}")
         print(f"🔗 主机: {client.host}")
         print(f"⛓️  链ID: {client.chain_id}")

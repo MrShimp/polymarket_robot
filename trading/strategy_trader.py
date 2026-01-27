@@ -67,11 +67,10 @@ class StrategyTrader:
                 self.clob_client = PolymarketCLOBClient(
                     host=client_config['host'],
                     chain_id=client_config['chain_id'],
-                    private_key=client_config['private_key'],
-                    use_testnet=client_config['use_testnet']
+                    private_key=client_config['private_key']
                 )
                 self.trader = PolymarketTrader(self.clob_client)
-                print(f"✅ 交易客户端已初始化 ({'测试网' if config.use_testnet else '主网'})")
+                print(f"✅ 交易客户端已初始化 (主网)")
                 print(f"📍 钱包地址: {self.clob_client.address}")
             except Exception as e:
                 print(f"❌ 交易客户端初始化失败: {e}")

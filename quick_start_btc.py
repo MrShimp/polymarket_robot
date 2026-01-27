@@ -97,7 +97,6 @@ async def quick_start(market_id: str, config_name: str = "normal"):
     
     params = {
         'amount': config['amount'],
-        'use_testnet': False,
         'require_confirm': False
     }
     

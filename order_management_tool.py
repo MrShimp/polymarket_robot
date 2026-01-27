@@ -19,7 +19,7 @@ class OrderManagementTool:
     """订单管理工具"""
     
     def __init__(self):
-        self.order_manager = OrderManager(use_testnet=False)
+        self.order_manager = OrderManager()
         self.clob_client = self.order_manager.clob_client
         self.gamma_api_base = "https://gamma-api.polymarket.com"
     
@@ -533,7 +533,7 @@ class OrderManagementTool:
             
             print(f"📊 当前配置:")
             print(f"   地址: {address}")
-            print(f"   网络: {'测试网' if self.order_manager.use_testnet else '主网'}")
+            print(f"   网络: 主网")
             
         except Exception as e:
             print(f"❌ 客户端初始化失败: {e}")

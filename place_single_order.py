@@ -20,9 +20,9 @@ class SingleOrderPlacer:
     """单一市场下单器"""
     
     def __init__(self):
-        self.clob_wrapper = PolymarketCLOBClient(use_testnet=False)
+        self.clob_wrapper = PolymarketCLOBClient()
         self.clob_client = self.clob_wrapper.get_client()  # 获取原生ClobClient
-        self.order_manager = OrderManager(use_testnet=False)  # 添加订单管理器
+        self.order_manager = OrderManager()  # 添加订单管理器
         self.gamma_api_base = "https://gamma-api.polymarket.com"
     
     def get_market_info(self, market_id: str) -> Optional[Dict]:

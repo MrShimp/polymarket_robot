@@ -20,14 +20,21 @@ from typing import Optional, List, Dict, Tuple
 class BTCSmartAutoTrader:
     """BTC智能自动交易器"""
     
-    def __init__(self, trade_amount: float = 5.0):
+    def __init__(self, trade_amount: float = 5.0, strategy_version: str = "v1"):
         self.trade_amount = trade_amount
+        self.strategy_version = strategy_version
         self.running = True
         self.beijing_tz = pytz.timezone('Asia/Shanghai')
         self.et_winter_tz = pytz.FixedOffset(-5 * 60)  # UTC-5，美东冬季时间
         
         # 时间判断阈值（分钟）
         self.time_threshold = 5  # 5分钟阈值
+        
+        # 根据策略版本确定策略文件
+        if strategy_version.lower() == "v2":
+            self.strategy_script = "btc_15min_strategy_v2.py"
+        else:
+            self.strategy_script = "btc_15min_strategy.py"
         
         # 日志设置
         self.setup_logging()
@@ -37,6 +44,8 @@ class BTCSmartAutoTrader:
         
         self.log("🤖 BTC智能自动交易器初始化完成")
         self.log(f"💰 交易金额: ${trade_amount}")
+        self.log(f"📋 策略版本: {strategy_version}")
+        self.log(f"📄 策略脚本: {self.strategy_script}")
         self.log(f"⏰ 时间阈值: {self.time_threshold}分钟")
     
     def setup_logging(self):
@@ -45,7 +54,8 @@ class BTCSmartAutoTrader:
         os.makedirs(self.log_dir, exist_ok=True)
         
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.log_file = os.path.join(self.log_dir, f"smart_auto_trader_{timestamp}.log")
+        strategy_suffix = f"_{self.strategy_version}" if hasattr(self, 'strategy_version') else ""
+        self.log_file = os.path.join(self.log_dir, f"smart_auto_trader{strategy_suffix}_{timestamp}.log")
     
     def log(self, message: str, level: str = "INFO"):
         """记录日志"""
@@ -168,26 +178,50 @@ class BTCSmartAutoTrader:
             self.log(f"❌ 获取市场失败: {e}", "ERROR")
             return None
     
+    def terminate_current_strategy(self):
+        """强制终止当前运行的策略"""
+        if self.current_strategy_process and self.current_strategy_process.poll() is None:
+            self.log("🛑 终止上一个15分钟周期的策略")
+            try:
+                self.current_strategy_process.terminate()
+                # 等待进程优雅退出
+                try:
+                    self.current_strategy_process.wait(timeout=5)
+                    self.log("✅ 策略进程已优雅退出")
+                except subprocess.TimeoutExpired:
+                    # 如果5秒内没有退出，强制杀死
+                    self.current_strategy_process.kill()
+                    self.current_strategy_process.wait()
+                    self.log("⚠️ 策略进程已强制终止")
+            except Exception as e:
+                self.log(f"❌ 终止策略进程时出错: {e}", "ERROR")
+            finally:
+                self.current_strategy_process = None
+        elif self.current_strategy_process:
+            # 进程已经结束
+            return_code = self.current_strategy_process.returncode
+            if return_code == 0:
+                self.log("✅ 上一个策略已正常结束")
+            else:
+                self.log(f"⚠️ 上一个策略异常结束 (返回码: {return_code})")
+            self.current_strategy_process = None
+        else:
+            self.log("📝 没有运行中的策略需要终止")
+
     def start_trading_strategy(self, market_id: str, btc_price: float) -> bool:
         """启动交易策略"""
         try:
-            self.log(f"🚀 启动交易策略")
+            beijing_time = self.get_beijing_time()
+            self.log(f"🚀 启动新的15分钟交易策略 ({self.strategy_version})")
+            self.log(f"   时间: {beijing_time.strftime('%Y-%m-%d %H:%M:%S')}")
             self.log(f"   市场ID: {market_id}")
             self.log(f"   BTC价格: ${btc_price:,.2f}")
             self.log(f"   交易金额: ${self.trade_amount}")
-            
-            # 停止之前的策略进程（如果有）
-            if self.current_strategy_process and self.current_strategy_process.poll() is None:
-                self.log("⚠️ 停止之前的策略进程")
-                self.current_strategy_process.terminate()
-                try:
-                    self.current_strategy_process.wait(timeout=10)
-                except subprocess.TimeoutExpired:
-                    self.current_strategy_process.kill()
+            self.log(f"   策略脚本: {self.strategy_script}")
             
             # 启动新的策略进程
             cmd = [
-                sys.executable, "btc_15min_strategy.py",
+                sys.executable, self.strategy_script,
                 market_id,
                 str(self.trade_amount),
                 str(btc_price)
@@ -202,7 +236,7 @@ class BTCSmartAutoTrader:
                 text=True
             )
             
-            self.log(f"✅ 策略进程已启动 (PID: {self.current_strategy_process.pid})")
+            self.log(f"✅ 新策略进程已启动 (PID: {self.current_strategy_process.pid})")
             return True
             
         except Exception as e:
@@ -246,28 +280,67 @@ class BTCSmartAutoTrader:
             self.log(f"⏳ 决策: 等待下一个市场 (间隔{minutes_since_prev:.1f}分钟 > {self.time_threshold}分钟)")
             return None, f"等待下一个市场 (还需{minutes_to_next:.1f}分钟)"
     
-    def wait_for_next_market(self):
-        """等待下一个市场开始"""
+    def wait_for_next_15min_interval(self):
+        """等待下一个15分钟整点"""
         while self.running:
-            _, next_timestamp, _, next_beijing_time = self.get_15min_timestamps()
-            time_to_next = self.get_time_to_interval_start(next_beijing_time)
+            beijing_time = self.get_beijing_time()
+            current_minute = beijing_time.minute
+            current_second = beijing_time.second
             
-            if time_to_next <= 0.5:  # 30秒内认为已经到了
-                self.log(f"⏰ 下一个市场即将开始")
-                
-                # 尝试获取下一个市场
-                market = self.get_market_by_timestamp(next_timestamp)
-                if market:
-                    return market
-                else:
-                    self.log(f"❌ 下一个市场暂未可用，继续等待...")
+            # 计算到下一个15分钟整点的等待时间
+            minutes_to_next = 15 - (current_minute % 15)
+            if minutes_to_next == 15:
+                minutes_to_next = 0
             
-            # 每30秒检查一次
-            wait_time = min(30, max(10, time_to_next * 60))
-            self.log(f"⏰ 等待下一个市场，还需 {time_to_next:.1f}分钟")
-            time.sleep(wait_time)
+            # 计算总的等待秒数
+            total_seconds_to_next = (minutes_to_next * 60) - current_second
+            
+            if total_seconds_to_next <= 30:  # 如果在30秒内，认为已经到了
+                break
+            
+            # 正确计算显示的分钟和秒数
+            display_minutes = total_seconds_to_next // 60
+            display_seconds = total_seconds_to_next % 60
+            
+            self.log(f"⏰ 等待下一个15分钟整点，还需 {display_minutes}分{display_seconds}秒")
+            
+            # 每分钟检查一次，但不超过剩余时间
+            sleep_time = min(60, total_seconds_to_next)
+            time.sleep(sleep_time)
+
+    def run_15min_trading_cycle(self):
+        """执行15分钟交易周期 - 获取最新数据并启动策略"""
+        beijing_time = self.get_beijing_time()
+        self.log(f"🔄 开始新的15分钟交易周期 - {beijing_time.strftime('%Y-%m-%d %H:%M:%S')}")
         
-        return None
+        # 1. 重新获取BTC价格
+        self.log("📊 重新获取最新BTC价格...")
+        btc_price = self.get_btc_price()
+        if not btc_price:
+            self.log("❌ 无法获取BTC价格，跳过本次交易", "ERROR")
+            return False
+        
+        # 2. 获取当前15分钟市场的时间戳
+        prev_timestamp, next_timestamp, prev_beijing_time, next_beijing_time = self.get_15min_timestamps()
+        
+        # 3. 尝试获取当前15分钟市场
+        self.log(f"🔍 重新查询15分钟市场 (时间戳: {next_timestamp})...")
+        market = self.get_market_by_timestamp(next_timestamp)
+        
+        if not market:
+            self.log("❌ 没有找到可用的15分钟市场，跳过本次交易", "ERROR")
+            return False
+        
+        self.log(f"🎯 找到市场: {market.get('question', 'Unknown')}")
+        
+        # 4. 启动交易策略
+        success = self.start_trading_strategy(market['market_id'], btc_price)
+        if not success:
+            self.log("❌ 启动交易策略失败", "ERROR")
+            return False
+        
+        self.log("✅ 新的15分钟交易周期启动成功")
+        return True
     
     def run_smart_trading_cycle(self):
         """执行智能交易周期"""
@@ -298,7 +371,16 @@ class BTCSmartAutoTrader:
             # 需要等待下一个市场
             self.log(f"⏳ {reason}")
             
-            market = self.wait_for_next_market()
+            # 等待下一个15分钟整点
+            self.wait_for_next_15min_interval()
+            
+            if not self.running:
+                return False
+            
+            # 获取下一个市场
+            _, next_timestamp, _, _ = self.get_15min_timestamps()
+            market = self.get_market_by_timestamp(next_timestamp)
+            
             if market and self.running:
                 # 重新获取BTC价格
                 btc_price = self.get_btc_price()
@@ -345,36 +427,32 @@ class BTCSmartAutoTrader:
         return False
     
     def run(self):
-        """主运行循环"""
+        """主运行循环 - 每15分钟重新开始"""
         self.log("🚀 BTC智能自动交易器启动")
         
         try:
-            # 首次启动时执行智能交易周期
+            # 首次启动时的智能决策
             if self.running:
                 success = self.run_smart_trading_cycle()
                 if not success:
                     self.log("❌ 首次交易周期失败", "ERROR")
-                    return
             
-            # 持续监控策略状态
+            # 主循环：每15分钟重新开始
             while self.running:
-                # 检查当前策略状态
-                strategy_running = self.check_strategy_status()
+                # 等待下一个15分钟整点
+                self.wait_for_next_15min_interval()
                 
-                if not strategy_running:
-                    # 策略已结束，启动新的交易周期
-                    self.log("🔄 策略已结束，准备启动新的交易周期")
-                    
-                    # 等待一段时间再启动新周期
-                    time.sleep(30)
-                    
-                    if self.running:
-                        success = self.run_smart_trading_cycle()
-                        if not success:
-                            self.log("❌ 新交易周期启动失败，等待重试", "ERROR")
-                            time.sleep(300)  # 等待5分钟再重试
+                if not self.running:
+                    break
                 
-                # 每分钟检查一次
+                # 每个新的15分钟周期都要：
+                # 1. 强制终止上一个策略（如果存在）
+                self.terminate_current_strategy()
+                
+                # 2. 启动新的15分钟交易周期（重新获取市场和价格）
+                self.run_15min_trading_cycle()
+                
+                # 等待一分钟再检查
                 time.sleep(60)
                 
         except KeyboardInterrupt:
@@ -390,14 +468,7 @@ class BTCSmartAutoTrader:
         self.running = False
         
         # 停止当前策略进程
-        if self.current_strategy_process and self.current_strategy_process.poll() is None:
-            self.log("⚠️ 停止策略进程")
-            self.current_strategy_process.terminate()
-            try:
-                self.current_strategy_process.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                self.current_strategy_process.kill()
-                self.log("⚠️ 强制终止策略进程")
+        self.terminate_current_strategy()
 
 
 def signal_handler(signum, frame):
@@ -416,14 +487,21 @@ def main():
     print("- 如果间隔小于5分钟，则直接获取并参与上一个15分钟的市场")
     print("- 如果间隔超过5分钟，则等待并参与下一个市场")
     print("=" * 60)
+    print("使用方法:")
+    print("  python3 btc_smart_auto_trader.py [交易金额] [策略版本]")
+    print("  例如: python3 btc_smart_auto_trader.py 1 v2  # 使用$1执行v2策略")
+    print("  例如: python3 btc_smart_auto_trader.py 5     # 使用$5执行v1策略")
+    print("=" * 60)
     
     # 注册信号处理器
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
     
     try:
-        # 获取交易金额参数
+        # 解析命令行参数
         trade_amount = 5.0
+        strategy_version = "v1"
+        
         if len(sys.argv) > 1:
             try:
                 trade_amount = float(sys.argv[1])
@@ -434,11 +512,18 @@ def main():
                 print("❌ 交易金额格式错误")
                 return
         
+        if len(sys.argv) > 2:
+            strategy_version = sys.argv[2].lower()
+            if strategy_version not in ["v1", "v2"]:
+                print("❌ 策略版本只支持 v1 或 v2")
+                return
+        
         print(f"💰 交易金额: ${trade_amount}")
+        print(f"📋 策略版本: {strategy_version}")
         
         # 创建智能自动交易器
         global trader
-        trader = BTCSmartAutoTrader(trade_amount=trade_amount)
+        trader = BTCSmartAutoTrader(trade_amount=trade_amount, strategy_version=strategy_version)
         
         # 启动智能自动交易
         trader.run()

@@ -28,12 +28,12 @@ python btc_auto_trader.py 10
   - 查找可用市场
   - 启动交易策略
 
-### 2. `test_trading_bot.py` - 市场查询器
+### 2. `btc_market_query.py` - 市场查询器
 - **功能**: 查找可用的BTC 15分钟市场
 - **用法**: 
   ```bash
-  python test_trading_bot.py          # 人类可读输出
-  python test_trading_bot.py --json   # JSON格式输出
+  python btc_market_query.py          # 人类可读输出
+  python btc_market_query.py --json   # JSON格式输出
   ```
 
 ### 3. `btc_15min_strategy.py` - 交易策略
@@ -76,7 +76,7 @@ python btc_auto_trader.py 10
 ```
 .
 ├── btc_auto_trader.py          # 主控制器
-├── test_trading_bot.py         # 市场查询器
+├── btc_market_query.py         # 市场查询器
 ├── btc_15min_strategy.py       # 交易策略
 ├── start_auto_trader.py        # 启动助手
 ├── BTC_AUTO_TRADER_README.md   # 说明文档
@@ -174,7 +174,7 @@ kill -TERM <PID>
 ### 调试模式
 ```bash
 # 单独测试市场查询
-python test_trading_bot.py
+python btc_market_query.py
 
 # 单独测试策略
 python btc_15min_strategy.py <market_id> 5 95000

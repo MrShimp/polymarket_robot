@@ -14,10 +14,9 @@ from trading.polymarket_clob_client import PolymarketCLOBClient
 class OrderManager:
     """订单管理器 - 处理高级订单操作"""
     
-    def __init__(self, use_testnet: bool = False):
-        self.clob_wrapper = PolymarketCLOBClient(use_testnet=use_testnet)
+    def __init__(self):
+        self.clob_wrapper = PolymarketCLOBClient()
         self.clob_client = self.clob_wrapper.get_client()
-        self.use_testnet = use_testnet
     
     def get_open_orders(self, token_id: Optional[str] = None) -> List[Dict]:
         """获取未成交订单"""
@@ -404,7 +403,7 @@ def main():
     """测试订单管理器功能"""
     print("🔧 订单管理器测试")
     
-    manager = OrderManager(use_testnet=False)
+    manager = OrderManager()
     
     # 测试获取订单
     print("\n1. 获取未成交订单:")

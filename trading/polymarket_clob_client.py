@@ -44,7 +44,6 @@ class PolymarketCLOBClient:
                  host: str = "https://clob.polymarket.com",
                  chain_id: int = 137,
                  private_key: str = "",
-                 use_testnet: bool = False,
                  api_key: str = "",
                  api_secret: str = "",
                  passphrase: str = ""):
@@ -53,9 +52,8 @@ class PolymarketCLOBClient:
         
         Args:
             host: API主机地址
-            chain_id: 链ID (137=Polygon主网, 80002=Polygon Amoy测试网)
+            chain_id: 链ID (137=Polygon主网)
             private_key: 私钥 (用于L1认证)
-            use_testnet: 是否使用测试网
             api_key: API密钥 (用于L2认证)
             api_secret: API密钥 (用于L2认证)
             passphrase: API密码短语 (用于L2认证)
@@ -63,19 +61,14 @@ class PolymarketCLOBClient:
         if not CLOB_CLIENT_AVAILABLE:
             raise ImportError("py_clob_client未安装，请运行: pip install py-clob-client")
         
-        self.use_testnet = use_testnet
         self.private_key = private_key
         self.api_key = api_key
         self.api_secret = api_secret
         self.passphrase = passphrase
         
-        # 设置链ID和主机
-        if use_testnet:
-            self.chain_id = AMOY
-            self.host = "https://clob-staging.polymarket.com"
-        else:
-            self.chain_id = chain_id if chain_id != 137 else POLYGON
-            self.host = host
+        # 设置链ID和主机 (仅主网)
+        self.chain_id = chain_id if chain_id != 137 else POLYGON
+        self.host = host
         
         # 从配置文件读取设置
         if not self.private_key or not self.api_key:
@@ -95,27 +88,16 @@ class PolymarketCLOBClient:
             
             polymarket_config = config.get('polymarket', {})
             
-            if self.use_testnet:
-                testnet_config = polymarket_config.get('testnet', {})
-                self.private_key = testnet_config.get('private_key', '')
-                self.api_key = testnet_config.get('api_key', '')
-                self.api_secret = testnet_config.get('api_secret', '')
-                self.passphrase = testnet_config.get('passphrase', '')
-                if testnet_config.get('host'):
-                    self.host = testnet_config['host']
-                if testnet_config.get('chain_id'):
-                    self.chain_id = testnet_config['chain_id']
-            else:
-                self.private_key = polymarket_config.get('private_key', '')
-                self.api_key = polymarket_config.get('api_key', '')
-                self.api_secret = polymarket_config.get('api_secret', '')
-                self.passphrase = polymarket_config.get('passphrase', '')
-                if polymarket_config.get('host'):
-                    self.host = polymarket_config['host']
-                if polymarket_config.get('chain_id'):
-                    self.chain_id = polymarket_config['chain_id']
-                if polymarket_config.get('funder_address'):
-                    self.funder_address = polymarket_config['funder_address']
+            self.private_key = polymarket_config.get('private_key', '')
+            self.api_key = polymarket_config.get('api_key', '')
+            self.api_secret = polymarket_config.get('api_secret', '')
+            self.passphrase = polymarket_config.get('passphrase', '')
+            if polymarket_config.get('host'):
+                self.host = polymarket_config['host']
+            if polymarket_config.get('chain_id'):
+                self.chain_id = polymarket_config['chain_id']
+            if polymarket_config.get('funder_address'):
+                self.funder_address = polymarket_config['funder_address']
                     
         except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
             print(f"⚠️ 无法读取配置文件: {e}")
@@ -237,19 +219,14 @@ class PolymarketCLOBClient:
 
 
 # 便捷函数
-def create_client(use_testnet: bool = False) -> PolymarketCLOBClient:
+def create_client() -> PolymarketCLOBClient:
     """创建客户端 - 从配置文件读取设置"""
-    return PolymarketCLOBClient(use_testnet=use_testnet)
-
-
-def create_testnet_client() -> PolymarketCLOBClient:
-    """创建测试网客户端"""
-    return PolymarketCLOBClient(use_testnet=True)
+    return PolymarketCLOBClient()
 
 
 def create_mainnet_client() -> PolymarketCLOBClient:
     """创建主网客户端"""
-    return PolymarketCLOBClient(use_testnet=False)
+    return PolymarketCLOBClient()
 
 
 def test_client_connection():

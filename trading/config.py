@@ -18,18 +18,10 @@ class TradingConfig:
         polymarket_config = self.config_data.get('polymarket', {})
         security_config = self.config_data.get('security', {})
         
-        # 网络配置
-        self.use_testnet = security_config.get('use_testnet', True)
-        
-        if self.use_testnet:
-            testnet_config = polymarket_config.get('testnet', {})
-            self.host = testnet_config.get('host', 'https://clob-staging.polymarket.com')
-            self.chain_id = testnet_config.get('chain_id', 80002)  # Polygon Amoy testnet
-            self.private_key = testnet_config.get('private_key', '')
-        else:
-            self.host = polymarket_config.get('host', 'https://clob.polymarket.com')
-            self.chain_id = polymarket_config.get('chain_id', 137)  # Polygon mainnet
-            self.private_key = polymarket_config.get('private_key', '')
+        # 网络配置 (仅主网)
+        self.host = polymarket_config.get('host', 'https://clob.polymarket.com')
+        self.chain_id = polymarket_config.get('chain_id', 137)  # Polygon mainnet
+        self.private_key = polymarket_config.get('private_key', '')
         
         # 从环境变量覆盖私钥（如果存在）
         env_private_key = os.getenv('POLYMARKET_PRIVATE_KEY')
@@ -73,12 +65,7 @@ class TradingConfig:
             "polymarket": {
                 "host": "https://clob.polymarket.com",
                 "chain_id": 137,
-                "private_key": "",
-                "testnet": {
-                    "host": "https://clob-staging.polymarket.com",
-                    "chain_id": 80002,
-                    "private_key": ""
-                }
+                "private_key": ""
             },
             "trading": {
                 "default_trade_amount": 10.0,
@@ -91,7 +78,6 @@ class TradingConfig:
                 "dry_run_mode": True
             },
             "security": {
-                "use_testnet": True,
                 "require_confirmation": True,
                 "max_gas_price": "50000000000"
             }
@@ -106,8 +92,7 @@ class TradingConfig:
         return {
             'host': self.host,
             'chain_id': self.chain_id,
-            'private_key': self.private_key,
-            'use_testnet': self.use_testnet
+            'private_key': self.private_key
         }
     
     def validate_trade_params(self, trade_amount: float, confidence: float) -> Dict:
@@ -140,25 +125,15 @@ class TradingConfig:
         except Exception as e:
             print(f"❌ 保存配置失败: {e}")
     
-    def update_private_key(self, private_key: str, testnet: bool = None):
+    def update_private_key(self, private_key: str):
         """更新私钥"""
-        if testnet is None:
-            testnet = self.use_testnet
-        
-        if testnet:
-            self.config_data.setdefault('polymarket', {}).setdefault('testnet', {})['private_key'] = private_key
-        else:
-            self.config_data.setdefault('polymarket', {})['private_key'] = private_key
-        
-        # 更新当前实例的私钥
-        if testnet == self.use_testnet:
-            self.private_key = private_key
+        self.config_data.setdefault('polymarket', {})['private_key'] = private_key
+        self.private_key = private_key
     
     def to_dict(self) -> Dict:
         """转换为字典"""
         return {
             'private_key_configured': self.is_configured(),
-            'use_testnet': self.use_testnet,
             'host': self.host,
             'chain_id': self.chain_id,
             'default_trade_amount': self.default_trade_amount,
@@ -209,12 +184,7 @@ def create_sample_config():
         "polymarket": {
             "host": "https://clob.polymarket.com",
             "chain_id": 137,
-            "private_key": "your_mainnet_private_key_here",
-            "testnet": {
-                "host": "https://clob-staging.polymarket.com",
-                "chain_id": 80002,
-                "private_key": "your_testnet_private_key_here"
-            }
+            "private_key": "your_mainnet_private_key_here"
         },
         "trading": {
             "default_trade_amount": 10.0,
@@ -234,7 +204,6 @@ def create_sample_config():
             "max_retries": 3
         },
         "security": {
-            "use_testnet": True,
             "require_confirmation": True,
             "max_gas_price": "50000000000"
         }
