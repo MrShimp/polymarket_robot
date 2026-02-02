@@ -57,7 +57,7 @@ class BTC15MinStrategy:
         # 策略参数
         self.trading_hours = {
             "start": 10,  # 10:00 AM 北京时间
-            "end": 20,  # 07:00 PM 北京时间
+            "end": 21,  # 07:00 PM 北京时间
         }
 
         # 入场过滤条件
@@ -90,7 +90,7 @@ class BTC15MinStrategy:
         self.default_amount = 5.0  # 默认交易金额
         self.last_minute_log = None  # 上次分钟日志时间
         self.traded_intervals = set()  # 记录已交易的15分钟区间
-        
+
         # 新增：概率监控和日志控制
         self.last_no_trade_log = 0  # 上次无交易条件日志时间
         self.last_position_log = 0  # 上次持仓日志时间
@@ -564,7 +564,9 @@ class BTC15MinStrategy:
                     time_valid, time_msg = self.is_valid_entry_time()
                     if not time_valid:
                         current_time = time.time()
-                        if current_time - self.last_no_trade_log >= 10:  # 每10秒记录一次
+                        if (
+                            current_time - self.last_no_trade_log >= 10
+                        ):  # 每10秒记录一次
                             self.last_no_trade_log = current_time
                             self.log(f"⏳ 买入限制: {time_msg}")
                         await asyncio.sleep(0.2)
@@ -573,7 +575,9 @@ class BTC15MinStrategy:
                     # 检查价格波动
                     if not self.btc_price or not self.baseline_price:
                         current_time = time.time()
-                        if current_time - self.last_no_trade_log >= 10:  # 每10秒记录一次
+                        if (
+                            current_time - self.last_no_trade_log >= 10
+                        ):  # 每10秒记录一次
                             self.last_no_trade_log = current_time
                             self.log("⏳ 等待价格数据...")
                         await asyncio.sleep(0.2)
@@ -584,7 +588,9 @@ class BTC15MinStrategy:
                     )
                     if not price_valid:
                         current_time = time.time()
-                        if current_time - self.last_no_trade_log >= 10:  # 每10秒记录一次
+                        if (
+                            current_time - self.last_no_trade_log >= 10
+                        ):  # 每10秒记录一次
                             self.last_no_trade_log = current_time
                             self.log(f"📈 {price_msg}")
                         await asyncio.sleep(0.2)
@@ -611,8 +617,17 @@ class BTC15MinStrategy:
                             target_prob = no_prob
 
                         # 执行入场
-                        success, actual_amount = await self.buy_strategy.enter_position(
-                            target_token_id, self.default_amount, target_prob
+                        # success, actual_amount = await self.buy_strategy.enter_position(
+                        #    target_token_id, self.default_amount, target_prob
+                        # )
+                        success, actual_amount = (
+                            await self.buy_strategy.enter_position(
+                                token_id=target_token_id,
+                                amount=self.default_amount,
+                                min_price=0.705,
+                                max_price=0.72,
+                                wait_seconds=1.0,  # Polymarket 建议 1～2 秒
+                            )
                         )
                         if success:
                             interval_start, _ = self.get_current_interval()
@@ -646,7 +661,9 @@ class BTC15MinStrategy:
                             self.log(f"❌ 入场失败: 订单执行失败")
                     else:
                         current_time = time.time()
-                        if current_time - self.last_no_trade_log >= 10:  # 每10秒记录一次
+                        if (
+                            current_time - self.last_no_trade_log >= 10
+                        ):  # 每10秒记录一次
                             self.last_no_trade_log = current_time
                             self.log(
                                 f"⏸️ 等待入场: YES{yes_prob_pct:.1f}% NO{no_prob_pct:.1f}%, 方向{direction}, 需要概率≥{self.entry_probability*100}%"
@@ -674,7 +691,11 @@ class BTC15MinStrategy:
                     current_time = time.time()
                     if current_time - self.last_position_log >= 1.0:  # 每1秒记录一次
                         self.last_position_log = current_time
-                        profit_status = "📈 盈利" if profit_points > 0 else "📉 亏损" if profit_points < 0 else "➡️ 持平"
+                        profit_status = (
+                            "📈 盈利"
+                            if profit_points > 0
+                            else "📉 亏损" if profit_points < 0 else "➡️ 持平"
+                        )
                         self.log(
                             f"{profit_status}: {self.position['side'].upper()} 概率{current_prob_pct:.1f}% "
                             f"(入场{entry_prob*100:.1f}%), {profit_points:+.1f}点, ${profit_amount:+.2f} ({profit_pct:+.1f}%)"

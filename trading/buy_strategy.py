@@ -8,6 +8,7 @@ from typing import Tuple
 from py_clob_client.clob_types import (
     MarketOrderArgs,
     OrderType,
+    OrderArgs,
 )
 
 
@@ -133,3 +134,70 @@ class BuyStrategy:
 
         return True, "参数验证通过"
 
+    async def enter_limit_range(
+        self, token_id: str,
+        amount: float,
+        min_price: float = 0.705,
+        max_price: float = 0.72,
+        wait_seconds: float = 1.0,
+        )-> Tuple[bool, float]:
+        """
+        在区间内挂一个限价 BUY，不成交就撤，不追价
+
+
+        Args:
+        token_id: token id
+        amount: 购买份额
+        min_price: 区间下沿（默认 0.605）
+        max_price: 区间上沿（默认 0.62）
+        wait_seconds: 等待成交时间（秒）
+
+
+        Returns:
+        (是否成交, 实际成交份额)
+        """
+        try:
+            # 🎯 选择一个中间价作为埋伏价（可微调）
+            limit_price = round((min_price + max_price) / 2, 3)
+
+            self.log(f"🧲 LIMIT埋伏: token_id={token_id}, price={limit_price}, amount={amount}")
+
+            order_args = OrderArgs(
+                token_id=token_id,
+                price=limit_price,
+                size=amount,
+                side="BUY",
+                )
+
+            signed = self.clob_client.create_order(order_args)
+            result = self.clob_client.post_order(signed, orderType=OrderType.GTC)
+
+
+            if not result or not result.get("orderID"):
+                self.log(f"❌ LIMIT单创建失败: {result}")
+                return False, 0.0
+
+
+            order_id = result["orderID"]
+            self.log(f"📌 LIMIT单已挂出: {order_id} @ {limit_price}")
+
+
+            # ⏳ 等待成交
+            await asyncio.sleep(wait_seconds)
+
+            # 🔍 查询订单状态
+            order_info = self.clob_client.get_order(order_id)
+
+            if order_info and order_info.get("status") == "FILLED":
+                filled = float(order_info.get("filledAmount", amount))
+                self.log(f"✅ LIMIT成交: {filled} @ {limit_price}")
+                return True, filled
+
+            # 🚫 未成交 → 撤单
+            self.log(f"⏹ 未成交，撤单: {order_id}")
+            self.clob_client.cancel_order(order_id)
+
+            return False, 0.0
+        except Exception as e:
+            self.log(f"❌ LIMIT入场异常: {e}")
+            return False, 0.0
