@@ -617,17 +617,8 @@ class BTC15MinStrategy:
                             target_prob = no_prob
 
                         # 执行入场
-                        # success, actual_amount = await self.buy_strategy.enter_position(
-                        #    target_token_id, self.default_amount, target_prob
-                        # )
-                        success, actual_amount = (
-                            await self.buy_strategy.enter_position(
-                                token_id=target_token_id,
-                                amount=self.default_amount,
-                                min_price=0.705,
-                                max_price=0.72,
-                                wait_seconds=1.0,  # Polymarket 建议 1～2 秒
-                            )
+                        success, actual_amount = await self.buy_strategy.enter_position(
+                            target_token_id, self.default_amount, target_prob
                         )
                         if success:
                             interval_start, _ = self.get_current_interval()
@@ -724,7 +715,7 @@ class BTC15MinStrategy:
                     if should_exit:
                         self.log(f"📉 出场信号: {exit_reason}")
 
-                        success = await self.sell_strategy.exit_position(
+                        success = await self.exit_position(
                             self.position["token_id"], self.position["amount"]
                         )
                         if success:
@@ -760,6 +751,157 @@ class BTC15MinStrategy:
 
         self.log("🛑 策略执行结束")
         return True
+
+    async def enter_position(
+        self, token_id: str, price: float, current_prob: float
+        ) -> Tuple[bool, float]:
+            """
+            入场操作
+
+            Args:
+                token_id: 代币ID
+                price: 交易金额
+                current_prob: 当前概率
+
+            Returns:
+                Tuple[bool, float]: (是否成功, 实际购买金额)
+            """
+            try:
+                self.log(f"🎯 准备入场: token_id={token_id}, 金额=${price}")
+
+            # 直接使用传入的金额，不进行任何格式化
+                shares_rounded = price
+
+                order_args = MarketOrderArgs(
+                    token_id=token_id,
+                    amount=shares_rounded,
+                    side="BUY",
+                )
+                self.log(f"💰 交易金额: {shares_rounded} (直接使用传入参数)")
+
+                signed_order = self.clob_client.create_market_order(order_args)
+                result = self.clob_client.post_order(signed_order, orderType=OrderType.FOK)
+
+                if result and result.get("orderID"):
+                    self.log(f"✅ 入场订单提交成功: {result}")
+                    self.log(f"📋 订单详情: {shares_rounded} @ 概率{current_prob:.3f}")
+                    return True, shares_rounded  # 返回实际购买的金额
+                else:
+                    self.log(f"❌ 入场订单失败: {result}")
+                    return False, 0.0
+
+            except Exception as e:
+                self.log(f"❌ 入场操作失败: {e}")
+                return False, 0.0
+    
+
+
+    async def exit_position(self, token_id: str, amount: float) -> bool:
+        """
+        出场操作 - 持续重试直到成功
+
+        Args:
+            token_id: 代币ID
+            amount: 预期卖出金额（实际会查询真实持仓）
+
+        Returns:
+            bool: 是否成功出场
+        """
+        max_retries = 10  # 最大重试次数，防止无限循环
+        retry_count = 0
+
+        while retry_count < max_retries:
+            try:
+                # 获取实际持仓
+                actual_balance = self.clob_client.get_balance_allowance(
+                    params=BalanceAllowanceParams(
+                        asset_type=AssetType.CONDITIONAL,
+                        token_id=token_id,
+                    )
+                )
+
+                # 确保余额是数字类型
+                balance_value = actual_balance.get("balance", "0")
+                if isinstance(balance_value, str):
+                    balance_value = float(balance_value)
+                balance_value = balance_value / 1000000
+
+                # 如果没有持仓，直接返回成功
+                if balance_value <= 0:
+                    self.log("✅ 没有持仓，出场完成")
+                    return True
+
+                retry_count += 1
+                self.log(
+                    f"🎯 出场尝试 #{retry_count}: token_id={token_id}, 持仓={balance_value}份"
+                )
+
+                # 创建市场卖出订单
+                order_args = MarketOrderArgs(
+                    token_id=token_id,
+                    amount=balance_value,
+                    side="SELL",
+                )
+                signed_order = self.clob_client.create_market_order(order_args)
+                result = self.clob_client.post_order(
+                    signed_order, orderType=OrderType.FOK
+                )
+
+                if result and result.get("orderID"):
+                    self.log(
+                        f"✅ 出场成功 (第{retry_count}次尝试): {result.get('orderID')}"
+                    )
+                    self.log(f"📋 成功卖出: {balance_value}份")
+                    return True
+                else:
+                    error_msg = str(result) if result else "无响应"
+                    self.log(f"⚠️ 出场失败 (第{retry_count}次): {error_msg}")
+
+                    # 等待1秒后重试
+                    await asyncio.sleep(1)
+
+            except Exception as e:
+                error_msg = str(e)
+                self.log(f"⚠️ 出场异常 (第{retry_count}次): {error_msg}")
+
+                # 等待1秒后重试
+                await asyncio.sleep(1)
+
+        # 如果达到最大重试次数仍未成功
+        self.log(f"❌ 出场失败: 已重试{max_retries}次，放弃操作")
+        return False
+
+        async def get_position_balance(self, token_id: str) -> Optional[float]:
+            """
+            获取指定代币的持仓余额
+
+            Args:
+                token_id: 代币ID
+
+            Returns:
+                Optional[float]: 持仓余额，获取失败返回None
+            """
+            try:
+                actual_balance = self.clob_client.get_balance_allowance(
+                    params=BalanceAllowanceParams(
+                        asset_type=AssetType.CONDITIONAL,
+                        token_id=token_id,
+                    )
+                )
+
+                balance_value = actual_balance.get("balance", "0")
+                if isinstance(balance_value, str):
+                    balance_value = float(balance_value)
+
+                # 转换为实际余额（除以1000000）
+                balance_value = balance_value / 1000000
+
+                self.log(f"📊 持仓查询: token_id={token_id}, 余额={balance_value}份")
+                return balance_value
+
+            except Exception as e:
+                self.log(f"❌ 获取持仓余额失败: {e}")
+                return None
 
     def save_trade_record(
         self,
