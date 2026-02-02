@@ -1,0 +1,9 @@
+{
+  "trade_amount": 5.0,
+  "log_level": "INFO",
+  "check_interval": 5,
+  "price_source": "binance",
+  "market_query_timeout": 60,
+  "strategy_stop_timeout": 5,
+  "description": "BTC 15分钟策略同步调度器配置文件"
+}
