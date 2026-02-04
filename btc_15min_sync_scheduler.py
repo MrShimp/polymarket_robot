@@ -34,6 +34,10 @@ class BTC15MinSyncScheduler:
         self.current_strategy_thread = None
         self.strategy_stop_event = threading.Event()
 
+        # 防重复执行的状态跟踪
+        self.last_execution_time = None
+        self.execution_lock = threading.Lock()
+
         self.log("🤖 BTC 15分钟同步调度器初始化完成")
         self.log(f"💰 交易金额: ${trade_amount}")
 
@@ -64,14 +68,30 @@ class BTC15MinSyncScheduler:
     def is_15min_interval(self) -> bool:
         """检查当前是否是15分钟整点"""
         beijing_time = self.get_beijing_time()
-        return beijing_time.minute % 15 == 0 and beijing_time.second < 30
+        return beijing_time.minute % 15 == 0 and beijing_time.second < 10
 
     def wait_for_next_15min_interval(self):
         """等待下一个15分钟整点"""
+        # 添加防重复启动的标记
+        last_executed_minute = None
+
         while self.running:
             beijing_time = self.get_beijing_time()
             current_minute = beijing_time.minute
             current_second = beijing_time.second
+
+            # 检查是否是15分钟整点且未执行过
+            if current_minute % 15 == 0 and current_second < 10:
+                # 防止在同一分钟内重复执行
+                if last_executed_minute != current_minute:
+                    last_executed_minute = current_minute
+                    self.log(f"✅ 到达15分钟整点: {beijing_time.strftime('%H:%M:%S')}")
+                    break
+                else:
+                    # 如果已经在这一分钟执行过，等待到下一个15分钟整点
+                    self.log(f"⏭️ 跳过重复执行，等待下一个15分钟整点")
+                    time.sleep(60)  # 等待1分钟
+                    continue
 
             # 计算到下一个15分钟整点的等待时间
             minutes_to_next = 15 - (current_minute % 15)
@@ -81,8 +101,11 @@ class BTC15MinSyncScheduler:
             # 计算总的等待秒数
             total_seconds_to_next = (minutes_to_next * 60) - current_second
 
-            if total_seconds_to_next <= 30:  # 如果在30秒内，认为已经到了
-                break
+            # 如果距离下一个整点很近（小于10秒），直接等待
+            if total_seconds_to_next <= 10:
+                self.log(f"⏰ 即将到达15分钟整点，等待 {total_seconds_to_next} 秒")
+                time.sleep(total_seconds_to_next + 1)  # 多等1秒确保跨过整点
+                continue
 
             # 正确计算显示的分钟和秒数
             display_minutes = total_seconds_to_next // 60
@@ -195,19 +218,22 @@ class BTC15MinSyncScheduler:
             try:
                 # 设置停止事件
                 self.strategy_stop_event.set()
-                
+
                 # 停止策略
                 self.current_strategy.running = False
                 self.current_strategy.stop_event.set()
-                
+
                 # 等待线程结束
-                if self.current_strategy_thread and self.current_strategy_thread.is_alive():
+                if (
+                    self.current_strategy_thread
+                    and self.current_strategy_thread.is_alive()
+                ):
                     self.current_strategy_thread.join(timeout=5)
                     if self.current_strategy_thread.is_alive():
                         self.log("⚠️ 策略线程未能在5秒内结束", "WARNING")
                     else:
                         self.log("✅ 策略已优雅停止")
-                
+
             except Exception as e:
                 self.log(f"❌ 停止策略时出错: {e}", "ERROR")
             finally:
@@ -233,7 +259,7 @@ class BTC15MinSyncScheduler:
             # 创建新的策略实例
             self.current_strategy = BTC15MinStrategy(baseline_price=btc_price)
             self.current_strategy.default_amount = self.trade_amount
-            
+
             # 设置BTC价格
             self.current_strategy.btc_price = btc_price
             self.current_strategy.baseline_price = btc_price
@@ -244,31 +270,36 @@ class BTC15MinSyncScheduler:
                     self.log("📈 策略线程开始执行")
                     # 启动策略的异步执行
                     import asyncio
-                    
+
                     # 创建新的事件循环
                     loop = asyncio.new_event_loop()
                     asyncio.set_event_loop(loop)
-                    
+
                     try:
                         # 启动价格监控和交易执行
                         self.current_strategy.running = True
-                        
+
                         # 同时运行价格监控和交易执行
-                        loop.run_until_complete(asyncio.gather(
-                            self.current_strategy.start_price_monitoring(),
-                            self.current_strategy.execute_trade(market_id)
-                        ))
-                        
+                        loop.run_until_complete(
+                            asyncio.gather(
+                                self.current_strategy.start_price_monitoring(),
+                                self.current_strategy.execute_trade(market_id),
+                            )
+                        )
+
                     finally:
                         loop.close()
-                        
+
                 except Exception as e:
                     self.log(f"❌ 策略执行异常: {e}", "ERROR")
                     import traceback
+
                     self.log(f"详细错误: {traceback.format_exc()}", "ERROR")
 
             # 启动策略线程
-            self.current_strategy_thread = threading.Thread(target=run_strategy, daemon=True)
+            self.current_strategy_thread = threading.Thread(
+                target=run_strategy, daemon=True
+            )
             self.current_strategy_thread.start()
 
             self.log(f"✅ 新策略实例已启动")
@@ -277,6 +308,7 @@ class BTC15MinSyncScheduler:
         except Exception as e:
             self.log(f"❌ 启动策略失败: {e}", "ERROR")
             import traceback
+
             self.log(f"详细错误: {traceback.format_exc()}", "ERROR")
             return False
 
@@ -297,7 +329,20 @@ class BTC15MinSyncScheduler:
     def run_trading_cycle(self):
         """执行一次完整的交易周期"""
         beijing_time = self.get_beijing_time()
-        self.log(f"🔄 开始新的交易周期 - {beijing_time.strftime('%Y-%m-%d %H:%M:%S')}")
+        current_key = f"{beijing_time.hour:02d}:{beijing_time.minute:02d}"
+
+        # 使用线程锁防止并发执行
+        with self.execution_lock:
+            # 双重检查防止重复执行
+            if self.last_execution_time == current_key:
+                self.log(f"⏭️ 检测到重复执行尝试 ({current_key})，跳过")
+                return
+
+            self.last_execution_time = current_key
+
+        self.log(
+            f"🔄 开始新的交易周期 - {beijing_time.strftime('%Y-%m-%d %H:%M:%S')} ({current_key})"
+        )
 
         # 1. 获取BTC价格
         self.log("📊 获取最新BTC价格...")
@@ -329,7 +374,7 @@ class BTC15MinSyncScheduler:
             self.log("❌ 启动策略实例失败", "ERROR")
             return
 
-        self.log("✅ 新的15分钟交易周期启动成功")
+        self.log(f"✅ 新的15分钟交易周期启动成功 ({current_key})")
 
     def run(self):
         """主运行循环"""
@@ -343,21 +388,29 @@ class BTC15MinSyncScheduler:
                 if not self.running:
                     break
 
+                # 获取当前时间
+                current_time = self.get_beijing_time()
+                current_key = f"{current_time.hour:02d}:{current_time.minute:02d}"
+
+                self.log(f"🎯 到达15分钟整点: {current_key}")
+
                 # 每个新的15分钟周期都要：
                 # 1. 停止上一个策略实例
                 self.stop_current_strategy()
 
-                # 2. 启动新的交易周期
+                # 2. 启动新的交易周期（内部有防重复逻辑）
                 self.run_trading_cycle()
 
-                # 等待一分钟再检查
-                time.sleep(60)
+                # 等待至少90秒再检查下一个周期，确保不会在同一分钟内重复触发
+                self.log("⏳ 等待90秒后检查下一个周期...")
+                time.sleep(90)
 
         except KeyboardInterrupt:
             self.log("收到中断信号，正在停止...")
         except Exception as e:
             self.log(f"运行错误: {e}", "ERROR")
             import traceback
+
             self.log(f"详细错误: {traceback.format_exc()}", "ERROR")
         finally:
             self.stop()
@@ -413,6 +466,7 @@ def main():
     except Exception as e:
         print(f"❌ 程序错误: {e}")
         import traceback
+
         print(f"详细错误: {traceback.format_exc()}")
     finally:
         if "scheduler" in globals():
