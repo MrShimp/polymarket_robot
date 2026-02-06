@@ -41,6 +41,17 @@ class BuyStrategy:
             Tuple[bool, float]: (是否成功, 实际购买金额)
         """
         try:
+            # 验证参数
+            is_valid, error_msg = self.validate_buy_parameters(token_id, price, current_prob)
+            if not is_valid:
+                self.log(f"❌ 参数验证失败: {error_msg}")
+                return False, 0.0
+
+            # 验证最小交易金额
+            if price < 1.0:
+                self.log(f"❌ 交易金额${price}小于最小要求$1.0")
+                return False, 0.0
+
             self.log(f"🎯 准备入场: token_id={token_id}, 金额=${price}")
 
             # 直接使用传入的金额，不进行任何格式化
@@ -65,7 +76,13 @@ class BuyStrategy:
                 return False, 0.0
 
         except Exception as e:
+            error_str = str(e)
             self.log(f"❌ 入场操作失败: {e}")
+            
+            # 检查是否是最小金额错误
+            if "minimum" in error_str.lower() or "amount" in error_str.lower():
+                self.log(f"💡 提示: 可能是交易金额不满足最小要求，当前金额${price}")
+            
             return False, 0.0
 
     async def create_buy_order(
@@ -124,6 +141,9 @@ class BuyStrategy:
 
         if not isinstance(amount, (int, float)) or amount <= 0:
             return False, "amount 必须是大于0的数字"
+
+        if amount < 1.0:
+            return False, f"amount ${amount} 小于最小要求 $1.0"
 
         if current_prob is not None and (
             not isinstance(current_prob, (int, float))

@@ -99,12 +99,25 @@ class BTC15MinSyncScheduler:
                 minutes_to_next = 0
 
             # 计算总的等待秒数
-            total_seconds_to_next = (minutes_to_next * 60) - current_second
+            if minutes_to_next == 0:
+                # 如果已经是15分钟整点，等待到下一个15分钟整点
+                total_seconds_to_next = (15 * 60) - current_second
+            else:
+                total_seconds_to_next = (minutes_to_next * 60) - current_second
+
+            # 确保等待时间不为负数
+            if total_seconds_to_next <= 0:
+                self.log(f"⚠️ 等待时间异常({total_seconds_to_next}秒)，重置为1秒")
+                total_seconds_to_next = 1  # 至少等待1秒
 
             # 如果距离下一个整点很近（小于10秒），直接等待
             if total_seconds_to_next <= 10:
                 self.log(f"⏰ 即将到达15分钟整点，等待 {total_seconds_to_next} 秒")
-                time.sleep(total_seconds_to_next + 1)  # 多等1秒确保跨过整点
+                try:
+                    time.sleep(max(1, total_seconds_to_next + 1))  # 确保至少等待1秒
+                except (ValueError, OverflowError) as e:
+                    self.log(f"❌ 短睡眠操作失败: {e}, 使用默认2秒")
+                    time.sleep(2)
                 continue
 
             # 正确计算显示的分钟和秒数
@@ -116,8 +129,18 @@ class BTC15MinSyncScheduler:
             )
 
             # 每分钟检查一次，但不超过剩余时间
-            sleep_time = min(60, total_seconds_to_next)
-            time.sleep(sleep_time)
+            sleep_time = min(60, max(1, total_seconds_to_next))  # 确保至少睡眠1秒
+
+            # 额外的安全检查
+            if sleep_time > 3600:  # 如果睡眠时间超过1小时，说明计算有问题
+                self.log(f"⚠️ 睡眠时间异常({sleep_time}秒)，重置为60秒")
+                sleep_time = 60
+
+            try:
+                time.sleep(sleep_time)
+            except (ValueError, OverflowError) as e:
+                self.log(f"❌ 睡眠操作失败: {e}, 使用默认60秒")
+                time.sleep(60)
 
     def get_btc_price(self) -> Optional[float]:
         """获取当前BTC价格"""

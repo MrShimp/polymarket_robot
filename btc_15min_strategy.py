@@ -56,17 +56,18 @@ class BTC15MinStrategy:
 
         # 策略参数
         self.trading_hours = {
-            "start": 10,  # 10:00 AM 北京时间
-            "end": 21,  # 07:00 PM 北京时间
+            "start": 3,  # 10:00 AM 北京时间
+            "end": 24,  # 07:00 PM 北京时间
         }
 
         # 入场过滤条件
-        self.min_time_after_start = 5  # 区间开始n分钟后才能下单
+        self.min_time_after_start = 2  # 区间开始n分钟后才能下单
         self.min_time_before_end = 1  # 结算前1分钟禁止下单
         self.price_threshold = 30  # ±30刀价格波动阈值
 
         # 交易执行参数
-        self.entry_probability = 0.75  # 70%概率入场 (降低门槛)
+        self.entry_probability = 0.75  # 75%概率入场 (降低门槛)
+        self.no_entry_probability = 0.80  # 80%概率以上不入场 (避免高风险)
         self.take_profit = 0.90  # 90%止盈
         self.stop_loss = 0.55  # 55%止损
 
@@ -87,7 +88,7 @@ class BTC15MinStrategy:
         self.running = False
         self.stop_event = Event()
         self.data_lock = Lock()
-        self.default_amount = 5.0  # 默认交易金额
+        self.default_amount = 5.0  # 默认交易金额，确保大于$1最小要求
         self.last_minute_log = None  # 上次分钟日志时间
         self.traded_intervals = set()  # 记录已交易的15分钟区间
 
@@ -458,11 +459,18 @@ class BTC15MinStrategy:
     def should_enter_position(
         self, yes_prob_pct: float, no_prob_pct: float, price_direction: str
     ) -> Tuple[bool, str, float]:
-        """判断是否应该入场 - 双向检测"""
+        """判断是否应该入场 - 双向检测，增加高概率不入场保护"""
         # 转换为小数形式进行比较
         yes_prob = yes_prob_pct / 100.0
         no_prob = no_prob_pct / 100.0
         entry_threshold = self.entry_probability  # 0.75
+        no_entry_threshold = self.no_entry_probability  # 0.95
+
+        # 检查是否概率过高，不适合入场
+        if yes_prob >= no_entry_threshold:
+            return False, "none", 0.0  # YES概率过高，风险太大
+        if no_prob >= no_entry_threshold:
+            return False, "none", 0.0  # NO概率过高，风险太大
 
         # 检查YES方向
         if yes_prob >= entry_threshold and price_direction == "up":
@@ -472,10 +480,12 @@ class BTC15MinStrategy:
         if no_prob >= entry_threshold and price_direction == "down":
             return True, "no", no_prob_pct
 
-        # 也可以在概率极高时忽略价格方向
-        if yes_prob >= 0.80:  # 80%以上概率可以忽略价格方向
+        # 也可以在概率较高时忽略价格方向，但不能超过不入场阈值
+        if (
+            yes_prob >= 0.80 and yes_prob < no_entry_threshold
+        ):  # 80%-95%之间可以忽略价格方向
             return True, "yes", yes_prob_pct
-        if no_prob >= 0.80:
+        if no_prob >= 0.80 and no_prob < no_entry_threshold:
             return True, "no", no_prob_pct
 
         return False, "none", 0.0
@@ -616,6 +626,57 @@ class BTC15MinStrategy:
                             target_outcome = no_outcome
                             target_prob = no_prob
 
+                        # 执行入场前先检查是否已有持仓
+                        existing_balance = await self.get_position_balance(
+                            target_token_id
+                        )
+                        if existing_balance and existing_balance > 0:
+                            self.log(
+                                f"⚠️ 检测到已有持仓: {existing_balance:.6f}份 (${existing_balance:.2f})"
+                            )
+                            self.log(f"🚫 跳过下单，避免重复持仓")
+
+                            # 记录现有持仓信息
+                            interval_start, _ = self.get_current_interval()
+                            interval_key = interval_start.strftime("%Y%m%d_%H%M")
+                            self.traded_intervals.add(interval_key)
+
+                            self.position = {
+                                "token_id": target_token_id,
+                                "outcome": target_outcome,
+                                "side": entry_side,
+                                "entry_price": target_prob,
+                                "entry_time": time.time(),
+                                "amount": existing_balance,  # 使用现有持仓金额
+                                "original_amount": existing_balance,
+                                "interval": interval_start,
+                                "btc_entry_price": self.btc_price,
+                                "direction": direction,
+                                "is_existing_position": True,  # 标记为现有持仓
+                            }
+                            self.log(
+                                f"📋 记录现有持仓: {entry_side.upper()} ${existing_balance:.2f}"
+                            )
+                            continue
+
+                        # 验证交易金额（最小$1）
+                        if self.default_amount < 1.0:
+                            self.log(
+                                f"❌ 交易金额${self.default_amount}小于最小要求$1.0"
+                            )
+                            continue
+
+                        # 检查USDC余额
+                        usdc_balance = await self.check_usdc_balance()
+                        if usdc_balance is None:
+                            current_time = time.time()
+                            if (
+                                current_time - self.last_no_trade_log >= 30
+                            ):  # 每30秒记录一次余额不足
+                                self.last_no_trade_log = current_time
+                                self.log(f"💰 USDC余额不足，无法交易")
+                            continue
+
                         # 执行入场
                         success, actual_amount = await self.buy_strategy.enter_position(
                             target_token_id, self.default_amount, target_prob
@@ -656,9 +717,18 @@ class BTC15MinStrategy:
                             current_time - self.last_no_trade_log >= 10
                         ):  # 每10秒记录一次
                             self.last_no_trade_log = current_time
-                            self.log(
-                                f"⏸️ 等待入场: YES{yes_prob_pct:.1f}% NO{no_prob_pct:.1f}%, 方向{direction}, 需要概率≥{self.entry_probability*100}%"
-                            )
+                            # 检查是否因为概率过高而不入场
+                            if (
+                                yes_prob_pct >= self.no_entry_probability * 100
+                                or no_prob_pct >= self.no_entry_probability * 100
+                            ):
+                                self.log(
+                                    f"🚫 概率过高不入场: YES{yes_prob_pct:.1f}% NO{no_prob_pct:.1f}%, 超过{self.no_entry_probability*100}%阈值"
+                                )
+                            else:
+                                self.log(
+                                    f"⏸️ 等待入场: YES{yes_prob_pct:.1f}% NO{no_prob_pct:.1f}%, 方向{direction}, 需要概率{self.entry_probability*100}%-{self.no_entry_probability*100}%"
+                                )
                         await asyncio.sleep(0.2)
                         continue
 
@@ -715,7 +785,7 @@ class BTC15MinStrategy:
                     if should_exit:
                         self.log(f"📉 出场信号: {exit_reason}")
 
-                        success = await self.exit_position(
+                        success = await self.sell_strategy.exit_position(
                             self.position["token_id"], self.position["amount"]
                         )
                         if success:
@@ -752,156 +822,73 @@ class BTC15MinStrategy:
         self.log("🛑 策略执行结束")
         return True
 
-    async def enter_position(
-        self, token_id: str, price: float, current_prob: float
-        ) -> Tuple[bool, float]:
-            """
-            入场操作
-
-            Args:
-                token_id: 代币ID
-                price: 交易金额
-                current_prob: 当前概率
-
-            Returns:
-                Tuple[bool, float]: (是否成功, 实际购买金额)
-            """
-            try:
-                self.log(f"🎯 准备入场: token_id={token_id}, 金额=${price}")
-
-            # 直接使用传入的金额，不进行任何格式化
-                shares_rounded = price
-
-                order_args = MarketOrderArgs(
-                    token_id=token_id,
-                    amount=shares_rounded,
-                    side="BUY",
-                )
-                self.log(f"💰 交易金额: {shares_rounded} (直接使用传入参数)")
-
-                signed_order = self.clob_client.create_market_order(order_args)
-                result = self.clob_client.post_order(signed_order, orderType=OrderType.FOK)
-
-                if result and result.get("orderID"):
-                    self.log(f"✅ 入场订单提交成功: {result}")
-                    self.log(f"📋 订单详情: {shares_rounded} @ 概率{current_prob:.3f}")
-                    return True, shares_rounded  # 返回实际购买的金额
-                else:
-                    self.log(f"❌ 入场订单失败: {result}")
-                    return False, 0.0
-
-            except Exception as e:
-                self.log(f"❌ 入场操作失败: {e}")
-                return False, 0.0
-    
-
-
-    async def exit_position(self, token_id: str, amount: float) -> bool:
+    async def get_position_balance(self, token_id: str) -> Optional[float]:
         """
-        出场操作 - 持续重试直到成功
+        获取指定代币的持仓余额
 
         Args:
             token_id: 代币ID
-            amount: 预期卖出金额（实际会查询真实持仓）
 
         Returns:
-            bool: 是否成功出场
+            Optional[float]: 持仓余额，获取失败返回None
         """
-        max_retries = 10  # 最大重试次数，防止无限循环
-        retry_count = 0
-
-        while retry_count < max_retries:
-            try:
-                # 获取实际持仓
-                actual_balance = self.clob_client.get_balance_allowance(
-                    params=BalanceAllowanceParams(
-                        asset_type=AssetType.CONDITIONAL,
-                        token_id=token_id,
-                    )
-                )
-
-                # 确保余额是数字类型
-                balance_value = actual_balance.get("balance", "0")
-                if isinstance(balance_value, str):
-                    balance_value = float(balance_value)
-                balance_value = balance_value / 1000000
-
-                # 如果没有持仓，直接返回成功
-                if balance_value <= 0:
-                    self.log("✅ 没有持仓，出场完成")
-                    return True
-
-                retry_count += 1
-                self.log(
-                    f"🎯 出场尝试 #{retry_count}: token_id={token_id}, 持仓={balance_value}份"
-                )
-
-                # 创建市场卖出订单
-                order_args = MarketOrderArgs(
+        try:
+            actual_balance = self.clob_client.get_balance_allowance(
+                params=BalanceAllowanceParams(
+                    asset_type=AssetType.CONDITIONAL,
                     token_id=token_id,
-                    amount=balance_value,
-                    side="SELL",
                 )
-                signed_order = self.clob_client.create_market_order(order_args)
-                result = self.clob_client.post_order(
-                    signed_order, orderType=OrderType.FOK
+            )
+
+            balance_value = actual_balance.get("balance", "0")
+            if isinstance(balance_value, str):
+                balance_value = float(balance_value)
+
+            # 转换为实际余额（除以1000000）
+            balance_value = balance_value / 1000000
+
+            self.log(f"📊 持仓查询: token_id={token_id}, 余额={balance_value}份")
+            return balance_value
+
+        except Exception as e:
+            self.log(f"❌ 获取持仓余额失败: {e}")
+            return None
+
+    async def check_usdc_balance(self) -> Optional[float]:
+        """
+        检查USDC余额是否足够交易
+
+        Returns:
+            Optional[float]: USDC余额，获取失败返回None
+        """
+        try:
+            # 获取USDC余额
+            usdc_balance = self.clob_client.get_balance_allowance(
+                params=BalanceAllowanceParams(
+                    asset_type=AssetType.COLLATERAL,
                 )
+            )
 
-                if result and result.get("orderID"):
-                    self.log(
-                        f"✅ 出场成功 (第{retry_count}次尝试): {result.get('orderID')}"
-                    )
-                    self.log(f"📋 成功卖出: {balance_value}份")
-                    return True
-                else:
-                    error_msg = str(result) if result else "无响应"
-                    self.log(f"⚠️ 出场失败 (第{retry_count}次): {error_msg}")
+            balance_value = usdc_balance.get("balance", "0")
+            if isinstance(balance_value, str):
+                balance_value = float(balance_value)
 
-                    # 等待1秒后重试
-                    await asyncio.sleep(1)
+            # 转换为实际余额（除以1000000）
+            balance_value = balance_value / 1000000
 
-            except Exception as e:
-                error_msg = str(e)
-                self.log(f"⚠️ 出场异常 (第{retry_count}次): {error_msg}")
+            self.log(f"💰 USDC余额: ${balance_value:.2f}")
 
-                # 等待1秒后重试
-                await asyncio.sleep(1)
-
-        # 如果达到最大重试次数仍未成功
-        self.log(f"❌ 出场失败: 已重试{max_retries}次，放弃操作")
-        return False
-
-        async def get_position_balance(self, token_id: str) -> Optional[float]:
-            """
-            获取指定代币的持仓余额
-
-            Args:
-                token_id: 代币ID
-
-            Returns:
-                Optional[float]: 持仓余额，获取失败返回None
-            """
-            try:
-                actual_balance = self.clob_client.get_balance_allowance(
-                    params=BalanceAllowanceParams(
-                        asset_type=AssetType.CONDITIONAL,
-                        token_id=token_id,
-                    )
+            if balance_value < self.default_amount:
+                self.log(
+                    f"⚠️ USDC余额不足: ${balance_value:.2f} < ${self.default_amount}"
                 )
-
-                balance_value = actual_balance.get("balance", "0")
-                if isinstance(balance_value, str):
-                    balance_value = float(balance_value)
-
-                # 转换为实际余额（除以1000000）
-                balance_value = balance_value / 1000000
-
-                self.log(f"📊 持仓查询: token_id={token_id}, 余额={balance_value}份")
-                return balance_value
-
-            except Exception as e:
-                self.log(f"❌ 获取持仓余额失败: {e}")
                 return None
+
+            return balance_value
+
+        except Exception as e:
+            self.log(f"❌ 获取USDC余额失败: {e}")
+            return None
 
     def save_trade_record(
         self,
@@ -971,7 +958,9 @@ class BTC15MinStrategy:
         )
         self.log(f"   卖出窗口: 无限制 (任何时间可卖出)")
         self.log(f"   交易频次: 每15分钟区间最多1次交易 (严格限制)")
-        self.log(f"   入场概率: {self.entry_probability*100}% (双向检测)")
+        self.log(
+            f"   入场概率: {self.entry_probability*100}%-{self.no_entry_probability*100}% (双向检测，超过{self.no_entry_probability*100}%不入场)"
+        )
         self.log(f"   止盈概率: {self.take_profit*100}%")
         self.log(f"   止损概率: {self.stop_loss*100}%")
         self.log(
@@ -1064,8 +1053,8 @@ async def main():
                 amount = float(
                     input("💰 请输入交易金额 (USDC) [默认10]: ").strip() or "10"
                 )
-                if amount <= 0:
-                    print("❌ 金额必须大于0")
+                if amount < 1.0:
+                    print("❌ 金额必须大于等于$1.0 (Polymarket最小要求)")
                     return
             except ValueError:
                 print("❌ 金额格式错误")
@@ -1093,7 +1082,7 @@ async def main():
 
         print(f"\n📊 市场信息:")
         print(f"   问题: {market_info.get('question')}")
-        print(f"   模式: 双向交易 (YES/NO 概率>75%均可入场)")
+        print(f"   模式: 双向交易 (YES/NO 概率75%-95%可入场)")
         print(f"   金额: ${amount}")
         print(f"   基准价格: ${baseline_price:,.2f}")
 
