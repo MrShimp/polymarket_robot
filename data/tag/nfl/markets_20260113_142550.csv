@@ -1,6 +1,0 @@
-id,question,event_id,market_type,outcome_prices,volume,liquidity,active,closed,created_at,last_trade_price,spread
-market_event_009_001,Market question 1 for event event_009,event_009,Yes/No,"['0.281', '0.719']",3462148,813147,True,False,2025-10-23T13:43:24.896260,0.281,0.0438
-market_event_009_002,Market question 2 for event event_009,event_009,Categorical,"['0.866', '0.134']",3396003,166226,True,False,2025-06-16T13:43:24.896263,0.866,0.0732
-market_event_009_003,Market question 3 for event event_009,event_009,Multiple Choice,"['0.192', '0.808']",4451982,233511,True,False,2025-01-30T13:43:24.896266,0.192,0.0616
-market_event_009_004,Market question 4 for event event_009,event_009,Yes/No,"['0.799', '0.201']",1822352,944849,True,False,2025-10-18T13:43:24.896269,0.799,0.0598
-market_event_009_005,Market question 5 for event event_009,event_009,Multiple Choice,"['0.136', '0.864']",1131157,612734,True,False,2025-08-26T13:43:24.896272,0.136,0.0728

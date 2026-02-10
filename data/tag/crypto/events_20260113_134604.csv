@@ -1,6 +1,0 @@
-id,slug,title,description,tags,volume,liquidity,active,closed,created_at,end_date,market_count
-event_003,event-003-1946,"Will Ethereum reach $8,000 by end of 2025?","Prediction market for: Will Ethereum reach $8,000 by end of 2025?","['crypto', 'defi', 'finance']",4551449,2098628,True,False,2025-04-18T13:43:24.895708,2026-04-30T13:43:24.895710,3
-event_007,event-007-8921,"Will Ethereum reach $8,000 by end of 2025?","Prediction market for: Will Ethereum reach $8,000 by end of 2025?","['crypto', 'defi', 'finance']",10032493,2269498,True,False,2025-06-28T13:43:24.895830,2027-05-16T13:43:24.895831,3
-event_008,event-008-9367,"Will Bitcoin reach $150,000 by end of 2025?","Prediction market for: Will Bitcoin reach $150,000 by end of 2025?","['crypto', 'bitcoin', 'finance']",10597203,2888528,True,False,2025-04-20T13:43:24.895834,2027-06-28T13:43:24.895836,8
-event_017,event-017-8083,"Will Bitcoin reach $150,000 by end of 2025?","Prediction market for: Will Bitcoin reach $150,000 by end of 2025?","['crypto', 'bitcoin', 'finance']",12315271,2711837,True,False,2025-10-25T13:43:24.895871,2026-05-06T13:43:24.895873,4
-event_025,event-025-7536,"Will Bitcoin reach $150,000 by end of 2025?","Prediction market for: Will Bitcoin reach $150,000 by end of 2025?","['crypto', 'bitcoin', 'finance']",5359053,3558304,True,False,2026-01-03T13:43:24.895964,2027-02-04T13:43:24.895967,6

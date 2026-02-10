@@ -1,7 +1,0 @@
-id,slug,title,description,tags,volume,liquidity,active,closed,created_at,end_date,market_count
-event_002,event-002-4508,Will OpenAI release GPT-5 in 2025?,Prediction market for: Will OpenAI release GPT-5 in 2025?,"['technology', 'ai', 'business']",10129425,1356127,True,False,2025-08-06T13:43:24.895701,2027-05-26T13:43:24.895704,8
-event_006,event-006-1544,Will Tesla stock hit $500 in 2025?,Prediction market for: Will Tesla stock hit $500 in 2025?,"['stocks', 'business', 'technology']",16345303,2051013,True,False,2026-01-06T13:43:24.895822,2026-05-10T13:43:24.895824,6
-event_011,event-011-3233,Will OpenAI release GPT-5 in 2025?,Prediction market for: Will OpenAI release GPT-5 in 2025?,"['technology', 'ai', 'business']",6656560,2517239,True,False,2025-09-04T13:43:24.895847,2027-10-17T13:43:24.895849,4
-event_013,event-013-2701,Will Tesla stock hit $500 in 2025?,Prediction market for: Will Tesla stock hit $500 in 2025?,"['stocks', 'business', 'technology']",14059019,1236464,True,False,2025-04-17T13:43:24.895856,2027-05-02T13:43:24.895857,5
-event_015,event-015-5674,Will Tesla stock hit $500 in 2025?,Prediction market for: Will Tesla stock hit $500 in 2025?,"['stocks', 'business', 'technology']",8317371,3647723,True,False,2025-12-01T13:43:24.895864,2027-10-21T13:43:24.895865,4
-event_019,event-019-7673,Will Tesla stock hit $500 in 2025?,Prediction market for: Will Tesla stock hit $500 in 2025?,"['stocks', 'business', 'technology']",7977514,3307927,True,False,2025-11-26T13:43:24.895879,2026-12-09T13:43:24.895880,4

@@ -1,4 +1,0 @@
-id,slug,title,description,tags,volume,liquidity,active,closed,created_at,end_date,market_count
-event_010,event-010-8031,Will global temperature rise exceed 1.5°C by 2030?,Prediction market for: Will global temperature rise exceed 1.5°C by 2030?,"['climate', 'science', 'world']",9994015,1198817,True,False,2025-10-14T13:43:24.895843,2026-08-05T13:43:24.895845,6
-event_014,event-014-1774,Will global temperature rise exceed 1.5°C by 2030?,Prediction market for: Will global temperature rise exceed 1.5°C by 2030?,"['climate', 'science', 'world']",4885124,2296301,True,False,2025-02-14T13:43:24.895860,2026-10-20T13:43:24.895861,4
-event_021,event-021-7202,Will global temperature rise exceed 1.5°C by 2030?,Prediction market for: Will global temperature rise exceed 1.5°C by 2030?,"['climate', 'science', 'world']",11027436,1012493,True,False,2025-03-11T13:43:24.895927,2026-04-21T13:43:24.895930,7

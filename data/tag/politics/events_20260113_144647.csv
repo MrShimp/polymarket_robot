@@ -1,2 +1,0 @@
-id,slug,title,description,active,closed,category,tags,volume,liquidity,start_date,end_date,sync_timestamp
-event_001,2024-us-presidential-election,2024 US Presidential Election,Who will win the 2024 United States Presidential Election?,True,False,Politics,"politics,elections,usa",15000000,2500000,2024-01-01T00:00:00Z,2024-11-05T23:59:59Z,2026-01-13T14:46:47.299057
